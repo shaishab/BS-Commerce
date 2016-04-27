@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-	describe('HomeController', function() {
+	describe('CoreController', function() {
 		//Initialize global variables
 		var scope,
 			HomeController;
@@ -12,7 +12,7 @@
 		beforeEach(inject(function($controller, $rootScope) {
 			scope = $rootScope.$new();
 
-			HomeController = $controller('HomeController', {
+			HomeController = $controller('CoreController', {
 				$scope: scope
 			});
 		}));

@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-	describe('HeaderController', function() {
+	describe('CoreHeaderController', function() {
 		//Initialize global variables
 		var scope,
 			HeaderController;
@@ -12,7 +12,7 @@
 		beforeEach(inject(function($controller, $rootScope) {
 			scope = $rootScope.$new();
 
-			HeaderController = $controller('HeaderController', {
+			HeaderController = $controller('CoreHeaderController', {
 				$scope: scope
 			});
 		}));

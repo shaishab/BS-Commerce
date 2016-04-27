@@ -40,6 +40,7 @@ module.exports = function(db) {
 	app.locals.jsFiles = config.getJavaScriptAssets();
 	app.locals.cssFiles = config.getCSSAssets();
 
+	//================= start our custom variable=====================================
 	// Setting application local variables for admin
 	app.locals.adminJsFiles = config.getAdminJavaScriptAssets();
 	app.locals.adminCssFiles = config.getAdminCSSAssets();
@@ -47,6 +48,7 @@ module.exports = function(db) {
 	//Setting application local variables for theme
 	app.locals.themeJsFiles = config.getThemeJavaScriptAssets();
 	app.locals.themeCssFiles = config.getThemeCSSAssets();
+	//================= end our custom variable=====================================
 
 	// Passing the request url to environment locals
 	app.use(function(req, res, next) {

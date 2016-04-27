@@ -75,6 +75,7 @@ module.exports.getCSSAssets = function() {
 	return output;
 };
 
+//================= start our custom functions=====================================
 
 /**
  * Get the modules JavaScript files for admin
@@ -117,3 +118,5 @@ module.exports.getThemeCSSAssets = function() {
 	var output = this.getGlobbedFiles(this.assets.themeCss, 'public/');
 	return output;
 };
+
+//================= End our custom functions=====================================
