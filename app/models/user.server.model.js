@@ -143,18 +143,9 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 	});
 };
 
-UserSchema.methods = {
-	/**
-	 * HasRole - check if the user has required role
-	 *
-	 * @param {String} plainText
-	 * @return {Boolean}
-	 * @api public
-	 */
-	hasRole: function(role) {
-		var roles = this.roles;
-		return roles.indexOf('admin') !== -1 || roles.indexOf(role) !== -1;
-	}
-}
+UserSchema.methods.hasRole = function(role) {
+	var roles = this.roles;
+	return roles.indexOf('admin') !== -1 || roles.indexOf(role) !== -1;
+};
 
 mongoose.model('User', UserSchema);
