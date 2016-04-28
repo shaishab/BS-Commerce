@@ -1,13 +1,10 @@
 'use strict';
 
-var mean = require('meanio'),
-    mongoose = require('mongoose'),
+var  mongoose = require('mongoose'),
     Category = mongoose.model('Category'),
     _ = require('lodash'),
     Q = require('q');
 
-
-mean.loadConfig();
 
 var generateParentSubCategories = function(originalParent, listItems) {
 
