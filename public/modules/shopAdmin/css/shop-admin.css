@@ -13,7 +13,7 @@ body {
 @media (min-width: 768px) {
     .admin-page-wrapper {
         border-left: 1px solid #e7e7e7;
-        margin: 0 0 0 265px;
+        margin: 51px 0 0 265px;
         padding: 0 30px;
         position: inherit;
     }
