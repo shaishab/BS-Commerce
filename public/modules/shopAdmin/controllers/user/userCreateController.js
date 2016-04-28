@@ -55,7 +55,7 @@ angular.module('shopAdmin').controller('userCreateController', ['$scope', '$time
             if(active) {
                 $scope.activeEditAddress =true;
                 //Object.assign($scope.editAddress, $scope.user.addresses[addressIndex]);
-                $scope.editAddress = jQuery.extend({}, $scope.user.addresses[addressIndex]);
+                $scope.editAddress = angular.copy($scope.user.addresses[addressIndex]);//previous jQuery.extend({}, source)
                 $scope.editAddress.index = addressIndex;
                 $scope.addressTableBtnsDisable = true;
             }

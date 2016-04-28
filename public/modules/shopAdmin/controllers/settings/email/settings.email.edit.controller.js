@@ -10,7 +10,7 @@ angular.module('shopAdmin').controller('settingsEmailEditController', ['$scope',
                 .$promise
                 .then(function(settings) {
                     $scope.settings = settings;
-                    $scope.email = jQuery.extend({}, settings.emails[$stateParams.emailIndex]);
+                    $scope.email = angular.copy(settings.emails[$stateParams.emailIndex]);//previous jQuery.extend({}, source)
                 });
         };
 
