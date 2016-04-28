@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('shopAdmin').controller('AdminHeaderController', ['$scope', 'Authentication', 'Menus',
-    function($scope, Authentication, Menus) {
-        $scope.authentication = Authentication;
+angular.module('shopAdmin').controller('AdminHeaderController', ['$scope', 'Global', 'Menus',
+    function($scope, Global, Menus) {
+        $scope.authentication = Global;
         $scope.isCollapsed = false;
         $scope.menu = Menus.getMenu('topbar');
 
