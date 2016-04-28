@@ -4,10 +4,10 @@
 angular.module('shopAdmin').config(['$httpProvider',
     function($httpProvider) {
         // Set the httpProvider "not authorized" interceptor
-        $httpProvider.interceptors.push(['$q', '$location', 'AdminAuthentication',
-            function($q, $location, AdminAuthentication) {
-                //console.log(AdminAuthentication.user);
-                if(!AdminAuthentication.user || (AdminAuthentication.user && AdminAuthentication.user.roles.indexOf('admin')!==-1)) {
+        $httpProvider.interceptors.push(['$q', '$location', 'Global',
+            function($q, $location, Global) {
+                //console.log('Global data = ',Global.isAdmin);
+                if(!Global.user || !Global.isAdmin) {
                     $location.path('signin');
                 }
                 return {
@@ -15,7 +15,7 @@ angular.module('shopAdmin').config(['$httpProvider',
                         switch (rejection.status) {
                             case 401:
                                 // Deauthenticate the global user
-                                AdminAuthentication.user = null;
+                                Global.user = null;
 
                                 // Redirect to signin page
                                 $location.path('signin');

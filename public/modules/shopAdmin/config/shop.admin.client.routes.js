@@ -3,7 +3,7 @@
 //Setting up route
 angular.module('shopAdmin').config(['$stateProvider',
 	function($stateProvider) {
-		console.log('from admin route');
+		//console.log('from admin route');
 		// ShopAdmin state routing
 		$stateProvider.
 		state('admin', {
