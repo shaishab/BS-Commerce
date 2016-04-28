@@ -2,7 +2,7 @@
 
 var controller = require('../controllers/category.controller');
 
-module.exports = function (shopCatalog, app, auth, database, shopCore) {
+module.exports = function (app, shopCore) {
     app.route('/api/categories')
         .get(controller.list)
         .put(controller.update);

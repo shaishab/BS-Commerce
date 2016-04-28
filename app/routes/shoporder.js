@@ -3,7 +3,7 @@
 var cartController = require('../controllers/cartController'),
     orderController = require('../controllers/orderController');
 
-module.exports = function(Shopcatalog, app, auth, database, shopCore) {
+module.exports = function(app) {
     app.route('/api/cart')
       .get(cartController.getCart)
       .put(cartController.update)

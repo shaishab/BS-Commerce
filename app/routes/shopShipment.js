@@ -4,7 +4,7 @@ var shipmentController = require('../controllers/shipmentController');
 
 /* jshint -W098 */
 // The Package is past automatically as first parameter
-module.exports = function(ShopShipment, app, auth, database) {
+module.exports = function( app) {
 
     app.route('/api/auth/shipment')
       .get(shipmentController.getShipments)

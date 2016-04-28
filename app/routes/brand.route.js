@@ -3,7 +3,7 @@
 var brandController = require('../controllers/brand.controller');
 
 
-module.exports = function(shopCatalog, app, auth, database, shopCore) {
+module.exports = function(app) {
     app.route('/api/brands')
         .get(brandController.getBrands)
         .post(brandController.createBrand)
