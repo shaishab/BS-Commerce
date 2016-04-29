@@ -1,5 +1,5 @@
 'use strict';
-require('../models/ordersModel');
+require('../models/order.server.model');
 var mongoose = require('mongoose'),
     Order = mongoose.model('Orders'),
     Q = require('q');
