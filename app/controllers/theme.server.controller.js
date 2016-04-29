@@ -1,5 +1,5 @@
 'use strict';
-require('../models/themeModel');
+require('../models/theme.server.model');
 
 var mongoose = require('mongoose'),
     Theme = mongoose.model('Theme');

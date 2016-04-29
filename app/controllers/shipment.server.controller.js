@@ -1,6 +1,6 @@
 'use strict';
 
-var shipmentService = require('../services/shipmentService');
+var shipmentService = require('../services/shipment.server.service');
 
 
 exports.createShipment =function(req, res) {

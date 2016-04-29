@@ -1,6 +1,6 @@
 'use strict';
 
-var catalogService = require('../services/catalog.service');
+var catalogService = require('../services/catalog.server.service');
 
 var getCategories = function(cat, subCat, callback) {
     var categories = [];

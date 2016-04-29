@@ -1,6 +1,6 @@
 'use strict';
 
-var service = require('../services/product.service');
+var service = require('../services/product.server.service');
 
 exports.list = function (req, res) {
     var promise;

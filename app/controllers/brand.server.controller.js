@@ -1,6 +1,6 @@
 'use strict';
 
-var brandService = require('../services/brand.service');
+var brandService = require('../services/brand.server.service');
 
 exports.createBrand = function(req, res){
     brandService.createBrand(req)

@@ -1,6 +1,6 @@
 'use strict';
 
-var orderService = require('../services/orderService');
+var orderService = require('../services/order.server.service');
     //cartService = require('../services/cartService');
 var mongoose = require('mongoose'),
     Order = mongoose.model('Orders');

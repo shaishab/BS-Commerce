@@ -1,6 +1,6 @@
 'use strict';
 
-var settingsService = require('../services/settingsService'),
+var settingsService = require('../services/settings.server.service'),
     nodemailer = require('nodemailer'),
     _ = require('lodash');
 

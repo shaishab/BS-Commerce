@@ -1,6 +1,6 @@
 'use strict';
 
-var cartService = require('../services/cartService');
+var cartService = require('../services/cart.server.service');
 
 exports.getCart = function(req, res){
     if(!req.user) {

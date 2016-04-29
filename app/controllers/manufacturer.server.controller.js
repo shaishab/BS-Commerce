@@ -1,6 +1,6 @@
 'use strict';
 
-var manufacturerService = require('../services/manufacturer.service');
+var manufacturerService = require('../services/manufacturer.server.service');
 
 exports.createManufacturer = function(req, res) {
     manufacturerService.create(req)

@@ -2,13 +2,13 @@
 
 var _ = require('lodash'),
   	validator = require('validator'),
-	validation = require('../services/validation.service'),
+	validation = require('../services/validation.server.service'),
 	//settingsController = require('../../../shopSettings/server/controllers/settingsController'),
   	mongoose = require('mongoose'),
   	User = mongoose.model('User'),
 	Order = mongoose.model('Orders'),
   	nodemailer = require('nodemailer'),
-	userService = require('../services/shop.user.service');
+	userService = require('../services/user.extension.server.service');
 
 
 //exports.create = function(req, res, next) {
