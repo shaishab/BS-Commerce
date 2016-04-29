@@ -1,6 +1,6 @@
 'use strict';
 
-var shopUser = require('../controllers/shop.user.controller');
+var shopUser = require('../controllers/user.extension.server.controller');
 
 
 module.exports = function(app) {

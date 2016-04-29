@@ -1,7 +1,7 @@
 'use strict';
 
-var controller = require('../controllers/product.controller');
-var mediaService = require('../services/mediaService');
+var controller = require('../controllers/product.server.controller');
+var mediaService = require('../services/media.server.service');
 
 module.exports = function (app) {
 

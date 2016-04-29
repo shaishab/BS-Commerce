@@ -2,7 +2,7 @@
 
 module.exports = function(app) {
     // Home route
-    var themeController = require('../controllers/themeController');
+    var themeController = require('../controllers/theme.server.controller');
     //app.route('/')
     //    .get(themeController.render);
 

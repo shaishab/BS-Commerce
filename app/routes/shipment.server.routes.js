@@ -1,6 +1,6 @@
 'use strict';
 
-var shipmentController = require('../controllers/shipmentController');
+var shipmentController = require('../controllers/shipment.server.controller');
 
 /* jshint -W098 */
 // The Package is past automatically as first parameter

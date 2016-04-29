@@ -1,7 +1,7 @@
 'use strict';
 
-var cartController = require('../controllers/cartController'),
-    orderController = require('../controllers/orderController');
+var cartController = require('../controllers/cart.server.controller'),
+    orderController = require('../controllers/order.server.controller');
 
 module.exports = function(app) {
     app.route('/api/cart')

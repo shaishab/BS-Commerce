@@ -1,6 +1,6 @@
 'use strict';
 
-var settingsController = require('../controllers/settingsController');
+var settingsController = require('../controllers/settings.server.controller');
 var auth = require('../../app/controllers/users.server.controller');
 
 /* jshint -W098 */

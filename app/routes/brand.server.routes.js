@@ -1,6 +1,6 @@
 'use strict';
 
-var brandController = require('../controllers/brand.controller');
+var brandController = require('../controllers/brand.server.controller');
 
 
 module.exports = function(app) {
