@@ -23,11 +23,13 @@ angular.module('shopAdmin').controller('themeEditController', ['$scope', '$state
         };
 
         $scope.delete = function () {
-            themeService.deleteTheme($stateParams.themeId)
-                .$promise
-                .then(function(response) {
-                    $state.go('Theme.List');
-                });
+            if(confirm('Are you sure want to delete this theme ?')) {
+                themeService.deleteTheme($stateParams.themeId)
+                    .$promise
+                    .then(function (response) {
+                        $state.go('Theme.List');
+                    });
+            }
         };
     }
 ]);
