@@ -16,7 +16,8 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap.css',
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 				'public/lib/components-font-awesome/css/font-awesome.css',
-				'public/lib/metisMenu/dist/metisMenu.css'
+				'public/lib/metisMenu/dist/metisMenu.css',
+				'public/lib/jstree/dist/themes/default/style.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.js',
@@ -29,7 +30,8 @@ module.exports = {
 				'public/lib/angular-ui-router/release/angular-ui-router.js',
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-				'public/lib/metisMenu/dist/metisMenu.js'
+				'public/lib/metisMenu/dist/metisMenu.js',
+				'public/lib/jstree/dist/jstree.js'
 			]
 		},
 		css: [
