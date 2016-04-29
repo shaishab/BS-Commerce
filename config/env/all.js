@@ -35,13 +35,13 @@ module.exports = {
 			]
 		},
 		css: [
-			'public/modules/**/css/*.css'
+			'public/modules/*[!shopAdmin]*/css/*.css'
 		],
 		js: [
 			'public/config.js',
 			'public/application.js',
-			'public/modules/*/*.js',
-			'public/modules/*/*[!tests]*/*.js'
+			'public/modules/*[!shopAdmin]*/*.js',
+			'public/modules/*[!shopAdmin]*/*[!tests]*/*.js'
 		],
 		//================= start our custom variable=====================================
 		adminCss: [

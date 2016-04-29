@@ -66,7 +66,7 @@ exports.deleteTheme = function(req) {
 
 exports.getDefaultTheme = function() {
     var deferred = Q.defer();
-    Theme.findOne({isDefault: true}, 'name displayName', function(error, theme) {
+    Theme.findOne({isDefault: true}, 'name displayName -_id', function(error, theme) {
         if(error || !theme) {
             return deferred.reject(error);
         }
