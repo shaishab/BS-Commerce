@@ -1,9 +1,10 @@
 'use strict';
 
 var controller = require('../controllers/product.controller');
+var mediaService = require('../services/mediaService');
 
-module.exports = function (app, shopCore) {
-    //
+module.exports = function (app) {
+
     app.route('/api/products/:id([A-Za-z0-9]{24})')
         .get(controller.getById)
         .delete(controller.delete);
@@ -21,7 +22,7 @@ module.exports = function (app, shopCore) {
 
     app.route('/api/photos')
         .post(function (req, res) {
-            shopCore.media.create(req.files.upload)
+            mediaService.create(req.files.upload)
                 .then(function (file) {
                     return res.status(200).json(file);
                 })
@@ -32,7 +33,7 @@ module.exports = function (app, shopCore) {
         });
     app.route('/api/products/photos')
         .post(function (req, res) {
-            shopCore.media.create(req.files.file)
+            mediaService.create(req.files.file)
                 .then(function (file) {
                     return res.status(200).json(file);
                 })
@@ -43,11 +44,11 @@ module.exports = function (app, shopCore) {
         });
     app.route('/api/products/photos/:id')
         .get(function (req, res) {
-            /*var stream = shopCore.media.get(req.params.id);
+            /*var stream = mediaService.get(req.params.id);
             stream.pipe(res);
             return res.status(200);*/
 
-            shopCore.media.get(req.params.id)
+            mediaService.get(req.params.id)
                 .then(function (stream) {
                     stream.pipe(res);
                     return res.status(200);
@@ -58,7 +59,7 @@ module.exports = function (app, shopCore) {
                 .done();
         })
         .delete(function (req, res) {
-            shopCore.media.delete(req.params.id)
+            mediaService.delete(req.params.id)
                 .then(function () {
                     return res.status(200).json({msg: 'Deleted successfully!'});
                 })
