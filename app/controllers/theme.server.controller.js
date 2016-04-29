@@ -1,96 +1,69 @@
 'use strict';
-require('../models/theme.server.model');
 
-var mongoose = require('mongoose'),
-    Theme = mongoose.model('Theme');
-
-//exports.render = function(req, res) {
-
-//    var modules = [];
-//    // Preparing angular modules list with dependencies
-//    for (var name in mean.modules) {
-//        modules.push({
-//            name: name,
-//            module: 'mean.' + name,
-//            angularDependencies: mean.modules[name].angularDependencies
-//        });
-//    }
-//
-//    function isAdmin() {
-//        return req.user && req.user.roles.indexOf('admin') !== -1;
-//    }
-//
-//    // Send some basic starting info to the view
-//    res.render('index', {
-//        user: req.user ? {
-//            name: req.user.name,
-//            _id: req.user._id,
-//            username: req.user.username,
-//            profile: req.user.profile,
-//            roles: req.user.roles
-//        } : {},
-//        modules: modules,
-//        isAdmin: isAdmin,
-//        adminEnabled: isAdmin() && mean.moduleEnabled('mean-admin')
-//    });
-//};
+var themeService = require('../services/theme.server.service');
 
 exports.getThemes = function(req, res) {
-    Theme.find({}, function(error, themes) {
-        if(error) {
-            return res.status(400).send({msg: 'Error occurred during getting themes'});
-        }
-
-        return res.status(200).send(themes);
-    });
+    themeService.getThemes(req)
+        .then(function(themes){
+            return res.status(200).json(themes);
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred during getting themes'});
+        })
+        .done();
 };
 
 exports.createTheme = function(req, res) {
-    var newTheme = new Theme(req.body);
-
-    newTheme.save(function(error, theme) {
-        if(error) {
-            return res.status(400).send({msg: 'Error occurred during create theme due to invalid parameter'});
-        }
-
-        return res.status(200).send('Theme created successfully');
-    });
+    themeService.createTheme(req)
+        .then(function(theme){
+            return res.status(200).json('Theme created successfully');
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred during create theme due to invalid parameter'});
+        })
+        .done();
 };
 
 exports.getThemeById = function(req, res) {
-    Theme.findOne({_id: req.params.themeId}, function(error, theme) {
-        if(error) {
-            return res.status(400).send({msg: 'Error occurred during getting themes'});
-        }
-
-        return res.status(200).send(theme);
-    });
+    themeService.getThemeById(req)
+        .then(function(theme){
+            return res.status(200).json(theme);
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred during getting themes'});
+        })
+        .done();
 };
 
 exports.updateTheme = function(req, res) {
-    Theme.findOneAndUpdate({_id: req.body._id}, req.body, function(error, theme) {
-        if(error) {
-           return res.status(400).send({msg: 'Error occurred during updating theme due to invalid information'});
-        }
-        return res.status(200).send({msg: 'Successfully updated'});
-    });
+    themeService.updateTheme(req)
+        .then(function(theme){
+            return res.status(200).json('Successfully updated');
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred during updating theme due to invalid information'});
+        })
+        .done();
 };
 
 exports.deleteTheme = function(req, res) {
-    Theme.findOneAndRemove({_id: req.params.themeId}, function(error, theme) {
-        if(error) {
-            return res.status(400).send({msg: 'Error occurred during deleting theme due to invalid information'});
-        }
-        return res.status(200).send({msg: 'Successfully deleted'});
-    });
+    themeService.deleteTheme(req)
+        .then(function(theme){
+            return res.status(200).json('Successfully deleted');
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred during deleting theme due to invalid information'});
+        })
+        .done();
 };
 
 exports.getDefaultTheme = function(req, res) {
-    Theme.findOne({isDefault: true}, function(error, theme) {
-        if(error) {
-            return res.status(400).send({msg: 'Error occurred during getting theme'});
-        }
-
-        return res.status(200).send({name: theme.name, displayName: theme.displayName});
-    });
+    themeService.deleteTheme(req)
+        .then(function(theme){
+            return res.status(200).json(theme);
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred during getting theme'});
+        })
+        .done();
 };
