@@ -231,7 +231,7 @@ angular.module('shopAdmin').controller('shipmentEditController', ['$scope', '$ti
             doc.text(60, 120,  ': '+$scope.shipment.order.shippingMethod);
 
             doc.text(20, 130,  'Product Information:');
-            doc.fromHTML($('#productTable').get(0), 30, 130, {
+            doc.fromHTML(angular.element(document.querySelector('#productTable')).get(0), 30, 130, { // previously was $('#productTable').get(0)
                 'elementHandlers': productTableFromHTML
             });
             doc.autoPrint();

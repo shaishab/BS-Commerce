@@ -143,4 +143,9 @@ UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
 	});
 };
 
+UserSchema.methods.hasRole = function(role) {
+	var roles = this.roles;
+	return roles.indexOf('admin') !== -1 || roles.indexOf(role) !== -1;
+};
+
 mongoose.model('User', UserSchema);

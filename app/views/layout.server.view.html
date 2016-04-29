@@ -44,28 +44,24 @@
 </head>
 
 <body class="ng-cloak">
-	<header data-ng-include="'/themes/{{themeName}}/views/header.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
+	<header data-ng-include="'/themes/{{theme.name}}/views/header.html'" class="navbar navbar-fixed-top navbar-inverse" style="height: 52px;"></header>
 	<section class="content">
 		<section class="container">
 			{% block content %}{% endblock %}
 		</section>
 	</section>
-	<footer data-ng-include="'/themes/{{themeName}}/views/footer.html'" class="navbar navbar-fixed-bottom navbar-inverse"></footer>
+	<footer data-ng-include="'/themes/{{theme.name}}/views/footer.html'" class="navbar navbar-fixed-bottom navbar-inverse"></footer>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
 		var user = {{ user | json | safe }};
-		var themeName=  {{ themeName| json | safe}}
+		var theme=  {{ theme| json | safe}};
 	</script>
 
 	<!--Application JavaScript Files-->
-	{% for jsFile in jsFiles %}
-	    {% if jsFile.indexOf('modules/shopAdmin') ===-1 %}<script type="text/javascript" src="{{jsFile}}"></script>{% endif %}
-	{% endfor %}
+	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
 
-	{% for themeJsFile in themeJsFiles %}
-		{% if themeJsFile.indexOf(themeName) !== -1 %}<script type="text/javascript" src="{{themeJsFile}}"></script>{% endif %}
-	{% endfor %}
+	{% for themeJsFile in themeJsFiles %}{% if themeJsFile.indexOf(theme.name) !== -1 %}<script type="text/javascript" src="{{themeJsFile}}"></script>{% endif %}{% endfor %}
 
 	{% if process.env.NODE_ENV === 'development' %}
 	<!--Livereload script rendered -->

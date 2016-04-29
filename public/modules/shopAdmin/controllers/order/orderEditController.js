@@ -131,7 +131,7 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
         $scope.editBillingAddress = function() {
             $scope.billAddressFieldRequired = true;
             $scope.showEditBillingAddressForm = true;
-            $scope.newBillingAddress = jQuery.extend({}, $scope.order.billingAddress);
+            $scope.newBillingAddress = angular.copy($scope.order.billingAddress); //jQuery.extend
         };
 
         $scope.cancelUpdateBillingAddress = function() {
@@ -166,7 +166,7 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
         $scope.editShippingAddress = function() {
             $scope.shippingAddressFieldRequired = true;
             $scope.showEditShippingAddressForm = true;
-            $scope.newShippingAddress = jQuery.extend({}, $scope.order.shippingAddress);
+            $scope.newShippingAddress = angular.copy($scope.order.shippingAddress);//previous jQuery.extend({}, source)
         };
 
         $scope.cancelUpdateShippingAddress = function() {
@@ -199,7 +199,7 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
         };
 
         $scope.editProductInfo = function(item) {
-            $scope.newItem = jQuery.extend({}, item);
+            $scope.newItem = angular.copy(item);////previous jQuery.extend({}, source)
             $scope.editQuantity = true;
             //console.log(item);
         };

@@ -54,7 +54,7 @@
 				</ul>
 			</li>
 		</ul>
-		<div ng-if="authentication.user && authentication.user.roles && authentication.user.roles.indexOf('admin') !== -1">
+		<div ng-if="authentication.user && authentication.authenticated && authentication.isAdmin">
 			<shop-admin-side-menu></shop-admin-side-menu>
 		</div>
 

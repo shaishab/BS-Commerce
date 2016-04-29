@@ -24,6 +24,7 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
                 if(user.roles.indexOf('authenticated') !== -1)
                     $scope.roleAuthenticated = true;
                 $scope.user.active = user.active || false;
+                $scope.user.gender = user.gender || 'male';
             });
         };
         $scope.getUserById();
@@ -85,7 +86,7 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
             $scope.editAddress = {};
             if(active) {
                 $scope.activeEditAddress =true;
-                $scope.editAddress = jQuery.extend({}, $scope.user.addresses[addressIndex]);
+                $scope.editAddress = angular.copy($scope.user.addresses[addressIndex]);//previous jQuery.extend({}, source)
                 $scope.editAddress.index = addressIndex;
                 $scope.addressTableBtnsDisable = true;
             }

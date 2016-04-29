@@ -4,6 +4,7 @@
 angular.module('shopAdmin').directive('shopAdminCategoryTree', ['Global', '$http', '$state',
     function (Global, $http, $state) {
         return {
+            restrict:'AE',
             replace: true,
             template: '<div id="category_jstree_div"></div>',
             link: function (scope, element, attrs) {
