@@ -24,6 +24,7 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
                 if(user.roles.indexOf('authenticated') !== -1)
                     $scope.roleAuthenticated = true;
                 $scope.user.active = user.active || false;
+                $scope.user.gender = user.gender || 'male';
             });
         };
         $scope.getUserById();
