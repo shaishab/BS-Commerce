@@ -58,10 +58,7 @@ exports.all = function(pageNumber, pageSize){
             if(error){
                 return deferred.reject(error);
             }
-            return deferred.resolve({
-                products: products,
-                total: count
-            });
+            return deferred.resolve(products);
         });
 
     return deferred.promise;

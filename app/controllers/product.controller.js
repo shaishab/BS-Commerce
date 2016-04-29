@@ -14,9 +14,8 @@ exports.list = function (req, res) {
     //var promise = req.query.slug ? service.search(req.query.slug, req.query.orderBy, req.query.currentPage, req.query.pageSize) : service.all( req.query.currentPage, req.query.pageSize);
 
     promise
-        .then(function (data) {
-            res.append('total', data.total);
-            return res.status(200).json(data.products);
+        .then(function (products) {
+            return res.status(200).json(products);
         })
         .catch(function (error) {
             return res.status(500).json([{msg: 'Unhandled Error!'}]);
