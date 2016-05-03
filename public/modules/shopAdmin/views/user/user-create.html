@@ -1,12 +1,11 @@
 <div class="bs-fa-color row">
     <div class="row">
-        <div class="col-md-6">
-            <span><i class="fa fa-user-md"></i> <strong> Add A New User </strong></span>
-            <span>(<a data-ui-sref="User.List">back to customer list</a>)</span>
-        </div>
+        <div class="admin-title">
+            <h3>
+                <i class="fa fa-user-md"></i> Add A New User (<a data-ui-sref="User.List">back to customer list</a>)
+            </h3>
 
-        <div class="col-md-6 pull-right text-right">
-            <button class="btn btn-default" data-ng-disabled="userForm.$invalid" data-ng-click="createNewUser()">Save</button>
+            <button class="btn btn-primary" data-ng-disabled="userForm.$invalid" data-ng-click="createNewUser()">Save</button>
         </div>
     </div>
     <hr>
