@@ -175,3 +175,25 @@ exports.updateProductsForBrand = function(req){
     });
     return deferred.promise;
 };
+
+exports.addProductPhoto = function(productId, pictureInfo){
+    var deferred = Q.defer();
+    Product.findOneAndUpdate({_id: productId}, {$push: {photos: pictureInfo}}, {new:true}, function(error, product) {
+        if(error) {
+            return deferred.reject(error);
+        }
+        return deferred.resolve(product);
+    });
+    return deferred.promise;
+};
+
+exports.deleteProductPhoto = function(productId, photoId){
+    var deferred = Q.defer();
+    Product.findOneAndUpdate({_id: productId}, {$pull: {photos : {id: photoId } } }, {new:true}, function(error, product) {
+        if(error) {
+            return deferred.reject(error);
+        }
+        return deferred.resolve(product);
+    });
+    return deferred.promise;
+};

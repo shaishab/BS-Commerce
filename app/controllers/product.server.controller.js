@@ -1,6 +1,7 @@
 'use strict';
 
-var service = require('../services/product.server.service');
+var service = require('../services/product.server.service'),
+    mediaService = require('../services/media.server.service');
 
 exports.list = function (req, res) {
     var promise;
@@ -163,3 +164,45 @@ exports.getProductsByBrand = function (req, res) {
         })
         .done();
 };
+exports.addProductPhoto = function(req, res) {
+    if(req.file && req.body.pictureInfo){
+        mediaService.create(req.file)
+            .then(function (file) {
+                var pictureInfo = req.body.pictureInfo;
+                pictureInfo.id = file._id;
+                service.addProductPhoto(req.params.productId, pictureInfo)
+                    .then(function(product) {
+                        return res.status(200).json(product);
+                    })
+                    .catch(function(error){
+                        return res.status(400).json(error);
+                    })
+                    .done();
+            })
+            .catch(function (error) {
+                return res.status(400).json({error: error});
+            })
+            .done();
+    } else {
+        return res.status(400).send({msg: 'Error occurred due to invalid information'});
+    }
+};
+
+exports.deleteProductPhoto = function(req, res) {
+    mediaService.delete(req.params.photoId)
+        .then(function () {
+            service.deleteProductPhoto(req.params.productId, req.params.photoId)
+                .then(function(product) {
+                    return res.status(200).json(product);
+                })
+                .catch(function(error){
+                    return res.status(400).json(error);
+                })
+                .done();
+        })
+        .catch(function (error) {
+            return res.status(500).json({error: error});
+        })
+        .done();
+};
+

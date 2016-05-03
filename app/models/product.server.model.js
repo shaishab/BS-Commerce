@@ -81,8 +81,23 @@ var ProductSchema = new Schema({
         ref: 'ProductTag'
     }],
     photos:[{
-        type: Schema.Types.ObjectId,
-        ref: 'fs.files'
+        id: {
+            type: Schema.Types.ObjectId,
+            ref: 'fs.files'
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        alt: {
+            type: String,
+            default: ''
+        },
+        displayOrder: {
+            type: Number,
+            default: 1
+        },
+        _id: false
     }],
     brands:{
         type: [Schema.Types.ObjectId],
