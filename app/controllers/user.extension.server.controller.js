@@ -375,10 +375,10 @@ exports.getUserStatistics = function(req, res) {
 			{
 				$group : {
 					_id : null,
-					todayTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', today ] }, 1, 0 ] } },
-					weekTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', thisWeek ] }, 1, 0 ] } },
-					monthTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', thisMonth ] }, 1, 0 ] } },
-					yearTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', thisYear ] }, 1, 0 ] } },
+					todayTotal: { $sum: {$cond: [ { $gte: [ '$created', today ] }, 1, 0 ] } },
+					weekTotal: { $sum: {$cond: [ { $gte: [ '$created', thisWeek ] }, 1, 0 ] } },
+					monthTotal: { $sum: {$cond: [ { $gte: [ '$created', thisMonth ] }, 1, 0 ] } },
+					yearTotal: { $sum: {$cond: [ { $gte: [ '$created', thisYear ] }, 1, 0 ] } },
 					allTimeTotal: { $sum: 1 }
 				}
 			}
