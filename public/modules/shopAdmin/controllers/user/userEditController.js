@@ -19,10 +19,10 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
                 $scope.user = user;
                 if(user.roles.indexOf('admin') !== -1)
                     $scope.roleAdmin = true;
-                if(user.roles.indexOf('rergistered') !== -1)
-                    $scope.roleRegistered = true;
-                if(user.roles.indexOf('authenticated') !== -1)
-                    $scope.roleAuthenticated = true;
+                if(user.roles.indexOf('user') !== -1)
+                    $scope.roleUser = true;
+                if(user.roles.indexOf('guest') !== -1)
+                    $scope.roleGuest = true;
                 $scope.user.active = user.active || false;
                 $scope.user.gender = user.gender || 'male';
             });
