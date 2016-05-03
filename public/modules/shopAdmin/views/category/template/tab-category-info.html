@@ -20,9 +20,9 @@
             <question-mark></question-mark> Picture
         </div>
         <div class="col-md-3">
-            <input type="file" class="btn btn-default" ngf-select ng-model="category.files" name="file" accept="image/*" />
-            <img ng-show="category.files[0] != null" ngf-src="category.files[0]"  class="thumb thumbnail" >
-            <img ng-show="category.files[0] == null" ng-src={{category.image}} class="thumb thumbnail" >
+            <input type="file" class="btn btn-default" ngf-select ng-model="category.file" ngf-multiple="false" name="file" accept="image/*" />
+            <img ng-show="category.file" ngf-src="category.file"  class="thumb thumbnail" >
+            <img ng-show="category.image" ng-src={{category.image}} class="thumb thumbnail" >
 
         </div>
     </div>
