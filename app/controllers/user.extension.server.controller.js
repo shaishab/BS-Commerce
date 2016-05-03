@@ -342,36 +342,18 @@ exports.removeUserById = function(req, res) {
 };
 
 exports.createUser = function(req, res) {
-	var user = new User({
-		name: req.body.name,
-		username: req.body.email.toLowerCase(),
-		email: req.body.email.toLowerCase(),
-		password: req.body.password,
-		phoneNumber: req.body.phoneNumber,
-		status: 'email-not-verified',
-		addresses: req.body.addresses,
-		gender: req.body.gender,
-		active: req.body.active,
-		roles: req.body.roles
-	});
 
+	var user = new User(req.body);
+
+	user.email= user.email.toLowerCase();
+	user.username = user.email;
+	user.status = 'email-not-verified';
+	user.displayName = user.firstName + ' ' + user.lastName;
 	user.provider = 'local';
-
-	 //because we set our user.provider to local our models/user.js validation will always be true
-	req.assert('name', 'You must enter a name').notEmpty();
-	req.assert('email', 'You must enter a valid email address').isEmail();
-	req.assert('password', 'Password must be between 6-20 characters long').len(6, 20);
-
-	var errors = req.validationErrors();
-	if (errors) {
-		return res.status(400).send(errors);
-		//if(error.errors.password){
-		//	return res.status(416).send({msg: error.errors.password.message});
-		//}
-	}
 
 	user.save(function(error) {
 		if(error) {
+			console.log(error);
 			if(error.errors.email){
 				return res.status(409).send({msg: error.errors.email.message});
 			}

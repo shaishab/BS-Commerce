@@ -43,10 +43,6 @@ User.schema.add({
     type: String,
     enum:['active', 'inactive', 'email-not-verified']
   },
-  registrationDate:{
-    type: Date,
-    default: new Date()
-  },
   gender:{
     type: String
   },

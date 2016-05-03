@@ -52,7 +52,7 @@ module.exports = function (app) {
         });
 
     app.route('/api/products/:productId/photos/:photoId')
-        .delete(controller.deleteProductPhoto)
+        .delete(controller.deleteProductPhoto);
 
     app.route('/api/productsByCondition')
         .get(controller.getProductByCondition);
