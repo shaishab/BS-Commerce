@@ -33,11 +33,11 @@ angular.module('shopAdmin').factory('productService', ['$resource',
                 });
                 return deleteProduct.delete({id: id});
             },
-            deleteProductPhoto: function(id) {
-                var deleteProductPhoto = $resource('/api/products/photos/:id', {id: '@id'}, {
+            deleteProductPhoto: function(productId, photoId) {
+                var deleteProductPhoto = $resource('/api/products/:productId/photos/:photoId', {productId: '@productId', photoId: '@photoId'}, {
                     'delete': {method: 'DELETE'}
                 });
-                return deleteProductPhoto.delete({id: id});
+                return deleteProductPhoto.delete({productId: productId, photoId: photoId});
             },
             getProductCount: function() {
                 var getProductCount = $resource('/api/products/count', {}, {

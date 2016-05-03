@@ -38,7 +38,7 @@ angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$
         $scope.createCategory = function () {
             var file = $scope.category.file ? $scope.category.file : null;
             $scope.category.file = undefined;
-            console.log(file);
+
             if($scope.category.parent === ''){
                 $scope.category.parent = null;
             }

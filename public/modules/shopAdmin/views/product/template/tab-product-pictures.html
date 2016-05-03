@@ -12,15 +12,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="item in product.photos">
-                <td><img ng-src="{{'/api/products/photos/'+item}}" class="thumb"></td>
-                <td>{{item}}</td>
-                <td>{{item}}</td>
-                <td>{{item}}</td>
-                <td><a href="#">Edit</a></td>
+            <tr ng-repeat="photo in product.photos">
+                <td><img ng-src="{{'/api/products/photos/'+photo.id}}" class="thumb"></td>
+                <td>{{photo.displayOrder}}</td>
+                <td>{{photo.alt}}</td>
+                <td>{{photo.title}}</td>
+                <td><a href="">Edit</a></td>
                 <!--ui-sref="Product.Edit({productId: item.id})"-->
                 <td>
-                    <div class="btn btn-danger" ng-click="deleteImage(item);"><i
+                    <div class="btn btn-danger" ng-click="deleteImage(photo.id);"><i
                             class="fa fa-remove fa-fw"></i>Delete
                     </div>
                 </td>
@@ -28,37 +28,53 @@
             </tbody>
         </table>
     </div>
-    <div class="row">
-        <div class="col-md-2">
-            <question-mark></question-mark> Picture
-        </div>
-        <!--ng-hide="picture.files[0] === null"-->
-        <div class="col-md-2">
-            <img ngf-src="picture.files[0]" class="img-thumbnail thumb-preview" style="cursor: pointer;"
-                 ngf-reset-on-click="true"
-                 ngf-default-src="/shopAdmin/assets/img/upload-orange.png" width="100px" height="100px" ngf-select data-ng-model="picture.files">
-        </div>
-    </div>
+    <hr>
+    <form name="productPictureForm">
+        <div class="row">
+            <div class="col-md-2">
+                <question-mark></question-mark> Picture
+            </div>
+            <!--ng-hide="picture.files[0] === null"-->
+            <div class="col-md-2">
+                <!--<input type="file" class="btn btn-default" ngf-select ng-model="picture.files" ngf-multiple="true" name="file" accept="image/*" />-->
+                <img ngf-src="picture.file || 'modules/shopAdmin/img/upload-orange.png'" class="img-thumbnail thumb-preview" style="cursor: pointer;"
+                     ngf-reset-on-click="true"
+                     width="100px" height="100px" ngf-select data-ng-model="picture.file">
+                <!--<img ng-show="picture.files" ngf-src="picture.files"  class="thumb thumbnail" >-->
+                <!--<img ng-show="picture.image" ng-src={{category.image}} class="thumb thumbnail" >-->
 
-    <div class="row">
-        <div class="col-md-2">
-            <question-mark></question-mark>Picture alt Text
+            </div>
         </div>
-        <div class="col-md-3"><input placeholder="image alt text" class="form-control" data-ng-model="pictureAlt"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-        <question-mark></question-mark>Picture Title
-        </div>
-        <div class="col-md-3">
-            <input placeholder="Picture Title" class="form-control" data-ng-model="picture.title">
 
+        <div class="row">
+            <div class="col-md-2">
+                <question-mark></question-mark>Picture Title
+            </div>
+            <div class="col-md-3">
+                <input placeholder="Picture Title" class="form-control" data-ng-model="picture.title" required>
+
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-offset-2 col-md-2">
-        <input class="btn btn-primary" type="button" ng-click="upload(picture.files)"
-               value="add Image to Product">
+        <div class="row">
+            <div class="col-md-2">
+                <question-mark></question-mark>Picture alt Text
+            </div>
+            <div class="col-md-3"><input placeholder="image alt text" class="form-control" data-ng-model="picture.alt" required></div>
         </div>
-    </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                <question-mark></question-mark> Display order
+            </div>
+            <div class="col-md-3">
+                <input type="number" name="quantity" min="1" max="100" class="form-control" data-ng-model="picture.displayOrder" required/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-offset-2 col-md-2">
+                <input class="btn btn-primary" type="button" ng-disabled="productPictureForm.$invalid" ng-click="upload(picture)"
+                       value="add Image to Product">
+            </div>
+        </div>
+    </form>
 </div>
