@@ -91,11 +91,13 @@ angular.module('shopAdmin').controller('productUpdateController',
         };
 
         $scope.deleteImage = function(photoId){
-            productService.deleteProductPhoto($stateParams.id, photoId)
-                .$promise
-                .then(function(updateProduct) {
-                    $scope.product = updateProduct;
-                });
+            if(confirm('Are you sure wnat to delete this picture ?')) {
+                productService.deleteProductPhoto($stateParams.id, photoId)
+                    .$promise
+                    .then(function(updateProduct) {
+                        $scope.product = updateProduct;
+                    });
+            }
         };
 
         $scope.deleteWholeProduct = function(){
