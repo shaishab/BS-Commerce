@@ -10,9 +10,9 @@ var gfs = new Grid(mongoose.connection.db);
 exports.create = function(file){
   var deferred = Q.defer();
 
-  console.log(file);
+  //console.log(file);
   var writeStream = gfs.createWriteStream({
-    filename: file.name,
+    filename: file.originalname,
     mode: 'w',
     content_type: file.mimetype
   });

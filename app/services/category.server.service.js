@@ -83,19 +83,9 @@ exports.addCategory = function (cat, imageId) {
 
     var deferred = Q.defer();
 
-    var newCategory = new Category({
-        name: cat.name,
-        slug: getSlug(cat.name),
-        parent: cat.parent,
-        description: cat.description,
-        imageId: imageId,
-        showOnHomePage: cat.showOnHomePage,
-        includeInTopMenu: cat.includeInTopMenu,
-        allowToSelectPageSize: cat.allowToSelectPageSize,
-        published: cat.published,
-        displayOrder: cat.displayOrder,
-        ancestors: []
-    });
+    var newCategory = new Category(cat);
+    newCategory.slug = getSlug(cat.name);
+    newCategory.imageId = imageId;
 
     newCategory.save(function (error) {
         if (error) {
