@@ -93,10 +93,6 @@ angular.module('shopAdmin').controller('userListController', ['$scope', 'Global'
             }
         };
 
-
-        $scope.showAddUserForm = function() {
-            $location.path('/User/Create');
-        };
         //</editor-fold>
 
         //<editor-fold desc='start pagination functions'>
