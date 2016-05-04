@@ -32,7 +32,9 @@ module.exports = {
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/metisMenu/dist/metisMenu.js',
 				'public/lib/jstree/dist/jstree.js',
-				'public/lib/ng-file-upload/ng-file-upload.js'
+				'public/lib/ng-file-upload/ng-file-upload.js',
+				'public/lib/tinymce-dist/tinymce.js',
+				'public/lib/angular-ui-tinymce/src/tinymce.js'
 			]
 		},
 		css: [
