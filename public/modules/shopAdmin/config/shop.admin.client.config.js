@@ -31,4 +31,20 @@ angular.module('shopAdmin').config(['$httpProvider',
             }
         ]);
     }
-]);
+]).run(['$rootScope', '$state', 'Global', function ($rootScope, $state, Global) {
+    $rootScope.$on('$stateChangeStart',
+        function (event, toState, toParams, fromState, fromParams) {
+            if (!Global.isAdmin && toState.name !== 'signin' && toState.name !== 'signup' && toState.name !== 'logout') {
+                event.preventDefault();
+                $state.go('signin');
+            }
+        });
+
+    $rootScope.$on('signin', function (event, user) {
+        Global.user = user;
+        if (Global.user && Global.user.roles) {
+            Global.authenticated = Global.user.roles.length;
+            Global.isAdmin = Global.user.roles.indexOf('admin') !== -1;
+        }
+    });
+}]);
