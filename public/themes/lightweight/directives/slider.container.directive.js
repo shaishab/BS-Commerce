@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('lightweight').directive('shopSliderContainer', ['Global',
+angular.module('lightweight').directive('sliderContainer', ['Global',
     function(Global) {
         return{
-            templateUrl: 'themes/lightweight/views/slider/shop-slider-container.html',
+            restrict: 'AE',
+            replace: true,
+            templateUrl: 'themes/lightweight/views/slider/slider-container.html',
             link: function($scope, element, attrs){
                 $scope.myInterval = 5000;
                 $scope.noWrapSlides = false;
