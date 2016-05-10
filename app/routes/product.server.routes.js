@@ -30,7 +30,7 @@ module.exports = function (app) {
                     return res.status(200).json(file);
                 })
                 .catch(function (error) {
-                    return res.status(500).json({error: error});
+                    return res.status(400).json({error: error});
                 })
                 .done();
         });
@@ -46,7 +46,7 @@ module.exports = function (app) {
                     return res.status(200);
                 })
                 .catch(function (error) {
-                    return res.status(500).json({error: error});
+                    return res.status(400).json({error: error});
                 })
                 .done();
         });

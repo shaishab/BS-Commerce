@@ -35,11 +35,7 @@ exports.search = function(slug, orderBy, currentPage, pageSize){
                             if(error){
                                 return deferred.reject(error);
                             }
-
-                            return deferred.resolve({
-                                products: products,
-                                total: count
-                            });
+                            return deferred.resolve({products:products, total: count});
                         });
                 });
         });

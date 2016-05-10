@@ -12,7 +12,6 @@ exports.list = function (req, res) {
     } else {
         promise = service.all(1, 9);
     }
-    //var promise = req.query.slug ? service.search(req.query.slug, req.query.orderBy, req.query.currentPage, req.query.pageSize) : service.all( req.query.currentPage, req.query.pageSize);
 
     promise
         .then(function (products) {
