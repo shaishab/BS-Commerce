@@ -36,12 +36,9 @@
             </div>
             <!--ng-hide="picture.files[0] === null"-->
             <div class="col-md-2">
-                <!--<input type="file" class="btn btn-default" ngf-select ng-model="picture.files" ngf-multiple="true" name="file" accept="image/*" />-->
                 <img ngf-src="picture.file || 'modules/shopAdmin/img/upload-orange.png'" class="img-thumbnail thumb-preview" style="cursor: pointer;"
                      ngf-reset-on-click="true"
                      width="100px" height="100px" ngf-select data-ng-model="picture.file">
-                <!--<img ng-show="picture.files" ngf-src="picture.files"  class="thumb thumbnail" >-->
-                <!--<img ng-show="picture.image" ng-src={{category.image}} class="thumb thumbnail" >-->
 
             </div>
         </div>
