@@ -8,7 +8,7 @@ angular.module('lightweight').directive('categoryAccordion', ['Global', '$rootSc
                 category.isOpen = true;
                 return true;
             }
-            var subCategorySelected = _.any(category.subCategories, function (sub) {
+            var subCategorySelected = _.some(category.subCategories, function (sub) {
                 return highlightIfSelected(sub, slug);
             });
 
@@ -55,7 +55,7 @@ angular.module('lightweight').directive('categoryAccordion', ['Global', '$rootSc
                 };
 
                 $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-                    console.log(toState,toParams);
+                    //console.log(toState,toParams);
                     scope.slug = (toState.name === 'products-in-category') ? toParams.slug : '';
                     processCategorySelection(scope.categories, scope.slug);
                 });

@@ -3,14 +3,8 @@
 angular.module('lightweight').factory('ProductService', ['$resource',
     function($resource) {
         return {
-            update: function(id) {
-                return $resource('api/products/:id',{
-                    id:'@_id'
-                },{
-                    update: {
-                        method: 'PUT'
-                    }
-                });
+            getProductByCategory: function() {
+               return $resource('api/products');
             },
             getProductById: function(id) {
                 var getProductById = $resource('api/products/:id', {id:'@_id'}, {
