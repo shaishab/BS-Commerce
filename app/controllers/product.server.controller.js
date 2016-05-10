@@ -19,7 +19,7 @@ exports.list = function (req, res) {
             return res.status(200).json(products);
         })
         .catch(function (error) {
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+            return res.status(400).json({msg: 'Error occurred due to invalid call'});
         })
         .done();
 };
@@ -30,7 +30,7 @@ exports.getById = function (req, res) {
             return res.status(200).json(product);
         })
         .catch(function (err) {
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
 };
@@ -41,7 +41,7 @@ exports.getBySKU = function (req, res) {
             return res.status(200).json(product);
         })
         .catch(function (err) {
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
 };
@@ -52,7 +52,7 @@ exports.create = function (req, res) {
             return res.status(200).json({_id: productId});
         })
         .catch(function (error) {
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
 
@@ -65,23 +65,62 @@ exports.update = function (req, res) {
             return res.status(200).json(product);
         })
         .catch(function (error) {
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
+};
 
-
+var deleteProduct = function(productId, callback) {
+    service.delete(productId)
+        .then(function (product) {
+            return callback(true);
+        })
+        .catch(function (error) {
+            return callback(false);
+        })
+        .done();
 };
 
 exports.delete = function(req,res){
-    service.delete(req.params.id)
+    service.getById(req.params.id)
         .then(function (product) {
-            return res.status(200).json(product);
+            var noOfPhoto = 0;
+            if(product.photos.length) {
+                product.photos.forEach(function(photo) {
+                    mediaService.delete(photo.id)
+                        .then(function () {
+                            noOfPhoto++;
+                        })
+                        .catch(function (error) {
+                            noOfPhoto++;
+                        })
+                        .done();
+                });
+
+                if(product.photos.length === noOfPhoto) {
+                    deleteProduct(req.params.id, function(success) {
+                        if(success) {
+                            return res.status(200).json({msg:'delete success'});
+                        } else {
+                            return res.status(400).json({msg: 'Error occurred during delete product due to invalid info.'});
+                        }
+                    });
+                }
+            } else {
+                deleteProduct(req.params.id, function(success) {
+                    if(success) {
+                        return res.status(200).json({msg:'delete success'});
+                    } else {
+                        return res.status(400).json({msg: 'Error occurred during delete product due to invalid info.'});
+                    }
+                });
+            }
+
         })
-        .catch(function (error) {
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+        .catch(function (err) {
+            return res.status(400).json({msg: 'Not found this product'});
         })
         .done();
-
 };
 
 exports.getCount = function(req, res){
@@ -90,7 +129,7 @@ exports.getCount = function(req, res){
             return res.status(200).json({count: count});
         })
         .catch(function(error){
-            return res.status(500).json([{msg: 'Unhandled Error!'}]);
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
 };
@@ -128,11 +167,11 @@ exports.getProductByCondition = function(req, res) {
                         return res.status(200).json({products: products, totalProducts: count});
                     })
                     .catch(function(error){
-                        return res.status(500).json({msg: 'Unhandled Error!'});
+                        return res.status(400).json({msg: 'Error occurred due to invalid information'});
                     });
             })
             .catch(function (error) {
-                return res.status(500).json({msg: 'Unhandled Error!'});
+                return res.status(400).json({msg: 'Error occurred due to invalid information'});
             })
             .done();
     });
@@ -141,10 +180,10 @@ exports.getProductByCondition = function(req, res) {
 exports.updateProductsForBrand = function (req, res) {
     service.updateProductsForBrand(req)
         .then(function (product) {
-            return res.status(200).json({msg: 'Update success'});
+            return res.status(200).json({msg: 'Error occurred due to invalid information'});
         })
         .catch(function (error) {
-            return res.status(500).json({msg: 'Unhandled Error!'});
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
 };
@@ -160,10 +199,11 @@ exports.getProductsByBrand = function (req, res) {
             return res.status(200).json({products: products});
         })
         .catch(function (error) {
-            return res.status(500).json({msg: 'Unhandled Error!'});
+            return res.status(400).json({msg: 'Error occurred due to invalid information'});
         })
         .done();
 };
+
 exports.addProductPhoto = function(req, res) {
     if(req.file && req.body.pictureInfo){
         mediaService.create(req.file)
@@ -201,7 +241,7 @@ exports.deleteProductPhoto = function(req, res) {
                 .done();
         })
         .catch(function (error) {
-            return res.status(500).json({error: error});
+            return res.status(400).json({error: error});
         })
         .done();
 };
