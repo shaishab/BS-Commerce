@@ -11,12 +11,12 @@
                 </p>
                 <button class="btn btn-default add-to-cart-btn" data-ng-click="toggleCartStatus(product, $event)" data-ng-class="{'added-to-cart': product.addedToCart}"><i class="fa fa-shopping-cart"></i> {{product.addedToCart ? 'Added to cart' : 'Add to cart'}}</button>
             </div>
-            <div class="choose">
-                <ul class="nav nav-pills nav-justified">
-                    <li><a href=""><i class="fa fa-plus-square"></i> Add to wishlist</a></li>
-                    <li><a href=""><i class="fa fa-plus-square"></i> Add to compare</a></li>
-                </ul>
-            </div>
+            <!--<div class="choose">-->
+                <!--<ul class="nav nav-pills nav-justified">-->
+                    <!--<li><a href=""><i class="fa fa-plus-square"></i> Add to wishlist</a></li>-->
+                    <!--<li><a href=""><i class="fa fa-plus-square"></i> Add to compare</a></li>-->
+                <!--</ul>-->
+            <!--</div>-->
         </div>
     </div>
     <div data-ng-if="!products.length" class="row text-center">
