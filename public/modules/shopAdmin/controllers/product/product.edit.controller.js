@@ -91,31 +91,13 @@ angular.module('shopAdmin').controller('productUpdateController',
         };
 
         $scope.deleteImage = function(photoId){
-            if(confirm('Are you sure wnat to delete this picture ?')) {
+            if(confirm('Are you sure want to delete this picture ?')) {
                 productService.deleteProductPhoto($stateParams.id, photoId)
                     .$promise
                     .then(function(updateProduct) {
                         $scope.product = updateProduct;
                     });
             }
-        };
-
-        $scope.deleteWholeProduct = function(){
-            $scope.deleteImageAndProduct($scope.product.photos[0]);
-        };
-
-        $scope.deleteImageAndProduct = function(id){
-            productService.deleteProductPhoto(id)
-                .$promise
-                .then(function(data) {
-                    var index = $scope.product.photos.indexOf(id);
-                    $scope.product.photos.splice(index, 1);
-                    if($scope.product.photos.length === 0){
-                        $scope.deleteProduct();
-                    }else{
-                        $scope.deleteImageAndProduct($scope.product.photos[0]);
-                    }
-                });
         };
 
         $scope.deleteProduct = function(){

@@ -58,8 +58,10 @@ angular.module('shopAdmin').controller('productCreateController', ['$scope', '$s
             });
 
 
-        $scope.add = function (edit) {
-            $scope.product.meta.keywords = $scope.product.meta.keywords ? $scope.product.meta.keywords.split(',') : [];
+        $scope.addProduct = function (edit) {
+            if($scope.product.meta.keywords && $scope.product.meta.keywords.length) {
+                $scope.product.meta.keywords = $scope.product.meta.keywords ? $scope.product.meta.keywords.split(',') : [];
+            }
             productService.createProduct($scope.product)
                 .$promise
                 .then(function(response) {
