@@ -19,20 +19,7 @@
 							<a href id="mini-cart-view" uib-dropdown-toggle><i class="fa fa-shopping-cart"></i> Cart</a>
 							<ul class="dropdown-menu dropdown-menu-right animated fadeIn" uib-dropdown-menu role="menu" aria-labelledby="mini-cart-view">
 								<li class="mini-cart-li">
-									<div class="row mini-cart-container">
-										<div class="mini-cart-body">
-											<div class="pull-right mini-cart-header-text ng-binding">There are total  item(s) in your cart</div>
-										</div>
-										<hr>
-										<!-- ngRepeat: item in items -->
-
-										<div class="mini-cart-footer">
-											<div class="mini-cart-footer-text pull-left ng-binding">
-												sub total: 0
-											</div>
-											<a class="pull-right" data-ui-sref="cart" href="#!/cart">Go TO CART</a>
-										</div>
-									</div>
+									<mini-cart></mini-cart>
 								</li>
 							</ul>
 						</li>
