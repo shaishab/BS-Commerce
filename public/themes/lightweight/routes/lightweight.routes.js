@@ -17,10 +17,16 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
                 templateUrl: 'themes/lightweight/views/index.html'
             })
             .state('Category', {
-                url: '/:slug',
+                url: '/category/:slug',
                 parent: 'master',
                 controller: 'ProductByCategoryController',
                 templateUrl: 'themes/lightweight/views/product/product-list-by-category.html'
+            })
+            .state('Product', {
+                url: '/product/:sku',
+                parent:'master',
+                controller: 'ProductDetailsController',
+                templateUrl: 'themes/lightweight/views/product/product-details.html'
             });
     }
 ]);
