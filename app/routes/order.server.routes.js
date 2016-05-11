@@ -4,11 +4,6 @@ var cartController = require('../controllers/cart.server.controller'),
     orderController = require('../controllers/order.server.controller');
 
 module.exports = function(app) {
-    app.route('/api/cart')
-      .get(cartController.getCart)
-      .put(cartController.update)
-      .delete(cartController.deleteCartById);
-
     app.route('/api/auth/order')
       .get(orderController.getOrders)
       .post(orderController.createOrder)
