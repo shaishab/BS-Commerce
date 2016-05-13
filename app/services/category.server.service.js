@@ -37,7 +37,7 @@ exports.list = function () {
                 return deferred.reject(error);
             }
 
-            var list = _.map(_.where(categories, {parent: null}), function (item) {
+            var list = _.map(_.filter(categories, {parent: null}), function (item) {
                 item.subCategories = [];
                 return item;
             });

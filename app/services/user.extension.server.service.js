@@ -7,6 +7,8 @@ var mongoose = require('mongoose'),
 
 exports.searchUser = function(searchQuery, skipSize, limitSize) {
     var deferred = Q.defer();
+    skipSize = parseInt(skipSize);
+    limitSize = parseInt(limitSize);
     User.find(searchQuery).skip(skipSize).limit(limitSize)
         .exec(function(error, users) {
             if(error) {

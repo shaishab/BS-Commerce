@@ -18,6 +18,8 @@ exports.createBrand = function(req){
 
 exports.getBrands = function(searchQuery, skipSize, limitSize){
     var deferred = Q.defer();
+    skipSize = parseInt(skipSize);
+    limitSize = parseInt(limitSize);
 
     Brand.find(searchQuery).skip(skipSize).limit(limitSize)
         .exec(function(error, brands){

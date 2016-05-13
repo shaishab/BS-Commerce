@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
 
 exports.searchList = function (query, page, limit) {
     var deferred = Q.defer();
+    limit = parseInt(limit);
     var skip = (parseInt(page)-1)* limit;
     Product.count(query).exec(function(err, count){
         if(err){

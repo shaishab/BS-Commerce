@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
 
 exports.search = function(slug, orderBy, currentPage, pageSize){
     var deferred = Q.defer();
-
+    currentPage = parseInt(currentPage);
+    pageSize = parseInt(pageSize);
     Category.find({'$or': [{'slug': slug}, { 'ancestors.slug' : slug}]})
         .exec(function(error, categories){
             if(error){
@@ -46,6 +47,8 @@ exports.search = function(slug, orderBy, currentPage, pageSize){
 exports.all = function(pageNumber, pageSize){
     var deferred = Q.defer();
     var count = 0;
+    pageNumber = parseInt(pageNumber);
+    pageSize = parseInt(pageSize);
 
     Product.find({})
         .skip((pageNumber-1)*pageSize)
@@ -140,6 +143,8 @@ exports.getCount = function(searchQuery){
 };
 
 exports.getProductByCondition = function(searchQuery, skipSize, limitSize) {
+    skipSize = parseInt(skipSize);
+    limitSize = parseInt(limitSize);
     var deferred = Q.defer();
     Product.find(searchQuery, 'info brands photos').skip(skipSize).limit(limitSize)
         .exec(function(error, products){
