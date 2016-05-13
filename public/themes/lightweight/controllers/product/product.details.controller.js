@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('lightweight').controller('ProductDetailsController', ['$scope', '$timeout', '$state', 'Global', 'ProductService',
-    function($scope, $timeout, $state, Global, ProductService) {
+angular.module('lightweight').controller('ProductDetailsController', ['$scope', '$rootScope', '$timeout', '$state', 'Global', 'ProductService','UserService','CartService',
+    function($scope, $rootScope, $timeout, $state, Global, ProductService, UserService, CartService) {
         $scope.global = Global;
         var sku = $state.params.sku;
+        $scope.dataLoading = false;
 
         $scope.product = {};
         $scope.quantity = 1;
@@ -23,36 +24,31 @@ angular.module('lightweight').controller('ProductDetailsController', ['$scope', 
                         id: currIndex++
                     };
                 });
-                //$scope.slides[0].active = true;
-                //cartService.getCart()
-                //    .$promise
-                //    .then(function(cart){
-                //        var indexInCart = _.findIndex(cart.items, function(item){
-                //            return item.product._id === product._id;
-                //        });
-                //
-                //        product.addedToCart = indexInCart >= 0;
-                //    });
-
             });
 
-        $scope.toggleCartStatus = function(product, event){
+        $scope.addToCart = function(product, event){
+
+            var item = {product:product._id,quantity:$scope.quantity};
 
             if(!Global.authenticated) {
-                product.notAuthenticate = true;
-                $timeout(function() {
-                    product.notAuthenticate = false;
-                },1000);
-                return;
+                $scope.dataLoading = true;
+
+                UserService.createGuestUser().$promise.then(function(data) {
+                    CartService.addToCart({item: item}).$promise.then(function(cartResponse) {
+                        $scope.dataLoading = false;
+                        $rootScope.$emit('cart:updated');
+                    });
+                });
+
+            } else {
+                $scope.dataLoading = true;
+
+                CartService.addToCart({item: item}).$promise.then(function(data) {
+                    $scope.dataLoading = false;
+                    $rootScope.$emit('cart:updated');
+                });
             }
             event.preventDefault();
-            //product.addedToCart = !(product.addedToCart);
-            //
-            //if(product.addedToCart) {
-            //    cartService.addToCart(product, $scope.quantity);
-            //}else{
-            //    cartService.removeFromCart(product);
-            //}
 
         };
     }

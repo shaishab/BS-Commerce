@@ -8,11 +8,13 @@ angular.module('lightweight').factory('Global', [
         _this._data = {
             user: window.user,
             authenticated: false,
-            isAdmin: false
+            isAdmin: false,
+            isRegistered: false
         };
-        if (window.user && window.user.roles) {
-            _this._data.authenticated = window.user.roles.length;
+        if (window.user && window.user.roles && window.user.roles.length) {
+            _this._data.authenticated = true;
             _this._data.isAdmin = window.user.roles.indexOf('admin') !== -1;
+            _this._data.isRegistered = (window.user.roles.indexOf('admin') !== -1 || window.user.roles.indexOf('user') !== -1);
         }
         return _this._data;
     }
