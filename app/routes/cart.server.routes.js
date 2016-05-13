@@ -4,7 +4,11 @@ var cartController = require('../controllers/cart.server.controller');
 
 module.exports = function(app) {
     app.route('/api/cart')
+        .post(cartController.addToCart)
         .get(cartController.getCart)
-        .put(cartController.update)
         .delete(cartController.deleteCartById);
+
+    app.route('/api/cart/item')
+        .put(cartController.updateCartItem)
+        .delete(cartController.deleteCartItem);
 };

@@ -5,93 +5,6 @@ var mongoose = require('mongoose'),
   _ = require('lodash'),
   Q = require('q');
 
-exports.search = function(options){
-  var deferred = Q.defer();
-
-  if(options.userId){
-    Cart.findOne({user: options.userId})
-      .exec(function(error, cart){
-        if(error){
-          return deferred.reject(error);
-        }
-        return deferred.resolve(cart);
-      });
-  }else{
-    deferred.reject({msg: 'Invalid argument'});
-  }
-
-  return deferred.promise;
-};
-
-var getCartIfExists = function(userId){
-  var deferred = Q.defer();
-
-  Cart.findOne({user: userId})
-    .populate('items.product')
-    .exec(function(error,cart){
-      if(error){
-        return deferred.reject(error);
-      }
-
-      return deferred.resolve(cart);
-    });
-
-  return deferred.promise;
-};
-
-exports.getCart = function(userId){
-  var deferred = Q.defer();
-
-  getCartIfExists(userId)
-    .then(function(cart){
-      if(cart){
-        return deferred.resolve(cart);
-      }
-
-      Cart.create({
-        user: userId
-      }, function(error, cart){
-        if(error){
-          return deferred.reject(error);
-        }
-        return deferred.resolve(cart);
-      });
-    });
-
-  return deferred.promise;
-};
-
-exports.update = function(userId, items){
-  var deferred = Q.defer();
-
-  exports.getCart(userId)
-    .then(function(cart){
-      var list = _.map(items, function(item){
-        return {
-          product: item.product._id,
-          quantity: item.quantity
-        };
-      });
-
-      cart.updatedOn = new Date();
-      Cart.update({user: cart.user},
-        {
-          $set: {
-            items: list,
-            updatedOn: cart.updatedOn
-          }
-        },function(error){
-          if(error){
-            return deferred.reject(error);
-          }
-
-          return deferred.resolve(_.assign(cart,{items: items}));
-        });
-    });
-
-  return deferred.promise;
-};
-
 exports.deleteCartById = function(cartId) {
   var deferred = Q.defer();
   Cart.findByIdAndRemove(cartId, function(err, doc) {
@@ -101,4 +14,139 @@ exports.deleteCartById = function(cartId) {
     return deferred.resolve(doc);
   });
   return deferred.promise;
+};
+
+/*------------------new-------------------------*/
+
+var isExistCart = function(userId, callback) {
+    Cart.findOne({user: userId}, function(error, cart){
+        if(error || !cart) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
+var createCart = function(userId, item, callback) {
+    var newCart = new Cart({user: userId, items: [item]});
+    newCart.save(function(error) {
+        if(error) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
+var isExistItem = function(userId, productId, callback) {
+    Cart.findOne({user: userId, 'items.product':productId}, function(error, cart){
+        if(error || !cart) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
+var addItem = function(userId, item, callback) {
+    Cart.findOneAndUpdate({user: userId}, {$push: {items: item}}, function(error){
+        if(error) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
+var updateItem = function(userId, item, callback) {
+    Cart.findOneAndUpdate({user: userId, 'items.product':item.product}, {$inc: { 'items.$.quantity': item.quantity }}, function(error){
+        if(error) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
+var deleteItem = function(userId, item, callback) {
+    Cart.findOneAndUpdate({user: userId, 'items.product':item.product}, {$pull: {items: item}}, function(error){
+        if(error) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
+exports.addToCart = function(userId, item) {
+    var deferred = Q.defer();
+    isExistCart(userId, function(existCart) {
+        if(existCart) {
+            isExistItem(userId, item.product, function(exitItem) {
+                if(exitItem) {
+                    updateItem(userId, item, function(updated) {
+                        if(updated) {
+                            return deferred.resolve({msg: 'success'});
+                        }
+                        return deferred.reject({msg: 'failed'});
+                    });
+                } else {
+                    addItem(userId, item, function(added) {
+                        if(added) {
+                            return deferred.resolve({msg: 'success'});
+                        }
+                        return deferred.reject({msg: 'failed'});
+                    });
+                }
+            });
+        } else {
+            createCart(userId, item, function(created) {
+                if(created) {
+                    return deferred.resolve({msg: 'success'});
+                }
+                return deferred.reject({msg: 'failed'});
+            });
+        }
+    });
+
+    return deferred.promise;
+};
+
+exports.getCart = function(userId) {
+    var deferred = Q.defer();
+
+    Cart.findOne({user: userId})
+        .populate('items.product','info photos')
+        .exec(function(error, cart) {
+            if(error) {
+                return deferred.reject({msg: 'empty'});
+            }
+            if(!cart) {
+                return deferred.resolve({});
+            }
+            return deferred.resolve(cart);
+        });
+
+    return deferred.promise;
+};
+
+exports.updateCartItem = function(userId, item) {
+    var deferred = Q.defer();
+
+    deleteItem(userId, item, function(updated) {
+        if(updated) {
+            return deferred.resolve({msg: 'success'});
+        }
+        return deferred.reject({msg: 'failed'});
+    });
+
+    return deferred.promise;
+};
+
+exports.deleteCartItem = function(userId, item) {
+    var deferred = Q.defer();
+
+    updateItem(userId, item, function(updated) {
+        if(updated) {
+            return deferred.resolve({msg: 'success'});
+        }
+        return deferred.reject({msg: 'failed'});
+    });
+
+    return deferred.promise;
 };
