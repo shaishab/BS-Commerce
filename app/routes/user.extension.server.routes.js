@@ -49,7 +49,10 @@ module.exports = function(app) {
   app.route('/auth/user/create')
       .post(shopUser.createUser);
 
-    app.route('/auth/users/statistics')
-        .get(shopUser.getUserStatistics);
+  app.route('/auth/users/statistics')
+      .get(shopUser.getUserStatistics);
+
+  app.route('/api/user/guest')
+      .post(shopUser.createGuestUser);
 
 };

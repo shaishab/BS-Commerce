@@ -363,6 +363,54 @@ exports.createUser = function(req, res) {
 	});
 };
 
+
+var guestUserNameGenerator =  function(){
+	var newUserName = '';
+	var possibleCharacter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+	for( var i=0; i < 9; i+=1 )
+		newUserName += possibleCharacter.charAt(Math.floor(Math.random() * possibleCharacter.length));
+
+	return newUserName;
+};
+
+exports.createGuestUser = function(req, res) {
+
+	var userName = guestUserNameGenerator();
+	var email = userName +'@guest.com';
+	var guestUser = {
+		roles:['guest'],
+		username:userName,
+		email: email,
+		password: userName,
+		firstName: 'guest',
+		lastName: 'user'
+	};
+	var user = new User(guestUser);
+	var message = null;
+
+	// Add missing user fields
+	user.provider = 'local';
+	user.displayName = user.firstName + ' ' + user.lastName;
+	user.save(function(error,newUser) {
+		if (error) {
+			return res.status(400).send({ message: 'Error occurred during creating guest user'});
+		} else {
+			// Remove sensitive data before login
+			user.password = undefined;
+			user.salt = undefined;
+
+			req.login(user, function(err) {
+				if (err) {
+					res.status(400).send(err);
+				} else {
+					res.json(user);
+				}
+			});
+		}
+	});
+};
+
 exports.getUserStatistics = function(req, res) {
 	var today = new Date();
 	today.setHours(0,0,0,0);
