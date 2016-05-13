@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-class="dataLoading? 'loading':'' ">
     <div class="product-details">
         <div class="col-sm-5">
             <div class="view-product">
@@ -10,38 +10,35 @@
             </div>
         </div>
         <div class="col-sm-7">
-            <div class="product-information"><!--/product-information-->
+            <div class="product-information">
                 <h2>{{product.info.name}}</h2>
                 <p>SKU: {{product.info.sku}}</p>
-                <span class="alert alert-danger" style="z-index: 1000; position: absolute;"
-                      data-ng-show="product.notAuthenticate">You should login</span>
+
                 <span>
                     <span>{{product.info.price | currency}}</span>
                     <label>Quantity:</label>
                     <input type="text" data-ng-model="quantity"/>
 
-                    <button type="button" class="btn btn-default add-to-cart"
-                            data-ng-click="toggleCartStatus(product, $event)"
-                            data-ng-class="{'added-to-cart': product.addedToCart}">
-                        <i class="fa fa-shopping-cart"></i>
-                        {{product.addedToCart? 'Added to cart' : 'Add to cart'}}
+                    <button type="button" class="btn btn-default add-to-cart" data-ng-click="addToCart(product, $event)">
+                        <i class="fa fa-shopping-cart"></i> Add to cart
                     </button>
                 </span>
 
                 <p><b>Availability:</b> In Stock</p>
                 <p><b>Condition:</b> New</p>
-                <p><b>Brand:</b> {{product.brands}}</p>
-            </div><!--/product-information-->
+                <p><b>Brand:</b> <span data-ng-repeat="brand in product.brands">{{brand}}</span></p>
+            </div>
         </div>
     </div>
-    <div class="category-tab">
-        <tabset>
-            <tab heading="Details">
-                {{product.info.fullDescription}}
-            </tab>
-            <tab heading="Reviews">
 
-            </tab>
-        </tabset>
+    <div class="category-tab">
+        <uib-tabset>
+            <uib-tab heading="Details">
+                {{product.info.fullDescription}}
+            </uib-tab>
+            <uib-tab heading="Reviews">
+                <p>coming soon...</p>
+            </uib-tab>
+        </uib-tabset>
     </div>
 </div>

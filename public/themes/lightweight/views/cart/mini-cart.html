@@ -6,7 +6,7 @@
                 <div class="col-sm-4">
                     <a data-ui-sref="Product({sku:item.product.info.sku})">
                         <img class="mini-cart-image" data-ng-if="item.product.photos.length > 0"
-                             data-ng-src="/api/products/photos/{{item.product.photos[0]}}"/>
+                             data-ng-src="/api/products/photos/{{item.product.photos[0].id}}"/>
                     </a>
                 </div>
                 <div class="col-sm-8">
