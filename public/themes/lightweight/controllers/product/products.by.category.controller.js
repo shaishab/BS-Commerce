@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('lightweight').controller('ProductByCategoryController',
-    ['$scope', '$timeout', '$state', 'Global', 'CatalogService', 'ProductService',
-    function($scope, $timeout, $state, Global, ShopCatalog, ProductService) {
+    ['$scope', '$rootScope', '$timeout', '$state', 'Global', 'ProductService', 'UserService', 'CartService',
+    function($scope, $rootScope, $timeout, $state, Global, ProductService, UserService, CartService) {
         var slug = $state.params.slug;
-        $scope.global = Global;
+        $scope.isBusy = false;
 
         $scope.pageSizeOptions = ['6','9','12'];
         $scope.orderByOptions = [{name: 'Name', value:'name'},{name: 'Price', value:'price'},{name: 'Date Published', value:'publishDate'}];
@@ -55,6 +55,30 @@ angular.module('lightweight').controller('ProductByCategoryController',
             $scope.state.orderBy.value = value;
 
             getProducts();
+        };
+
+        $scope.addToCart = function(product, event){
+
+            var item = {product:product._id, quantity: 1};
+
+            if(!Global.authenticated) {
+                $scope.isBusy = true;
+
+                UserService.createGuestUser().$promise.then(function(data) {
+                    CartService.addToCart({item: item}).$promise.then(function(cartResponse) {
+                        $scope.isBusy = false;
+                        $rootScope.$emit('cart:updated');
+                    });
+                });
+            } else {
+                $scope.isBusy = true;
+                CartService.addToCart({item: item}).$promise.then(function(data) {
+                    $scope.isBusy = false;
+                    $rootScope.$emit('cart:updated');
+                });
+            }
+            event.preventDefault();
+
         };
     }
 ]);

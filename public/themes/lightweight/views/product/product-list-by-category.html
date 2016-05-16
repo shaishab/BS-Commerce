@@ -33,7 +33,7 @@
         </div>
     </div>
     <hr>
-    <div class="row">
+    <div class="row" ng-class="isBusy? 'loading':'' ">
         <div class="col-md-4 col-sm-6" data-ng-repeat="product in products">
             <div class="single-product">
                 <div class=" product-info text-center">
@@ -45,9 +45,8 @@
                     <p>
                         <a data-ui-sref="Product({sku:product.info.sku})" data-ng-bind="product.info.name"></a>
                     </p>
-                    <button class="btn btn-default add-to-cart-btn" data-ng-click="toggleCartStatus(product, $event)"
-                            data-ng-class="{'added-to-cart': product.addedToCart}"><i class="fa fa-shopping-cart"></i>
-                        {{product.addedToCart ? 'Added to cart' : 'Add to cart'}}
+                    <button class="btn btn-default add-to-cart-btn" data-ng-click="addToCart(product, $event)">
+                        <i class="fa fa-shopping-cart"></i>Add to cart
                     </button>
                 </div>
                 <!--<div class="choose">-->
