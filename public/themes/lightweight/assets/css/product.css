@@ -11,13 +11,22 @@
 .view-product {
     position: relative;
 }
-.product-information {
-    border: 1px solid #F7F7F0;
-    overflow: hidden;
-    padding-bottom: 60px;
-    padding-left: 60px;
-    padding-top: 60px;
-    position: relative;
+
+@media (max-width: 767px) {
+    .product-information {
+        border: 1px solid #F7F7F0;
+        padding-top: 60px;
+    }
+}
+@media (min-width: 768px){
+    .product-information {
+        border: 1px solid #F7F7F0;
+        overflow: hidden;
+        padding-bottom: 60px;
+        padding-left: 60px;
+        padding-top: 60px;
+        position: relative;
+    }
 }
 .product-information h2 {
     color: #363432;

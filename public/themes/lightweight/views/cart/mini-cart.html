@@ -1,15 +1,16 @@
 <div class=" row mini-cart-container">
-    <div class="mini-cart-body">
-        <div class="pull-right mini-cart-header-text">There are total {{items.length || 0}} item(s) in your cart</div>
+    <div class="mini-cart-body" style="max-height: 256px; overflow-y: scroll">
+        <div class="pull-right mini-cart-header-text">There are total <b>{{items.length || 0}} item(s)</b> in your cart</div>
+        <hr>
         <div data-ng-repeat="item in items">
-            <div>
-                <div class="col-sm-4">
+            <div class="col-sm-12" style="border-bottom: rgba(0, 0, 0, 0.08) solid 1px; padding: 10px 0;">
+                <div class="col-sm-2">
                     <a data-ui-sref="Product({sku:item.product.info.sku})">
                         <img class="mini-cart-image" data-ng-if="item.product.photos.length > 0"
                              data-ng-src="/api/products/photos/{{item.product.photos[0].id}}"/>
                     </a>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-10">
                     <a data-ui-sref="Product({sku:item.product.info.sku})">
                         <div>{{item.product.info.name}}</div>
                     </a>
@@ -19,11 +20,8 @@
             </div>
         </div>
     </div>
-    <hr>
     <div class="mini-cart-footer">
-        <div class="mini-cart-footer-text pull-left">
-            sub total: {{subTotal}}
-        </div>
-        <a class="pull-right" data-ui-sref="Cart">Go TO CART</a>
+        <label class="mini-cart-footer-text pull-left">sub total: {{subTotal}}</label>
+        <a class="btn btn-info pull-right" data-ui-sref="Cart">Go TO CART</a>
     </div>
 </div>
