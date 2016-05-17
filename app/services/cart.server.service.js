@@ -55,17 +55,8 @@ var addItem = function(userId, item, callback) {
     });
 };
 
-var updateItem = function(userId, item, callback) {
+var incrementItem = function(userId, item, callback) {
     Cart.findOneAndUpdate({user: userId, 'items.product':item.product}, {$inc: { 'items.$.quantity': item.quantity }}, function(error){
-        if(error) {
-            return callback(false);
-        }
-        return callback(true);
-    });
-};
-
-var deleteItem = function(userId, item, callback) {
-    Cart.findOneAndUpdate({user: userId, 'items.product':item.product}, {$pull: {items: item}}, function(error){
         if(error) {
             return callback(false);
         }
@@ -79,7 +70,7 @@ exports.addToCart = function(userId, item) {
         if(existCart) {
             isExistItem(userId, item.product, function(exitItem) {
                 if(exitItem) {
-                    updateItem(userId, item, function(updated) {
+                    incrementItem(userId, item, function(updated) {
                         if(updated) {
                             return deferred.resolve({msg: 'success'});
                         }
@@ -128,12 +119,14 @@ exports.getCart = function(userId) {
 exports.updateCartItem = function(userId, item) {
     var deferred = Q.defer();
 
-    deleteItem(userId, item, function(updated) {
-        if(updated) {
-            return deferred.resolve({msg: 'success'});
-        }
-        return deferred.reject({msg: 'failed'});
-    });
+    Cart.findOneAndUpdate({user: userId, 'items.product':item.product}, {$set: { 'items.$.quantity': item.quantity }}, {new: true})
+        .populate('items.product','info photos')
+        .exec(function(error, cart){
+            if(error) {
+                return deferred.reject({msg: 'failed'});
+            }
+            return deferred.resolve(cart);
+        });
 
     return deferred.promise;
 };
@@ -141,12 +134,14 @@ exports.updateCartItem = function(userId, item) {
 exports.deleteCartItem = function(userId, item) {
     var deferred = Q.defer();
 
-    updateItem(userId, item, function(updated) {
-        if(updated) {
-            return deferred.resolve({msg: 'success'});
-        }
-        return deferred.reject({msg: 'failed'});
-    });
+    Cart.findOneAndUpdate({user: userId}, {$pull: {items: {product: item.product}}}, {new: true})
+        .populate('items.product','info photos')
+        .exec(function(error, cart){
+            if(error) {
+                return deferred.reject({msg: 'failed'});
+            }
+            return deferred.resolve(cart);
+        });
 
     return deferred.promise;
 };

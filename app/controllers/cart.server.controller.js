@@ -40,18 +40,36 @@ exports.deleteCartById = function(req, res){
 
 
 exports.updateCartItem = function(req, res){
-    cartService.updateCartItem(req.user._id, req.body.item)
-        .then(function(cart){
-            return res.status(200).json(cart);
-        })
-        .catch(function(error){
-            return res.status(400).json({msg: 'Error occurred while updating cart item', error: error});
-        })
-        .done();
+    if(req.body.item && req.body.item.quantity > 0) {
+        cartService.updateCartItem(req.user._id, req.body.item)
+            .then(function(cart){
+                return res.status(200).json(cart);
+            })
+            .catch(function(error){
+                return res.status(400).json({msg: 'Error occurred while updating cart item', error: error});
+            })
+            .done();
+    } else {
+        cartService.deleteCartItem(req.user._id, req.body.item)
+            .then(function(cart){
+                return res.status(200).json(cart);
+            })
+            .catch(function(error){
+                return res.status(400).json({msg: 'Error occurred while updating cart item', error: error});
+            })
+            .done();
+    }
+
 };
 
 exports.deleteCartItem = function(req, res){
-    cartService.deleteCartItem(req.user._id, req.body.item)
+    if(!req.query.product) {
+        return res.status(400).send({msg: 'Invalid request sent'});
+    }
+
+    var item = {product: req.query.product};
+
+    cartService.deleteCartItem(req.user._id, item)
         .then(function(cart){
             return res.status(200).json(cart);
         })
