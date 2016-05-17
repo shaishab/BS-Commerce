@@ -16,14 +16,17 @@
                     });
                     return addToCart.add(product);
                 },
-                deleteCartItem: function(product){
-
-                },
                 updateCartItem: function(product){
-
+                    var updateCartItem = $resource('/api/cart/item', {}, {
+                        'update': {method: 'PUT'}
+                    });
+                    return updateCartItem.update(product);
                 },
-                deleteCartById: function(cartId) {
-
+                deleteCartItem: function(product){
+                    var deleteCartItem = $resource('/api/cart/item', {}, {
+                        'delete': {method: 'DELETE'}
+                    });
+                    return deleteCartItem.delete(product.item);
                 }
             };
         }
