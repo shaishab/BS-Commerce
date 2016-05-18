@@ -1,7 +1,7 @@
 'use strict';
-angular.module('lightweight').controller('CheckoutSuccessController', ['$scope', '$location', '$state', 'Global',
-	function($scope, $location, $state, Global) {
+angular.module('lightweight').controller('CheckoutSuccessController', ['$scope', '$location', '$stateParams', 'Global',
+	function($scope, $location, $stateParams, Global) {
 
-		$scope.orderId = $state.params.orderId;
+		$scope.orderId = $stateParams.orderId;
 	}
 ]);
