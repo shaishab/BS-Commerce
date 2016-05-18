@@ -8,6 +8,10 @@ angular.module('lightweight').factory('UserService', ['$resource',
                     'create': {method: 'POST'}
                 });
                 return createUser.create();
+            },
+            getUserById: function (userId) {
+                var userById = $resource('/auth/user/:userId', {userId: '@userId'});
+                return userById.get({userId: userId});
             }
         };
     }
