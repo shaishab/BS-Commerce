@@ -3,6 +3,18 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var AncestorSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    slug: {
+        type: String,
+        required: true
+    },
+    _id: false
+});
+
 var CategorySchema = new Schema({
     name: {
         type: String,
@@ -45,7 +57,7 @@ var CategorySchema = new Schema({
         default: 0
     },
     ancestors: {
-        type: [CategorySchema],
+        type: [AncestorSchema],
         default: []
     },
     meta:{
