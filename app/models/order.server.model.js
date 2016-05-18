@@ -4,7 +4,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var AddressSchema = {
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
