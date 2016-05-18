@@ -27,6 +27,12 @@
                         'delete': {method: 'DELETE'}
                     });
                     return deleteCartItem.delete(product.item);
+                },
+                deleteAllCartItems: function(){
+                    var deleteAllItem = $resource('/api/cart/allitems', {}, {
+                        'delete': {method: 'DELETE'}
+                    });
+                    return deleteAllItem.delete();
                 }
             };
         }
