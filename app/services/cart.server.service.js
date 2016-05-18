@@ -145,3 +145,17 @@ exports.deleteCartItem = function(userId, item) {
 
     return deferred.promise;
 };
+
+exports.deleteAllCartItems = function(userId) {
+    var deferred = Q.defer();
+
+    Cart.findOneAndUpdate({user: userId}, {$set: {items: []}}, {new: true})
+        .exec(function(error, cart){
+            if(error) {
+                return deferred.reject({msg: 'failed'});
+            }
+            return deferred.resolve(cart);
+        });
+
+    return deferred.promise;
+};

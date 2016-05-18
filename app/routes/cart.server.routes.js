@@ -11,4 +11,7 @@ module.exports = function(app) {
     app.route('/api/cart/item')
         .put(cartController.updateCartItem)
         .delete(cartController.deleteCartItem);
+
+    app.route('/api/cart/allitems')
+        .delete(cartController.deleteAllCartItems);
 };

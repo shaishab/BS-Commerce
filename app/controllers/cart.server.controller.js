@@ -78,3 +78,17 @@ exports.deleteCartItem = function(req, res){
         })
         .done();
 };
+
+exports.deleteAllCartItems = function(req, res){
+    if(!req.user) {
+        return res.status(401).json({msg: 'Unauthorized'});
+    }
+    cartService.deleteAllCartItems(req.user._id)
+        .then(function(cart){
+            return res.status(200).json(cart);
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred while deleting cart item', error: error});
+        })
+        .done();
+};
