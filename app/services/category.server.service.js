@@ -79,21 +79,44 @@ exports.getBySlug = function (slug) {
     return deferred.promise;
 };
 
-exports.addCategory = function (cat, imageId) {
+exports.addCategory = function (requestCategory, imageId) {
 
     var deferred = Q.defer();
 
-    var newCategory = new Category(cat);
-    newCategory.slug = getSlug(cat.name);
+    var newCategory = new Category(requestCategory);
+    newCategory.slug = getSlug(requestCategory.name);
     newCategory.imageId = imageId;
 
-    newCategory.save(function (error) {
-        if (error) {
-            deferred.reject();
-        } else {
-            deferred.resolve();
-        }
-    });
+    if(requestCategory.parent) {
+        Category.findOne({_id:requestCategory.parent}, 'ancestors')
+            .lean()
+            .exec(function(err, parentCategory) {
+                var currentAncestors = [{
+                    _id: parentCategory._id,
+                    name: parentCategory.name,
+                    slug: parentCategory.slug
+                }];
+                currentAncestors.concat(parentCategory.ancestors);
+
+                newCategory.ancestors = currentAncestors;
+
+                newCategory.save(function (error) {
+                    if (error) {
+                        deferred.reject();
+                    } else {
+                        deferred.resolve();
+                    }
+                });
+            });
+    } else {
+        newCategory.save(function (error) {
+            if (error) {
+                deferred.reject();
+            } else {
+                deferred.resolve();
+            }
+        });
+    }
 
     return deferred.promise;
 
@@ -114,12 +137,38 @@ exports.deleteById = function(id){
 
 exports.update = function(req){
     var deferred = Q.defer();
-    Category.findByIdAndUpdate(req.body._id, req.body, function(error, category) {
-        if(error) {
-            return deferred.reject(error);
-        }
-        return deferred.resolve(category);
-    });
+
+    if(req.body.parent) {
+        Category.findOne({_id:req.body.parent}, 'name slug ancestors')
+            .lean()
+            .exec(function(err, parentCategory) {
+
+                var currentAncestors = [{
+                    _id: parentCategory._id,
+                    name: parentCategory.name,
+                    slug: parentCategory.slug
+                }];
+
+                currentAncestors.concat(parentCategory.ancestors);
+                req.body.ancestors = currentAncestors;
+
+                Category.findByIdAndUpdate(req.body._id, req.body, function(error, category) {
+                    if(error) {
+                        return deferred.reject(error);
+                    }
+                    return deferred.resolve(category);
+                });
+
+            });
+    } else {
+        Category.findByIdAndUpdate(req.body._id, req.body, function(error, category) {
+            if(error) {
+                return deferred.reject(error);
+            }
+            return deferred.resolve(category);
+        });
+    }
+
     return deferred.promise;
 };
 

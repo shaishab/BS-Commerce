@@ -11,8 +11,7 @@ var AncestorSchema = new Schema({
     slug: {
         type: String,
         required: true
-    },
-    _id: false
+    }
 });
 
 var CategorySchema = new Schema({

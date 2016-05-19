@@ -23,7 +23,7 @@ angular.module('shopAdmin').controller('categoryEditController', ['$scope', '$st
                     var item = {};
                     item._id = category._id;
                     item.parent = null;
-                    item.text = category.name;
+                    item.name = category.name;
                     $scope.categories.push(item);
                 });
             });
