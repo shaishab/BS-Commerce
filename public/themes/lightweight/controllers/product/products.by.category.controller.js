@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').controller('ProductByCategoryController',
-    ['$scope', '$rootScope', '$timeout', '$state', 'Global', 'ProductService', 'UserService', 'CartService',
-    function($scope, $rootScope, $timeout, $state, Global, ProductService, UserService, CartService) {
+    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', 'ProductService', 'UserService', 'CartService',
+    function($scope, $rootScope, $timeout, $state, $window, Global, ProductService, UserService, CartService) {
         var slug = $state.params.slug;
 
         $scope.pageSizeOptions = ['6','9','12'];
@@ -60,10 +60,12 @@ angular.module('lightweight').controller('ProductByCategoryController',
 
             var item = {product:product._id, quantity: 1};
 
-            if(!Global.authenticated) {
+            if(!$scope.global.authenticated) {
 
-                UserService.createGuestUser().$promise.then(function(data) {
+                UserService.createGuestUser().$promise.then(function(user) {
                     CartService.addToCart({item: item}).$promise.then(function(cartResponse) {
+                        $scope.global.user = user;
+                        $window.location.reload();
                         $rootScope.$emit('cart:updated');
                     });
                 });

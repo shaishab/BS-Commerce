@@ -1,12 +1,15 @@
 'use strict';
 
-angular.module('lightweight').directive('productFeaturedItem', ['$rootScope','$timeout', 'Global', 'ProductService','UserService','CartService',
-    function($rootScope, $timeout, Global, ProductService, UserService, CartService) {
+angular.module('lightweight').directive('productFeaturedItem',
+    ['$rootScope','$timeout', '$window', 'Global', 'ProductService','UserService','CartService',
+    function($rootScope, $timeout, $window, Global, ProductService, UserService, CartService) {
         return{
             restrict: 'AE',
             replace: true,
             templateUrl: 'themes/lightweight/views/product/product-featured-item.html',
             link: function(scope, element, attrs){
+
+                scope.global = Global;
 
                 scope.getFeaturedProducts = function() {
                     var query = {
@@ -25,9 +28,11 @@ angular.module('lightweight').directive('productFeaturedItem', ['$rootScope','$t
 
                     var item = {product:product._id, quantity: 1};
 
-                    if(!Global.authenticated) {
-                        UserService.createGuestUser().$promise.then(function(data) {
+                    if(!scope.global.authenticated) {
+                        UserService.createGuestUser().$promise.then(function(user) {
                             CartService.addToCart({item: item}).$promise.then(function(cartResponse) {
+                                scope.global.user = user;
+                                $window.location.reload();
                                 $rootScope.$emit('cart:updated');
                             });
                         });

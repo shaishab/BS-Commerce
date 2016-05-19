@@ -34,7 +34,7 @@
 							<a href="/#!/signin">Sign In</a>
 						</li>
 					</ul>
-					<ul class="nav navbar-nav navbar-right" data-ng-show="authentication.isRegistered">
+					<ul class="nav navbar-nav navbar-right" data-ng-if="authentication.isRegistered">
 						<li class="dropdown" uib-dropdown>
 							<a href="#" id="profile-option" class="dropdown-toggle" uib-dropdown-toggle>
 								<span data-ng-bind="authentication.user.displayName"></span> <b class="caret"></b>

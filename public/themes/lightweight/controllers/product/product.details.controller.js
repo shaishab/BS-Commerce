@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('lightweight').controller('ProductDetailsController', ['$scope', '$rootScope', '$timeout', '$state', 'Global', 'ProductService','UserService','CartService',
-    function($scope, $rootScope, $timeout, $state, Global, ProductService, UserService, CartService) {
+angular.module('lightweight').controller('ProductDetailsController',
+    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', 'ProductService','UserService','CartService',
+    function($scope, $rootScope, $timeout, $state, $window, Global, ProductService, UserService, CartService) {
         $scope.global = Global;
         var sku = $state.params.sku;
-        $scope.dataLoading = false;
 
         $scope.product = {};
         $scope.quantity = 1;
@@ -30,21 +30,17 @@ angular.module('lightweight').controller('ProductDetailsController', ['$scope', 
 
             var item = {product:product._id,quantity:$scope.quantity};
 
-            if(!Global.authenticated) {
-                $scope.dataLoading = true;
-
-                UserService.createGuestUser().$promise.then(function(data) {
+            if(!$scope.global.authenticated) {
+                UserService.createGuestUser().$promise.then(function(user) {
                     CartService.addToCart({item: item}).$promise.then(function(cartResponse) {
-                        $scope.dataLoading = false;
+                        $scope.global.user = user;
+                        $window.location.reload();
                         $rootScope.$emit('cart:updated');
                     });
                 });
 
             } else {
-                $scope.dataLoading = true;
-
                 CartService.addToCart({item: item}).$promise.then(function(data) {
-                    $scope.dataLoading = false;
                     $rootScope.$emit('cart:updated');
                 });
             }
