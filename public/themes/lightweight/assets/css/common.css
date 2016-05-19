@@ -1,9 +1,13 @@
-.loading {
-    background: rgba(255, 255, 255, .15) url("../img/loader.gif") no-repeat 50% 50%;
-    -webkit-transition: background-color 10ms linear;
-    transition: background-color 10ms linear;
-    z-index: 50000000;
-    top: 0;
+.show-loading {
+    background-color: #00A000;
+    height: 50px;
+    position: absolute;
+    z-index: 99999;
+    width: 100%;
+    opacity: 0.5;
+    padding: 5px;
+    color: #ffffff;
+    text-align: center;
 }
 
 .btn.btn-primary {
