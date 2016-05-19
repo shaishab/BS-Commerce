@@ -6,7 +6,6 @@ angular.module('lightweight').controller('CartController', ['$scope', '$rootScop
 		$scope.items = [];
 		$scope.shipping = 0;
 		$scope.tax = 0;
-		$scope.isBusy = true;
 
 		CartService.getCart()
 			.$promise
@@ -23,7 +22,6 @@ angular.module('lightweight').controller('CartController', ['$scope', '$rootScop
 				else {
 					$state.go('emptyCart');
 				}
-				$scope.isBusy = false;
 			});
 
 		$scope.editCartItem = function(item) {
@@ -37,26 +35,22 @@ angular.module('lightweight').controller('CartController', ['$scope', '$rootScop
 		};
 
 		$scope.updateCartItem = function(item) {
-			$scope.isBusy = true;
 			var product = { item: {product: item.product._id, quantity: item.editQuantity}};
 			CartService.updateCartItem(product)
 				.$promise
 				.then(function(updatedCart) {
 					$scope.items = updatedCart.items;
-					$scope.isBusy = false;
 					$rootScope.$emit('cart:updated');
 				});
 		};
 
 		$scope.deleteCartItem = function(item) {
 			if(confirm('Are you sure you want to delete this item ?')) {
-				$scope.isBusy = true;
 				var product = { item: {product: item.product._id}};
 				CartService.deleteCartItem(product)
 					.$promise
 					.then(function(updatedCart) {
 						$scope.items = updatedCart.items;
-						$scope.isBusy = false;
 						$rootScope.$emit('cart:updated');
 					});
 			}

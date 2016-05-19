@@ -5,7 +5,6 @@ angular.module('lightweight').controller('AdvanceSearchController',
         function ($scope, $timeout, $state, $location, $http, Global, BrandService, CategoryService) {
 
             $scope.global = Global;
-            $scope.isBusy = true;
 
             $scope.state = {
                 totalRecords: 0,
@@ -93,7 +92,6 @@ angular.module('lightweight').controller('AdvanceSearchController',
                     .then(function (response) {
                         $scope.products = response.data.products;
                         $scope.state.totalRecords = response.data.total;
-                        //$scope.isBusy = false;
                     }, function (error) {
                         //console.log(error);
                     });

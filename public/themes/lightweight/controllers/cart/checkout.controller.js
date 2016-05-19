@@ -12,12 +12,10 @@
 			$scope.order.shippingCost = 0;
 
 			$scope.items = [];
-			$scope.isBusy = true;
 
 			CartService.getCart()
 				.$promise
 				.then(function (cart) {
-					$scope.isBusy = false;
 					if (cart.items && cart.items.length > 0) {
 						$scope.cartEmpty = false;
 						$scope.items = cart.items;
@@ -113,7 +111,6 @@
 			};
 
 			$scope.confirmOrder = function() {
-				$scope.isBusy = true;
 				addProductInfo(function() {
 					CheckoutService.createOrder($scope.order)
 						.$promise
@@ -123,13 +120,11 @@
 							CartService.deleteAllCartItems()
 								.$promise
 								.then(function(deleteResponse) {
-									$scope.isBusy = false;
 									$rootScope.$emit('cart:updated');
 									$state.go('CheckoutSuccess',{orderId: response.orderId});
 								},
 								function(error) {
 									$rootScope.$emit('cart:updated');
-									$scope.isBusy = false;
 									$state.go('CheckoutSuccess',{orderId: response.orderId});
 
 								});

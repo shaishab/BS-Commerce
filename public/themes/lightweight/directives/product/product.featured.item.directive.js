@@ -8,8 +8,6 @@ angular.module('lightweight').directive('productFeaturedItem', ['$rootScope','$t
             templateUrl: 'themes/lightweight/views/product/product-featured-item.html',
             link: function(scope, element, attrs){
 
-                scope.isBusy = false;
-
                 scope.getFeaturedProducts = function() {
                     var query = {
                         isFeatured: true,
@@ -28,18 +26,13 @@ angular.module('lightweight').directive('productFeaturedItem', ['$rootScope','$t
                     var item = {product:product._id, quantity: 1};
 
                     if(!Global.authenticated) {
-                        scope.isBusy = true;
-
                         UserService.createGuestUser().$promise.then(function(data) {
                             CartService.addToCart({item: item}).$promise.then(function(cartResponse) {
-                                scope.isBusy = false;
                                 $rootScope.$emit('cart:updated');
                             });
                         });
                     } else {
-                        scope.isBusy = true;
                         CartService.addToCart({item: item}).$promise.then(function(data) {
-                            scope.isBusy = false;
                             $rootScope.$emit('cart:updated');
                         });
                     }
