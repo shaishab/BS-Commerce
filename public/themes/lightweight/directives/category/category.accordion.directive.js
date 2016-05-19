@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('lightweight').directive('categoryAccordion', ['Global', '$rootScope', '$state', 'CatalogService',
-    function(Global, $rootScope, $state, CatalogService) {
+angular.module('lightweight').directive('categoryAccordion', ['Global', '$rootScope', '$state', 'CategoryService',
+    function(Global, $rootScope, $state, CategoryService) {
 
         var highlightIfSelected = function(category, slug){
             if(category.slug === slug){
@@ -33,8 +33,7 @@ angular.module('lightweight').directive('categoryAccordion', ['Global', '$rootSc
                 scope.slug = $state.params.slug;
                 scope.categories = [];
 
-                CatalogService
-                    .query()
+                CategoryService.getCategories()
                     .$promise
                     .then(function(list){
                         scope.categories = list;
