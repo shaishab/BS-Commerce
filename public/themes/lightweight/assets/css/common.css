@@ -10,6 +10,18 @@
     text-align: center;
 }
 
+@keyframes hideLoadingBar {
+    from {
+        opacity:0.5
+    } to {
+          opacity: 0;
+      }
+}
+
+.show-loading.ng-hide {
+    animation: 0.6s hideLoadingBar;
+}
+
 .btn.btn-primary {
     background: #FE980F;
     border-color: #E48300;

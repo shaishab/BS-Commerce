@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').controller('AdvanceSearchController',
-    ['$scope', '$timeout', '$state', '$location', '$http', 'Global', 'BrandService', 'CategoryService',
-        function ($scope, $timeout, $state, $location, $http, Global, BrandService, CategoryService) {
+    ['$scope', '$rootScope', '$timeout', '$state', '$location', '$window', 'Global', 'BrandService', 'CategoryService', 'CartService', 'UserService', 'ProductService',
+        function ($scope, $rootScope, $timeout, $state, $location, $window, Global, BrandService, CategoryService, CartService, UserService, ProductService) {
 
             $scope.global = Global;
 
@@ -18,24 +18,24 @@ angular.module('lightweight').controller('AdvanceSearchController',
 
             BrandService.getBrands()
                 .$promise
-                .then(function(response) {
+                .then(function (response) {
                     $scope.brands = response.brands;
-                }, function(error) {
+                }, function (error) {
                     $scope.brands = []
                 });
 
-            var generateCategoriesForDropDownList = function(getCategories, callback) {
+            var generateCategoriesForDropDownList = function (getCategories, callback) {
                 var generatedCategories = [];
 
-                var generateCategoriesWithParent = function(categories, parentCategoryName) {
-                    angular.forEach(categories, function(category) {
-                        if(parentCategoryName) {
+                var generateCategoriesWithParent = function (categories, parentCategoryName) {
+                    angular.forEach(categories, function (category) {
+                        if (parentCategoryName) {
                             category.name = parentCategoryName + ' >> ' + category.name;
                         }
 
                         generatedCategories.push(category);
 
-                        if(category.subCategories) {
+                        if (category.subCategories) {
                             generateCategoriesWithParent(category.subCategories, category.name);
                         }
                     });
@@ -46,11 +46,11 @@ angular.module('lightweight').controller('AdvanceSearchController',
 
             CategoryService.getCategories()
                 .$promise
-                .then(function(categories) {
-                    generateCategoriesForDropDownList(categories, function(categories) {
+                .then(function (categories) {
+                    generateCategoriesForDropDownList(categories, function (categories) {
                         $scope.categories = categories;
                     });
-                }, function(error) {
+                }, function (error) {
                     $scope.categories = [];
                 });
 
@@ -61,39 +61,37 @@ angular.module('lightweight').controller('AdvanceSearchController',
 
             $timeout(function () {
                 $scope.searchInfo = $location.search();
-                if($scope.searchInfo.advS) $scope.searchInfo.advS = JSON.parse($scope.searchInfo.advS);
-                if($scope.searchInfo.isInSubCat) $scope.searchInfo.isInSubCat = JSON.parse($scope.searchInfo.isInSubCat);
-                if($scope.searchInfo.priceMin) $scope.searchInfo.priceMin = parseFloat($scope.searchInfo.priceMin);
-                if($scope.searchInfo.priceMax) $scope.searchInfo.priceMax = parseFloat($scope.searchInfo.priceMax);
+                if ($scope.searchInfo.advS) $scope.searchInfo.advS = JSON.parse($scope.searchInfo.advS);
+                if ($scope.searchInfo.isInSubCat) $scope.searchInfo.isInSubCat = JSON.parse($scope.searchInfo.isInSubCat);
+                if ($scope.searchInfo.priceMin) $scope.searchInfo.priceMin = parseFloat($scope.searchInfo.priceMin);
+                if ($scope.searchInfo.priceMax) $scope.searchInfo.priceMax = parseFloat($scope.searchInfo.priceMax);
 
                 $scope.getProducts();
 
             });
 
-            $scope.generateSearchUrl = function() {
+            $scope.generateSearchUrl = function () {
                 var searchString = $scope.searchInfo.q;
-                if($scope.searchInfo.advS) {
-                    if($scope.searchInfo.advS) searchString = searchString + '&advS='+$scope.searchInfo.advS;
-                    if($scope.searchInfo.cat) searchString = searchString + '&cat='+$scope.searchInfo.cat;
-                    if($scope.searchInfo.isInSubCat) searchString = searchString + '&isInSubCat='+$scope.searchInfo.isInSubCat;
-                    if($scope.searchInfo.brand) searchString = searchString + '&brand='+$scope.searchInfo.brand;
-                    if($scope.searchInfo.priceMin) searchString = searchString + '&priceMin='+$scope.searchInfo.priceMin;
-                    if($scope.searchInfo.priceMax) searchString = searchString + '&priceMax='+$scope.searchInfo.priceMax;
+                if ($scope.searchInfo.advS) {
+                    if ($scope.searchInfo.advS) searchString = searchString + '&advS=' + $scope.searchInfo.advS;
+                    if ($scope.searchInfo.cat) searchString = searchString + '&cat=' + $scope.searchInfo.cat;
+                    if ($scope.searchInfo.isInSubCat) searchString = searchString + '&isInSubCat=' + $scope.searchInfo.isInSubCat;
+                    if ($scope.searchInfo.brand) searchString = searchString + '&brand=' + $scope.searchInfo.brand;
+                    if ($scope.searchInfo.priceMin) searchString = searchString + '&priceMin=' + $scope.searchInfo.priceMin;
+                    if ($scope.searchInfo.priceMax) searchString = searchString + '&priceMax=' + $scope.searchInfo.priceMax;
                 }
                 var url = '/search?q=' + searchString + '&limit=' + $scope.limit + '&page=' + $scope.state.currentPage;
                 return url;
             };
 
             $scope.getProducts = function () {
-
                 var url = $scope.generateSearchUrl();
 
-                $http.get('/api' + url)
-                    .then(function (response) {
-                        $scope.products = response.data.products;
-                        $scope.state.totalRecords = response.data.total;
-                    }, function (error) {
-                        //console.log(error);
+                ProductService.getSearchProduct(url)
+                    .$promise
+                    .then(function (responseData) {
+                        $scope.products = responseData.products;
+                        $scope.state.totalRecords = responseData.total;
                     });
             };
 
@@ -108,10 +106,34 @@ angular.module('lightweight').controller('AdvanceSearchController',
 
             };
 
-            $scope.advancedSearch = function() {
+            $scope.advancedSearch = function () {
                 var url = $scope.generateSearchUrl();
                 $location.url(url);
                 $scope.getProducts();
             };
 
-        }]);
+            $scope.addToCart = function (product, event) {
+
+                var item = {product: product._id, quantity: 1};
+
+                if (!$scope.global.authenticated) {
+
+                    UserService.createGuestUser().$promise.then(function (user) {
+                        CartService.addToCart({item: item}).$promise.then(function (cartResponse) {
+
+                            $scope.global.user = user;
+                            $window.location.reload();
+                            $rootScope.$emit('cart:updated');
+                        });
+                    });
+                } else {
+                    CartService.addToCart({item: item}).$promise.then(function (data) {
+                        $rootScope.$emit('cart:updated');
+                    });
+                }
+                event.preventDefault();
+
+            };
+
+        }
+    ]);

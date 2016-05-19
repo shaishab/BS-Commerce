@@ -4,7 +4,7 @@ angular.module('lightweight').factory('ProductService', ['$resource',
     function($resource) {
         return {
             getProductByCategory: function() {
-               return $resource('api/products');
+               return $resource('/api/products');
             },
             getProductById: function(id) {
                 var getProductById = $resource('api/products/:id', {id:'@_id'}, {
@@ -17,6 +17,12 @@ angular.module('lightweight').factory('ProductService', ['$resource',
                     'get': {method: 'GET'}
                 });
                 return getFeaturedProducts.get(query);
+            },
+            getSearchProduct: function(searchUrl) {
+                var searchProduct = $resource('/api'+searchUrl, {}, {
+                    'get': {method: 'GET'}
+                });
+                return searchProduct.get();
             }
         };
     }
