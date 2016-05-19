@@ -117,9 +117,9 @@
                 <tr class="row" >
                     <td colspan="8" class="tbl-footer">
                         <div class="col-md-5 col-sm-12">
-                            <pagination total-items="totalItems" data-ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                            <uib-pagination total-items="totalItems" data-ng-model="currentPage" max-size="maxSize" class="pagination-sm"
                                         boundary-links="true" rotate="false" num-pages="numPages"
-                                        items-per-page="numberOfDisplay"  ng-change="setPage(currentPage)" style="margin: 0;"></pagination>
+                                        items-per-page="numberOfDisplay"  ng-change="setPage(currentPage)" style="margin: 0;"></uib-pagination>
                         </div>
                         <div class="col-md-4 col-sm-12 col-xs-12">
                             <select data-ng-model="numberOfDisplay" data-ng-options="opt for opt in numberOfDisplayOptions" data-ng-change="displayOptionChange()"></select>
