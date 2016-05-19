@@ -51,6 +51,12 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
                 url: '/order/:orderId',
                 controller: 'OrderDetailsController',
                 templateUrl: 'themes/lightweight/views/order/order-details.html'
+            })
+            .state('search', {
+                url: '/search?q&limit&page',
+                parent: 'master',
+                controller: 'AdvanceSearchController',
+                templateUrl: 'themes/lightweight/views/advance-search.html'
             });
     }
 ]);
