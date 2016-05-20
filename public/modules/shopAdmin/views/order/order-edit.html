@@ -8,8 +8,8 @@
     </div>
     <hr>
     <div class="row" style="border: 2px solid #C5C5C5;">
-        <tabset>
-            <tab heading="Info">
+        <uib-tabset>
+            <uib-tab heading="Info">
                 <div class="col-md-12">
                     <form class="form-horizontal" style="margin-top: 20px;">
                         <h2>Order informations</h2>
@@ -88,9 +88,9 @@
                         </div>
                     </form>
                 </div>
-            </tab>
+            </uib-tab>
 
-            <tab heading="Billing info">
+            <uib-tab heading="Billing info">
                 <div class="col-md-12">
                     <form class="form-horizontal" style="margin-top: 20px;" data-ng-show="!showEditBillingAddressForm" novalidate>
                         <h2>Billing address</h2>
@@ -232,9 +232,9 @@
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                 </div>
-            </tab>
+            </uib-tab>
 
-            <tab heading="Shipping info">
+            <uib-tab heading="Shipping info">
                 <div class="col-md-12">
                     <form class="form-horizontal" style="margin-top: 20px;" data-ng-show="!showEditShippingAddressForm" novalidate>
                         <h2>Shipping address</h2>
@@ -379,9 +379,9 @@
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                 </div>
-            </tab>
+            </uib-tab>
 
-            <tab heading="Product info">
+            <uib-tab heading="Product info">
                 <div class="">
                     <div class=" col-md-12 table-responsive cart_info">
                         <h2>Product(s) Information</h2>
@@ -400,7 +400,7 @@
                             <tbody>
                             <tr data-ng-repeat="item in order.products">
                                 <td class="cart_product" style="margin:0">
-                                    <img data-ng-src="/api/products/photos/{{item.productId.photos[0]}}" alt="no image" style="max-height: 50px">
+                                    <img data-ng-src="/api/products/photos/{{item.productId.photos[0].id}}" alt="no image" style="max-height: 50px">
                                 </td>
                                 <td class="cart_description">
                                     <h4><a data-ui-sref="Product.Edit({productId: item.productId._id})" target="_blank">{{item.name}}</a></h4>
@@ -457,7 +457,7 @@
                         </div>
                     </div>
                 </div>
-            </tab>
-        </tabset>
+            </uib-tab>
+        </uib-tabset>
     </div>
 </div>

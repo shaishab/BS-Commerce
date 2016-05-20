@@ -19,8 +19,8 @@
         <div class="col-md-offset-4 col-md-4 alert-danger text-center" data-ng-show="deleteErrorMsg"><label>{{deleteErrorMsg}}</label></div>
     </div>
     <div class="row" style="border: 2px solid #C5C5C5;">
-        <tabset>
-            <tab heading="User Info">
+        <uib-tabset>
+            <uib-tab heading="User Info">
                 <div class="col-md-12">
                     <form class="form-horizontal" style="padding-top: 10px;">
                         <div class="form-group">
@@ -78,8 +78,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-3"><label for="active"><i class="fa fa-question-circle fa-fw"></i> Active</label></div>
-                            <div class="col-md-4">
-                                <label class="checkbox-inline">
+                            <div class="col-md-4 checkbox">
+                                <label>
                                     <input type="checkbox" id="active" data-ng-model="user.active" value="active">
                                 </label>
                             </div>
@@ -92,8 +92,8 @@
                         </div>
                     </form>
                 </div>
-            </tab>
-            <tab heading="User Roles">
+            </uib-tab>
+            <uib-tab heading="User Roles">
                 <div class="col-md-2"  style="padding-top: 34px;"><label><i class="fa fa-question-circle fa-fw"></i> Roles</label></div>
                 <div class="col-md-4">
                     <div class="checkbox">
@@ -112,8 +112,8 @@
                         </label>
                     </div>
                 </div>
-            </tab>
-            <tab heading="Addresses">
+            </uib-tab>
+            <uib-tab heading="Addresses">
                 <div class="table-responsive" style="padding-top: 10px;">
                     <table class="table table-bordered table-hover" role="grid">
                         <thead class="tbl-header">
@@ -225,8 +225,8 @@
                         </form>
                     </div>
                 </div>
-            </tab>
-            <tab heading="Orders">
+            </uib-tab>
+            <uib-tab heading="Orders">
                 <div class="table-responsive" style="padding-top: 10px;">
                     <table class="table table-bordered table-hover" role="grid">
                         <thead class="tbl-header">
@@ -257,35 +257,8 @@
                     </table>
                     <hr>
                 </div>
-            </tab>
-            <tab heading="Reward Points">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover" role="grid">
-                        <thead class="tbl-header">
-                        <tr class="row">
-                            <th>Points</th>
-                            <th>Points balance</th>
-                            <th>Message</th>
-                            <th>Created on</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="row">
-                            <td></td>
-                            <td>Reward Points options coming soon..</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr class="row" >
-                            <td colspan="4" class="tbl-header"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <button class="btn btn-default"  style="margin-left: 15px;">Add Reward Points</button>
-                    <hr>
-                </div>
-            </tab>
-        </tabset>
+            </uib-tab>
+        </uib-tabset>
     </div>
 
 </div>
