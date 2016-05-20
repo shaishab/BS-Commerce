@@ -5,7 +5,6 @@ angular.module('lightweight').controller('CheckoutAsGuestController',
     function($scope, $rootScope, $location, $state, $stateParams, $window, Global, UserService, CartService) {
         $scope.global = Global;
         var returnState = $stateParams.returnUrl;
-        console.log(returnState);
         $scope.userCredential = {};
         $scope.items = [];
 
@@ -22,10 +21,12 @@ angular.module('lightweight').controller('CheckoutAsGuestController',
                     .$promise
                     .then(function(user) {
                         $scope.global.user = user;
-                        // And redirect to the index page
+
                         $window.location.reload();
                         $rootScope.$emit('cart:updated');
+
                         $state.go(returnState);
+                        
                     }, function(error) {
                         console.log('error== ',error);
                     });
