@@ -39,7 +39,14 @@
                         'get': {method: 'GET', isArray: true}
                     });
                     return getCart.get();
+                },
+                getStripePublishableKey: function() {
+                    var getPublishableKey = $resource('/api/stripePublishableKey', {}, {
+                        'get': {method: 'GET'}
+                    });
+                    return getPublishableKey.get();
                 }
+
             };
         }
     ]);

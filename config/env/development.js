@@ -39,5 +39,9 @@ module.exports = {
 				pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
 			}
 		}
+	},
+	stripe: {
+		publishableKey: 'pk_test_bvLQL8RHq2KUbEXCwKoYim0Q',
+		secretKey: 'sk_test_MZWnReGdw0E6Iw4Zybd0RPqI'
 	}
 };

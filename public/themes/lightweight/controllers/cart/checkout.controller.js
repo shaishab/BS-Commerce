@@ -14,6 +14,20 @@
 
 			$scope.items = [];
 
+			var stripePublishableKey = '';
+			$scope.creditCardInfo = {};
+			$scope.months = [];
+			$scope.years = [];
+			var currentYear = new Date().getFullYear();
+
+			for (var month=1; month<=12; month++) {
+				$scope.months.push(month);
+			}
+
+			for(var year = 0; year<15; year++) {
+				$scope.years.push(currentYear + year);
+			}
+
 			CartService.getCart()
 				.$promise
 				.then(function (cart) {
@@ -34,6 +48,14 @@
 				},
 				function (error) {
 					$state.go('emptyCart');
+				});
+
+			CartService.getStripePublishableKey()
+				.$promise
+				.then(function(response) {
+					stripePublishableKey = response.publishableKey;
+
+					console.log(response);
 				});
 
 			$scope.initializeAddress = function() {
@@ -111,6 +133,55 @@
 				}
 			};
 
+			$scope.checkCreditCardValidation = function() {
+
+				Stripe.setPublishableKey(stripePublishableKey);
+
+				//var valid = $.payment.validateCardNumber($scope.creditCardInfo.cardNumber);
+                //
+				//if (!valid) {
+				//	$scope.cardError = 'Your card is not valid!';
+				//	return false;
+				//}
+
+				//https://github.com/mjhea0/node-stripe-example/blob/master/src/server/routes/index.js
+
+				console.log($scope.creditCardInfo);
+				$rootScope.isBusy = true;
+
+				Stripe.card.createToken({
+					number: $scope.creditCardInfo.cardNumber,
+					cvc: $scope.creditCardInfo.cardCVC,
+					exp_month: $scope.creditCardInfo.cardExpireMonth,
+					exp_year: $scope.creditCardInfo.cardExpireYear
+				}, function(status, stripeResponse){
+
+					if(stripeResponse.error){
+						console.log('stripe error',stripeResponse.error);
+						$rootScope.isBusy = false;
+						$scope.cardError = stripeResponse.error.message;
+					}else{
+						console.log('stripe success');
+						$rootScope.isBusy = false;
+						var stripeToken = stripeResponse.id;
+						console.log('stripe id= ',stripeToken);
+						$scope.order.stripeToken = stripeToken;
+						$scope.setActiveStep(6);
+
+						//if(stripeToken){
+						//	$scope.order.stripeToken = stripeToken;
+						//	$scope.setActiveStep(6);
+						//}else{
+						//	//$scope.busy = false;
+						//	$scope.cardError ='Token not found from stripe.';
+						//}
+					}
+				});
+
+				//$scope.setActiveStep(6)
+
+			};
+
 			$scope.confirmOrder = function() {
 				addProductInfo(function() {
 					CheckoutService.createOrder($scope.order)
@@ -155,6 +226,7 @@
 			};
 
 			$scope.setActiveStep = function(stepNo) {
+				console.log('call to change tab');
 				$scope.open['tab'+stepNo] = true;
 			};
 

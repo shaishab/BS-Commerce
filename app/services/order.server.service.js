@@ -2,17 +2,59 @@
 require('../models/order.server.model');
 var mongoose = require('mongoose'),
     Order = mongoose.model('Orders'),
-    Q = require('q');
+    Q = require('q'),
+    config = require('../../config/config'),
+    stripe = require('stripe')(config.stripe.secretKey);
+
+
+var getChargeFromCard = function(stripeToken, price, currency, callback) {
+    var stripeToken = stripeToken;
+    var amount = price * 100;
+    var currency = currency || 'usd';
+    // ensure amount === actual product amount to avoid fraud
+
+    stripe.charges.create({
+            card: stripeToken,
+            currency: currency,
+            amount: amount
+        },
+        function(err, charge) {
+            if (err) {
+                console.log(err);
+                return callback(false);
+            } else {
+                return callback(true);
+            }
+        });
+};
 
 exports.createOrder = function(req) {
     var deferred = Q.defer();
     var newOrder = new Order(req.body);
-    newOrder.save(function(error, order) {
-       if(error) {
-           return deferred.reject(error);
-       }
-        return deferred.resolve(order);
-    });
+    if(req.body.stripeToken) {
+        getChargeFromCard(req.body.stripeToken, req.body.totalCost, 'usd', function(charged) {
+            if(charged) {
+                newOrder.paymentStatus ='paid';
+                newOrder.save(function(error, order) {
+                    if(error) {
+                        return deferred.reject(error);
+                    }
+                    return deferred.resolve(order);
+                });
+            } else {
+                return deferred.reject({msg: 'failed to get charge'});
+            }
+        });
+    } else {
+        newOrder.save(function(error, order) {
+            if(error) {
+                return deferred.reject(error);
+            }
+            return deferred.resolve(order);
+        });
+    }
+
+
     return deferred.promise;
 };
 
