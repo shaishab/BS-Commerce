@@ -57,6 +57,11 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
                 parent: 'master',
                 controller: 'AdvanceSearchController',
                 templateUrl: 'themes/lightweight/views/advance-search.html'
+            })
+            .state('CheckoutAsGuest', {
+                url: '/login/checkoutasguest?returnUrl',
+                controller: 'CheckoutAsGuestController',
+                templateUrl: 'themes/lightweight/views/cart/checkout-as-guest.html'
             });
     }
 ]);

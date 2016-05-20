@@ -10,6 +10,7 @@
 			$scope.order = {};
 			$scope.addresses =[];
 			$scope.order.shippingCost = 0;
+			$scope.global = Global;
 
 			$scope.items = [];
 

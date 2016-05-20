@@ -4,6 +4,7 @@ angular.module('lightweight').controller('ProductByCategoryController',
     ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', 'ProductService', 'UserService', 'CartService',
     function($scope, $rootScope, $timeout, $state, $window, Global, ProductService, UserService, CartService) {
         var slug = $state.params.slug;
+        $scope.global = Global;
 
         $scope.pageSizeOptions = ['6','9','12'];
         $scope.orderByOptions = [{name: 'Name', value:'name'},{name: 'Price', value:'price'},{name: 'Date Published', value:'publishDate'}];
