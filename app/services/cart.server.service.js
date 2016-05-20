@@ -23,12 +23,12 @@ var isExistCart = function(userId, callback) {
         if(error || !cart) {
             return callback(false);
         }
-        return callback(true);
+        return callback(cart);
     });
 };
 
-var createCart = function(userId, item, callback) {
-    var newCart = new Cart({user: userId, items: [item]});
+var createCart = function(userId, items, callback) {
+    var newCart = new Cart({user: userId, items: items});
     newCart.save(function(error) {
         if(error) {
             return callback(false);
@@ -64,6 +64,15 @@ var incrementItem = function(userId, item, callback) {
     });
 };
 
+var replaceCartAllItems = function(userId, items, callback) {
+    Cart.findOneAndUpdate({user: userId}, {$set: { 'items': items }}, function(error){
+        if(error) {
+            return callback(false);
+        }
+        return callback(true);
+    });
+};
+
 exports.addToCart = function(userId, item) {
     var deferred = Q.defer();
     isExistCart(userId, function(existCart) {
@@ -86,7 +95,7 @@ exports.addToCart = function(userId, item) {
                 }
             });
         } else {
-            createCart(userId, item, function(created) {
+            createCart(userId, [item], function(created) {
                 if(created) {
                     return deferred.resolve({msg: 'success'});
                 }
@@ -157,5 +166,71 @@ exports.deleteAllCartItems = function(userId) {
             return deferred.resolve(cart);
         });
 
+    return deferred.promise;
+};
+
+exports.getCartWithoutPopulate = function(userId) {
+    var deferred = Q.defer();
+
+    Cart.findOne({user: userId})
+        .exec(function(error, cart) {
+            if(error) {
+                return deferred.reject({msg: 'empty'});
+            }
+            if(!cart) {
+                return deferred.resolve({});
+            }
+            return deferred.resolve(cart);
+        });
+
+    return deferred.promise;
+};
+
+
+exports.mergeItemsForExistingUser = function(userId, items) {
+    var deferred = Q.defer();
+
+    isExistCart(userId, function(existCart) {
+        if(!existCart) {
+            createCart(userId, items, function(created) {
+                if(created) {
+                    return deferred.resolve({msg: 'success'});
+                }
+                return deferred.reject({msg: 'failed'});
+            });
+        } else {
+
+            if(!existCart.items.length) {
+                replaceCartAllItems(userId, items, function(updated) {
+                   if(updated) {
+                       return deferred.resolve({msg: 'success'});
+                   }
+                    return deferred.reject({msg: 'failed'});
+                });
+            } else {
+                var existingItems = existCart.items;
+                var newItems = items;
+
+                var mergeItems = _.map(existingItems, function(item) {
+
+                    var index = _.findIndex(newItems, {product: item.product.toString()});
+
+                    if(index !== -1) {
+                        item.quantity += newItems[index].quantity;
+                        newItems.splice(index,1);
+                    }
+                    return item;
+                });
+                var mergeItems = _.concat(mergeItems, newItems)
+
+                replaceCartAllItems(userId, mergeItems, function(updated) {
+                    if(updated) {
+                        return deferred.resolve({msg: 'success'});
+                    }
+                    return deferred.reject({msg: 'failed'});
+                });
+            }
+        }
+    });
     return deferred.promise;
 };

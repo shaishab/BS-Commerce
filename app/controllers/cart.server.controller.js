@@ -92,3 +92,17 @@ exports.deleteAllCartItems = function(req, res){
         })
         .done();
 };
+
+exports.getItemsWithoutPopulate = function(req, res) {
+    if(!req.user) {
+        return res.status(200).json('');
+    }
+    cartService.getCartWithoutPopulate(req.user._id)
+        .then(function(cart){
+            return res.status(200).json(cart.items);
+        })
+        .catch(function(error){
+            return res.status(400).json({msg: 'Error occurred while getting cart', error: error});
+        })
+        .done();
+};

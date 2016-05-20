@@ -8,7 +8,9 @@ var _ = require('lodash'),
   	User = mongoose.model('User'),
 	Order = mongoose.model('Orders'),
   	nodemailer = require('nodemailer'),
-	userService = require('../services/user.extension.server.service');
+	passport = require('passport'),
+	userService = require('../services/user.extension.server.service'),
+	cartService = require('../services/cart.server.service');
 
 
 //exports.create = function(req, res, next) {
@@ -437,4 +439,35 @@ exports.getUserStatistics = function(req, res) {
 			}
 			return res.status(200).send(users);
 		});
+};
+
+exports.signInUserWithGuestUserItems = function(req, res, next) {
+
+	var requestItems = req.body.items;
+
+	passport.authenticate('local', function(err, user, info) {
+		if (err || !user) {
+			res.status(400).send(info);
+		} else {
+			// Remove sensitive data before login
+			user.password = undefined;
+			user.salt = undefined;
+
+			cartService.mergeItemsForExistingUser(user._id, requestItems)
+				.then(function(success){
+					req.login(user, function(loginErr) {
+						if (err) {
+							return res.status(400).send(loginErr);
+						} else {
+							return res.json(user);
+						}
+					});
+
+				})
+				.catch(function(error){
+					return res.status(400).send(error);
+				})
+				.done();
+		}
+	})(req, res, next);
 };

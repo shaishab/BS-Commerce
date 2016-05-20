@@ -13,5 +13,6 @@ module.exports = function(app) {
         .delete(cartController.deleteCartItem);
 
     app.route('/api/cart/allitems')
+        .get(cartController.getItemsWithoutPopulate)
         .delete(cartController.deleteAllCartItems);
 };

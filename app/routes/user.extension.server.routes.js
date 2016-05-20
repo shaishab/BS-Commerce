@@ -1,12 +1,12 @@
 'use strict';
 
-var shopUser = require('../controllers/user.extension.server.controller');
+var extensionUserController = require('../controllers/user.extension.server.controller');
 
 
 module.exports = function(app) {
    //Setting up the users api
   //app.route('/auth/register')
-  //  .post(shopUser.create);
+  //  .post(extensionUserController.create);
   //
   //app.route('/auth/login')
   //  .post(
@@ -17,42 +17,45 @@ module.exports = function(app) {
   //    passport.authenticate('local', {
   //      failureFlash: true
   //    }),
-  //    shopUser.login);
+  //    extensionUserController.login);
   //
   //app.route('/auth/logout')
-  //  .get(shopUser.logout);
+  //  .get(extensionUserController.logout);
   //
   //app.route('/auth/password')
-  //  .put(shopUser.changePassword);
+  //  .put(extensionUserController.changePassword);
   //
   //app.route('/auth/resetForgotPassword')
-  //    .put(shopUser.resetForgotPassword);
+  //    .put(extensionUserController.resetForgotPassword);
 
   app.route('/auth/profile')
-    .put(shopUser.updateProfile);
+    .put(extensionUserController.updateProfile);
 
   app.route('/auth/user/:userId')
-      .get(shopUser.getUserById);
+      .get(extensionUserController.getUserById);
 
   app.route('/auth/search/user')
-      .get(shopUser.searchUser);
+      .get(extensionUserController.searchUser);
 
   app.route('/auth/user/changePassword')
-      .put(shopUser.changeUserPassword);
+      .put(extensionUserController.changeUserPassword);
 
   app.route('/auth/user/update')
-      .put(shopUser.updateUserInfo);
+      .put(extensionUserController.updateUserInfo);
 
   app.route('/auth/user/delete')
-      .delete(shopUser.removeUserById);
+      .delete(extensionUserController.removeUserById);
 
   app.route('/auth/user/create')
-      .post(shopUser.createUser);
+      .post(extensionUserController.createUser);
 
   app.route('/auth/users/statistics')
-      .get(shopUser.getUserStatistics);
+      .get(extensionUserController.getUserStatistics);
 
-  app.route('/api/user/guest')
-      .post(shopUser.createGuestUser);
+  app.route('/auth/user/guest')
+      .post(extensionUserController.createGuestUser);
+  
+  app.route('/auth/guest/to/user/signin')
+      .post(extensionUserController.signInUserWithGuestUserItems);
 
 };
