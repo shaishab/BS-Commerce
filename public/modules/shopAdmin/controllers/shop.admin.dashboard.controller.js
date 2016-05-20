@@ -1,8 +1,8 @@
 'use strict';
 
 // ShopAdmins controller
-angular.module('shopAdmin').controller('DashboardController', ['$scope', '$stateParams', '$location', 'Authentication', 'ShopAdmins',
-    function($scope, $stateParams, $location, Authentication, ShopAdmins) {
+angular.module('shopAdmin').controller('DashboardController', ['$scope', '$stateParams', '$location', 'Global',
+    function($scope, $stateParams, $location, Authentication) {
         $scope.authentication = Authentication;
         console.log('load dashboard controller');
         // Create new ShopAdmin

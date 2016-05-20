@@ -18,6 +18,8 @@ exports.createOrder = function(req) {
 
 exports.getOrders = function(searchQuery, skipSize, limitSize) {
     var deferred = Q.defer();
+    skipSize = parseInt(skipSize);
+    limitSize = parseInt(limitSize);
     Order.find(searchQuery).skip(skipSize).limit(limitSize).populate('user', 'email name')
         .exec(function(error, orders) {
             if(error) {

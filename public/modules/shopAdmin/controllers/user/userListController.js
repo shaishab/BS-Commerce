@@ -17,7 +17,7 @@ angular.module('shopAdmin').controller('userListController', ['$scope', 'Global'
         $scope.currentPage = 1;
         $scope.dispalayUsers = [];
         $scope.searchQuery = {};
-        $scope.roleAuthenticated = true;
+        $scope.roleUser = true;
             //fruits.slice(1, 3);
 
         //</editor-flod>
@@ -27,10 +27,10 @@ angular.module('shopAdmin').controller('userListController', ['$scope', 'Global'
             $scope.roles = '';
             if($scope.roleAdmin)
                 $scope.roles+= 'admin,';
-            if($scope.roleRegistered)
-                $scope.roles+= 'registered,';
-            if($scope.roleAuthenticated)
-                $scope.roles+= 'authenticated';
+            if($scope.roleUser)
+                $scope.roles+= 'user,';
+            if($scope.roleGuest)
+                $scope.roles+= 'guest';
         };
 
 
@@ -93,10 +93,6 @@ angular.module('shopAdmin').controller('userListController', ['$scope', 'Global'
             }
         };
 
-
-        $scope.showAddUserForm = function() {
-            $location.path('/User/Create');
-        };
         //</editor-fold>
 
         //<editor-fold desc='start pagination functions'>

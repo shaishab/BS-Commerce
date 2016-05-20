@@ -37,6 +37,8 @@
 	<!--Application CSS Files-->
 	{% for cssFile in cssFiles %}<link rel="stylesheet" href="{{cssFile}}">{% endfor %}
 
+	{% for themeCssFile in themeCssFiles %}{% if themeCssFile.indexOf(theme.name) !== -1 %}<link rel="stylesheet" href="{{themeCssFile}}">{% endif %}{% endfor %}
+
 	<!-- HTML5 Shim -->
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -44,13 +46,13 @@
 </head>
 
 <body class="ng-cloak">
-	<header data-ng-include="'/themes/{{theme.name}}/views/header.html'" class="navbar navbar-fixed-top navbar-inverse" style="height: 52px;"></header>
+	<header data-ng-include="'/themes/{{theme.name}}/views/header.html'" class="navbar navbar-fixed-top navbar-default" style="height: 52px;"></header>
 	<section class="content">
-		<section class="container">
+		<section class="container" style="margin-bottom: 50px;">
 			{% block content %}{% endblock %}
 		</section>
 	</section>
-	<footer data-ng-include="'/themes/{{theme.name}}/views/footer.html'" class="navbar navbar-fixed-bottom navbar-inverse"></footer>
+	<footer data-ng-include="'/themes/{{theme.name}}/views/footer.html'" class="navbar navbar-default"></footer>
 
 	<!--Embedding The User Object-->
 	<script type="text/javascript">

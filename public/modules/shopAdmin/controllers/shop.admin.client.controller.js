@@ -1,7 +1,7 @@
 'use strict';
 
 // ShopAdmins controller
-angular.module('shopAdmin').controller('ShopAdminsController', ['$scope', '$stateParams', '$location', 'Authentication', 'ShopAdmins',
+angular.module('shopAdmin').controller('ShopAdminsController', ['$scope', '$stateParams', '$location', 'Global', 'ShopAdmins',
 	function($scope, $stateParams, $location, Authentication, ShopAdmins) {
 		$scope.authentication = Authentication;
 

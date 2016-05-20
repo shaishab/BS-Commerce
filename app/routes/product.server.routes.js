@@ -1,7 +1,10 @@
 'use strict';
 
 var controller = require('../controllers/product.server.controller');
-var mediaService = require('../services/media.server.service');
+var mediaService = require('../services/media.server.service'),
+    multer = require('multer'),
+    storage = multer.memoryStorage(),
+    upload = multer({ storage: storage });
 
 module.exports = function (app) {
 
@@ -27,47 +30,29 @@ module.exports = function (app) {
                     return res.status(200).json(file);
                 })
                 .catch(function (error) {
-                    return res.status(500).json({error: error});
+                    return res.status(400).json({error: error});
                 })
                 .done();
         });
-    app.route('/api/products/photos')
-        .post(function (req, res) {
-            mediaService.create(req.files.file)
-                .then(function (file) {
-                    return res.status(200).json(file);
-                })
-                .catch(function (error) {
-                    return res.status(500).json({error: error});
-                })
-                .done();
-        });
+
+    app.route('/api/products/:productId/photos')
+        .post(upload.single('file'), controller.addProductPhoto);
+
     app.route('/api/products/photos/:id')
         .get(function (req, res) {
-            /*var stream = mediaService.get(req.params.id);
-            stream.pipe(res);
-            return res.status(200);*/
-
             mediaService.get(req.params.id)
                 .then(function (stream) {
                     stream.pipe(res);
                     return res.status(200);
                 })
                 .catch(function (error) {
-                    return res.status(500).json({error: error});
-                })
-                .done();
-        })
-        .delete(function (req, res) {
-            mediaService.delete(req.params.id)
-                .then(function () {
-                    return res.status(200).json({msg: 'Deleted successfully!'});
-                })
-                .catch(function (error) {
-                    return res.status(500).json({error: error});
+                    return res.status(400).json({error: error});
                 })
                 .done();
         });
+
+    app.route('/api/products/:productId/photos/:photoId')
+        .delete(controller.deleteProductPhoto);
 
     app.route('/api/productsByCondition')
         .get(controller.getProductByCondition);

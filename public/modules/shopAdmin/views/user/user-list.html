@@ -1,7 +1,9 @@
 <div class="row bs-fa-color">
-    <div class="col-md-3"><span><i class="fa fa-user-md"></i> <strong>Users</strong> </span></div>
-    <div class="col-md-9">
-        <button class="btn btn-primary pull-right" data-ng-click="showAddUserForm()">Add User</button>
+    <div class="admin-title">
+        <h3><i class="fa fa-user-md"></i> User list</h3>
+        <a ui-sref="User.Create">
+            <button type="button" class="btn btn-info"> Add New User</button>
+        </a>
     </div>
 </div>
 <hr>
@@ -17,12 +19,12 @@
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="registered" data-ng-model="roleRegistered" ng-change="updateRoles()"> Registered
+                    <input type="checkbox" value="user" data-ng-model="roleUser" ng-change="updateRoles()"> User
                 </label>
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="authenticated" data-ng-model="roleAuthenticated" ng-change="updateRoles()"> authenticated
+                    <input type="checkbox" value="guest" data-ng-model="roleGuest" ng-change="updateRoles()"> Guest
                 </label>
             </div>
         </div>
@@ -75,9 +77,9 @@
             <tr class="row" >
                 <td colspan="8" class="tbl-footer">
                     <div class="col-md-5 col-sm-12">
-                        <pagination total-items="totalItems" data-ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                        <uib-pagination total-items="totalItems" data-ng-model="currentPage" max-size="maxSize" class="pagination-sm"
                                     boundary-links="true" rotate="false" num-pages="numPages"
-                                    items-per-page="numberOfDisplay"  ng-change="setPage(currentPage)" style="margin: 0;"></pagination>
+                                    items-per-page="numberOfDisplay"  ng-change="setPage(currentPage)" style="margin: 0;"></uib-pagination>
                     </div>
                     <div class="col-md-4 col-sm-12 col-xs-12">
                         <select data-ng-model="numberOfDisplay" data-ng-options="opt for opt in numberOfDisplayOptions" data-ng-change="displayOptionChange()"></select>

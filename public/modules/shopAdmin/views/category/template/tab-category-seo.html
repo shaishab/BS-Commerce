@@ -1,7 +1,7 @@
 <div class="form-container">
     <div class="row">
         <div class="col-md-3">
-            <question-mark ></question-mark> Meta keywords:
+            <question-mark tooltip="Meta keywords to be added to category page header.it should be coma separated"></question-mark> Meta keywords:
         </div>
         <div class="col-md-3">
             <input type="text" class="form-control" data-ng-model="category.meta.keywords"/>
@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <question-mark></question-mark> Meta description
+            <question-mark tooltip="Meta description to be added to category page header"></question-mark> Meta description
         </div>
         <div class="col-md-3">
             <input type="text" class="form-control" data-ng-model="category.meta.description"/>
@@ -17,7 +17,7 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <question-mark></question-mark> Meta title:
+            <question-mark tooltip="Override the page title. The default is the name of the category."></question-mark> Meta title:
         </div>
         <div class="col-md-3">
             <input type="text" class="form-control" data-ng-model="category.meta.title"/>
@@ -25,7 +25,7 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <question-mark></question-mark> Search engine friendly page name:
+            <question-mark tooltip="Set a search engine friendly page name e.g. 'the-best-category' to make your page URL 'http://www.yourStore.com/the-best-category'. Leave empty to generate it automatically based on the name of the category."></question-mark> Search engine friendly page name:
         </div>
         <div class="col-md-3">
             <input type="text" class="form-control" data-ng-model="category.meta.SEFN"/>

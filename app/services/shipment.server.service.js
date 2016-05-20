@@ -18,6 +18,8 @@ exports.createShipment = function(req) {
 
 exports.getShipments = function(searchQuery, skipSize, limitSize) {
     var deferred = Q.defer();
+    skipSize = parseInt(skipSize);
+    limitSize = parseInt(limitSize);
     Shipment.find(searchQuery).skip(skipSize).limit(limitSize).populate('order')
         .exec(function(error, shipments) {
             if(error) {

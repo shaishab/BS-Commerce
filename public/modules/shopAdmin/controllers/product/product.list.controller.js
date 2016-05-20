@@ -28,7 +28,7 @@ angular.module('shopAdmin').controller('productListController', ['$scope', 'Glob
                         var item = {};
                         item._id =product._id;
                         if(product.photos.length) {
-                            item.picture = product.photos[0];
+                            item.picture = product.photos[0].id;
                         }
                         item.name = product.info.name;
                         item.sku = product.info.sku;

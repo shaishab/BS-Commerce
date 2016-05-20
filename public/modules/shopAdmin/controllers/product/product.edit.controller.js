@@ -1,5 +1,4 @@
 'use strict';
-//var apps = angular.module('mean.shopAdmin');
 
 angular.module('shopAdmin').controller('productUpdateController',
     ['$scope', '$stateParams', 'Upload', '$state', 'categoryService', 'brandService', 'productService', '$http',
@@ -63,32 +62,20 @@ angular.module('shopAdmin').controller('productUpdateController',
                 });
         };
 
-        $scope.upload = function (selectedFile) {
+        $scope.upload = function (picture) {
 
-            var file = selectedFile ? selectedFile[0] : null;
+            var file = picture.file ? picture.file : null;
+            var pictureInfo = {title: picture.title, alt: picture.alt, displayOrder: picture.displayOrder};
             Upload.upload({
-                url: '/api/products/photos',
-                fields: {
-                    name: file.name
-                },
-                file: file
+                url: '/api/products/'+$stateParams.id+'/photos',
+                data: {file: file, pictureInfo: pictureInfo}
             }).progress(function (evt) {
                 //var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                 //$scope.log = 'progress: ' + progressPercentage + '% ' +
                 //    evt.config.file.name + '\n' + $scope.log;
             }).success(function (data, status, headers, config) {
-                if (status === 404) {
-                    window.location = '/admin/login';
-                } else if (status === 200) {
-                    if ($scope.product.photos === undefined) {
-                        $scope.product.photos = [];
-                    }
-                    $scope.product.photos.push(data._id);
-                    $scope.picture.files[0] = undefined;
-                    $scope.picture.title ='';
-                    //$scope.update(true);
-                }
-
+                $scope.product = data;
+                $scope.picture = {};
             });
         };
 
@@ -103,32 +90,14 @@ angular.module('shopAdmin').controller('productUpdateController',
                 });
         };
 
-        $scope.deleteImage = function(id){
-            productService.deleteProductPhoto(id)
-                .$promise
-                .then(function(promise) {
-                    var index = $scope.product.photos.indexOf(id);
-                    $scope.product.photos.splice(index, 1);
-                    $scope.update();
-                });
-        };
-
-        $scope.deleteWholeProduct = function(){
-            $scope.deleteImageAndProduct($scope.product.photos[0]);
-        };
-
-        $scope.deleteImageAndProduct = function(id){
-            productService.deleteProductPhoto(id)
-                .$promise
-                .then(function(data) {
-                    var index = $scope.product.photos.indexOf(id);
-                    $scope.product.photos.splice(index, 1);
-                    if($scope.product.photos.length === 0){
-                        $scope.deleteProduct();
-                    }else{
-                        $scope.deleteImageAndProduct($scope.product.photos[0]);
-                    }
-                });
+        $scope.deleteImage = function(photoId){
+            if(confirm('Are you sure want to delete this picture ?')) {
+                productService.deleteProductPhoto($stateParams.id, photoId)
+                    .$promise
+                    .then(function(updateProduct) {
+                        $scope.product = updateProduct;
+                    });
+            }
         };
 
         $scope.deleteProduct = function(){

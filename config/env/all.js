@@ -31,7 +31,11 @@ module.exports = {
 				'public/lib/angular-ui-utils/ui-utils.js',
 				'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
 				'public/lib/metisMenu/dist/metisMenu.js',
-				'public/lib/jstree/dist/jstree.js'
+				'public/lib/jstree/dist/jstree.js',
+				'public/lib/ng-file-upload/ng-file-upload.js',
+				'public/lib/tinymce-dist/tinymce.js',
+				'public/lib/angular-ui-tinymce/src/tinymce.js',
+				'public/lib/lodash/dist/lodash.js'
 			]
 		},
 		css: [
@@ -59,7 +63,7 @@ module.exports = {
 		],
 		themeJs: [
 			'public/themes/*/*.js',
-			'public/themes/**/*/*.js'
+			'public/themes/**/*.js'
 		],
 		//================= end our custom variable=====================================
 		tests: [

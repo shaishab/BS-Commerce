@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
 
 exports.search = function(slug, orderBy, currentPage, pageSize){
     var deferred = Q.defer();
-
+    currentPage = parseInt(currentPage);
+    pageSize = parseInt(pageSize);
     Category.find({'$or': [{'slug': slug}, { 'ancestors.slug' : slug}]})
         .exec(function(error, categories){
             if(error){
@@ -35,11 +36,7 @@ exports.search = function(slug, orderBy, currentPage, pageSize){
                             if(error){
                                 return deferred.reject(error);
                             }
-
-                            return deferred.resolve({
-                                products: products,
-                                total: count
-                            });
+                            return deferred.resolve({products:products, total: count});
                         });
                 });
         });
@@ -50,6 +47,8 @@ exports.search = function(slug, orderBy, currentPage, pageSize){
 exports.all = function(pageNumber, pageSize){
     var deferred = Q.defer();
     var count = 0;
+    pageNumber = parseInt(pageNumber);
+    pageSize = parseInt(pageSize);
 
     Product.find({})
         .skip((pageNumber-1)*pageSize)
@@ -144,13 +143,15 @@ exports.getCount = function(searchQuery){
 };
 
 exports.getProductByCondition = function(searchQuery, skipSize, limitSize) {
+    skipSize = parseInt(skipSize);
+    limitSize = parseInt(limitSize);
     var deferred = Q.defer();
     Product.find(searchQuery, 'info brands photos').skip(skipSize).limit(limitSize)
-        .exec(function(error, brands){
+        .exec(function(error, products){
             if(error){
                 return deferred.reject(error);
             }
-            return deferred.resolve(brands);
+            return deferred.resolve(products);
         });
 
     return deferred.promise;
@@ -172,6 +173,28 @@ exports.updateProductsForBrand = function(req){
             }
             return deferred.resolve(docs);
         });
+    });
+    return deferred.promise;
+};
+
+exports.addProductPhoto = function(productId, pictureInfo){
+    var deferred = Q.defer();
+    Product.findOneAndUpdate({_id: productId}, {$push: {photos: pictureInfo}}, {new:true}, function(error, product) {
+        if(error) {
+            return deferred.reject(error);
+        }
+        return deferred.resolve(product);
+    });
+    return deferred.promise;
+};
+
+exports.deleteProductPhoto = function(productId, photoId){
+    var deferred = Q.defer();
+    Product.findOneAndUpdate({_id: productId}, {$pull: {photos : {id: photoId } } }, {new:true}, function(error, product) {
+        if(error) {
+            return deferred.reject(error);
+        }
+        return deferred.resolve(product);
     });
     return deferred.promise;
 };

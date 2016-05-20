@@ -8,7 +8,9 @@ var _ = require('lodash'),
   	User = mongoose.model('User'),
 	Order = mongoose.model('Orders'),
   	nodemailer = require('nodemailer'),
-	userService = require('../services/user.extension.server.service');
+	passport = require('passport'),
+	userService = require('../services/user.extension.server.service'),
+	cartService = require('../services/cart.server.service');
 
 
 //exports.create = function(req, res, next) {
@@ -342,42 +344,72 @@ exports.removeUserById = function(req, res) {
 };
 
 exports.createUser = function(req, res) {
-	var user = new User({
-		name: req.body.name,
-		username: req.body.email.toLowerCase(),
-		email: req.body.email.toLowerCase(),
-		password: req.body.password,
-		phoneNumber: req.body.phoneNumber,
-		status: 'email-not-verified',
-		addresses: req.body.addresses,
-		gender: req.body.gender,
-		active: req.body.active,
-		roles: req.body.roles
-	});
 
+	var user = new User(req.body);
+
+	user.email= user.email.toLowerCase();
+	user.username = user.email;
+	user.status = 'email-not-verified';
+	user.displayName = user.firstName + ' ' + user.lastName;
 	user.provider = 'local';
-
-	 //because we set our user.provider to local our models/user.js validation will always be true
-	req.assert('name', 'You must enter a name').notEmpty();
-	req.assert('email', 'You must enter a valid email address').isEmail();
-	req.assert('password', 'Password must be between 6-20 characters long').len(6, 20);
-
-	var errors = req.validationErrors();
-	if (errors) {
-		return res.status(400).send(errors);
-		//if(error.errors.password){
-		//	return res.status(416).send({msg: error.errors.password.message});
-		//}
-	}
 
 	user.save(function(error) {
 		if(error) {
+			console.log(error);
 			if(error.errors.email){
 				return res.status(409).send({msg: error.errors.email.message});
 			}
 			return res.status(400).send({msg: 'An unhandled error occurred, please try again'});
 		}
 		return res.status(200).send({msg: 'User Create Success'});
+	});
+};
+
+
+var guestUserNameGenerator =  function(){
+	var newUserName = '';
+	var possibleCharacter = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+	for( var i=0; i < 9; i+=1 )
+		newUserName += possibleCharacter.charAt(Math.floor(Math.random() * possibleCharacter.length));
+
+	return newUserName;
+};
+
+exports.createGuestUser = function(req, res) {
+
+	var userName = guestUserNameGenerator();
+	var email = userName +'@guest.com';
+	var guestUser = {
+		roles:['guest'],
+		username:userName,
+		email: email,
+		password: userName,
+		firstName: 'guest',
+		lastName: 'user'
+	};
+	var user = new User(guestUser);
+	var message = null;
+
+	// Add missing user fields
+	user.provider = 'local';
+	user.displayName = user.firstName + ' ' + user.lastName;
+	user.save(function(error,newUser) {
+		if (error) {
+			return res.status(400).send({ message: 'Error occurred during creating guest user'});
+		} else {
+			// Remove sensitive data before login
+			user.password = undefined;
+			user.salt = undefined;
+
+			req.login(user, function(err) {
+				if (err) {
+					res.status(400).send(err);
+				} else {
+					res.json(user);
+				}
+			});
+		}
 	});
 };
 
@@ -393,10 +425,10 @@ exports.getUserStatistics = function(req, res) {
 			{
 				$group : {
 					_id : null,
-					todayTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', today ] }, 1, 0 ] } },
-					weekTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', thisWeek ] }, 1, 0 ] } },
-					monthTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', thisMonth ] }, 1, 0 ] } },
-					yearTotal: { $sum: {$cond: [ { $gte: [ '$registrationDate', thisYear ] }, 1, 0 ] } },
+					todayTotal: { $sum: {$cond: [ { $gte: [ '$created', today ] }, 1, 0 ] } },
+					weekTotal: { $sum: {$cond: [ { $gte: [ '$created', thisWeek ] }, 1, 0 ] } },
+					monthTotal: { $sum: {$cond: [ { $gte: [ '$created', thisMonth ] }, 1, 0 ] } },
+					yearTotal: { $sum: {$cond: [ { $gte: [ '$created', thisYear ] }, 1, 0 ] } },
 					allTimeTotal: { $sum: 1 }
 				}
 			}
@@ -407,4 +439,35 @@ exports.getUserStatistics = function(req, res) {
 			}
 			return res.status(200).send(users);
 		});
+};
+
+exports.signInUserWithGuestUserItems = function(req, res, next) {
+
+	var requestItems = req.body.items;
+
+	passport.authenticate('local', function(err, user, info) {
+		if (err || !user) {
+			res.status(400).send(info);
+		} else {
+			// Remove sensitive data before login
+			user.password = undefined;
+			user.salt = undefined;
+
+			cartService.mergeItemsForExistingUser(user._id, requestItems)
+				.then(function(success){
+					req.login(user, function(loginErr) {
+						if (err) {
+							return res.status(400).send(loginErr);
+						} else {
+							return res.json(user);
+						}
+					});
+
+				})
+				.catch(function(error){
+					return res.status(400).send(error);
+				})
+				.done();
+		}
+	})(req, res, next);
 };

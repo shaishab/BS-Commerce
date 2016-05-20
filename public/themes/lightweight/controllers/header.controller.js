@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lightweight').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
+angular.module('lightweight').controller('HeaderController', ['$scope', 'Global', 'Menus',
     function($scope, Authentication, Menus) {
         $scope.authentication = Authentication;
         $scope.isCollapsed = false;
