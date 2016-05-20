@@ -33,6 +33,12 @@
                         'delete': {method: 'DELETE'}
                     });
                     return deleteAllItem.delete();
+                },
+                getItemsWithoutPopulate: function(){
+                    var getCart = $resource('/api/cart/allitems', {}, {
+                        'get': {method: 'GET', isArray: true}
+                    });
+                    return getCart.get();
                 }
             };
         }

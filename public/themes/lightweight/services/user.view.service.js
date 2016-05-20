@@ -4,7 +4,7 @@ angular.module('lightweight').factory('UserService', ['$resource',
     function($resource) {
         return {
             createGuestUser: function() {
-                var createUser = $resource('/api/user/guest', {}, {
+                var createUser = $resource('/auth/user/guest', {}, {
                     'create': {method: 'POST'}
                 });
                 return createUser.create();
@@ -12,6 +12,18 @@ angular.module('lightweight').factory('UserService', ['$resource',
             getUserById: function (userId) {
                 var userById = $resource('/auth/user/:userId', {userId: '@userId'});
                 return userById.get({userId: userId});
+            },
+            signInUser: function(userCredential) {
+                var signIn = $resource('/auth/signin', {}, {
+                    'post': {method: 'POST'}
+                });
+                return signIn.post(userCredential)
+            },
+            signInUserWithGuestUserItems: function(user) {
+                var signIn = $resource('/auth/guest/to/user/signin', {}, {
+                    'post': {method: 'POST'}
+                });
+                return signIn.post(user);
             }
         };
     }
