@@ -55,5 +55,14 @@ angular.module('lightweight').controller('CartController', ['$scope', '$rootScop
 					});
 			}
 		};
+
+		$scope.goToCheckoutPage = function () {
+
+			if(!$scope.global.isRegistered) {
+				$state.go('CheckoutAsGuest', {returnUrl:'Checkout'});
+			} else {
+				$state.go('Checkout');
+			}
+		};
 	}
 ]);
