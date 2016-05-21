@@ -86,9 +86,8 @@ exports.addCategory = function (requestCategory, imageId) {
     var newCategory = new Category(requestCategory);
     newCategory.slug = getSlug(requestCategory.name);
     newCategory.imageId = imageId;
-
     if(requestCategory.parent) {
-        Category.findOne({_id:requestCategory.parent}, 'ancestors')
+        Category.findOne({_id:requestCategory.parent}, 'name slug ancestors')
             .lean()
             .exec(function(err, parentCategory) {
                 var currentAncestors = [{
@@ -96,24 +95,26 @@ exports.addCategory = function (requestCategory, imageId) {
                     name: parentCategory.name,
                     slug: parentCategory.slug
                 }];
-                currentAncestors.concat(parentCategory.ancestors);
 
+                if(parentCategory.ancestors.length) {
+                    currentAncestors.concat(parentCategory.ancestors);
+                }
                 newCategory.ancestors = currentAncestors;
 
                 newCategory.save(function (error) {
                     if (error) {
-                        deferred.reject();
+                        deferred.reject(error);
                     } else {
-                        deferred.resolve();
+                        deferred.resolve({msg: 'success'});
                     }
                 });
             });
     } else {
         newCategory.save(function (error) {
             if (error) {
-                deferred.reject();
+                deferred.reject(error);
             } else {
-                deferred.resolve();
+                deferred.resolve({msg: 'success'});
             }
         });
     }
