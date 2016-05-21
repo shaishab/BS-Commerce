@@ -80,8 +80,8 @@ angular.module('shopAdmin').controller('productUpdateController',
         };
 
         $scope.update = function () {
-            if(typeof $scope.product.meta.keywords === 'string') {
-                $scope.product.meta.keywords = $scope.product.meta.keywords ? $scope.product.meta.keywords.split(',') : [];
+            if($scope.product.meta && $scope.product.meta.keywords && typeof $scope.product.meta.keywords === 'string') {
+                $scope.product.meta.keywords = $scope.product.meta.keywords.length ? $scope.product.meta.keywords.split(',') : [];
             }
             productService.updateProduct($scope.product)
                 .$promise
