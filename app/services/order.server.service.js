@@ -8,14 +8,12 @@ var mongoose = require('mongoose'),
 
 
 var getChargeFromCard = function(stripeToken, price, currency, callback) {
-    var stripeToken = stripeToken;
-    var amount = price * 100;
-    var currency = currency || 'usd';
-    // ensure amount === actual product amount to avoid fraud
+
+    var amount = price * 100; // make amount in cent
 
     stripe.charges.create({
             card: stripeToken,
-            currency: currency,
+            currency: currency || 'usd',
             amount: amount
         },
         function(err, charge) {

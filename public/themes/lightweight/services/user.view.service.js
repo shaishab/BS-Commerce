@@ -17,7 +17,7 @@ angular.module('lightweight').factory('UserService', ['$resource',
                 var signIn = $resource('/auth/signin', {}, {
                     'post': {method: 'POST'}
                 });
-                return signIn.post(userCredential)
+                return signIn.post(userCredential);
             },
             signInUserWithGuestUserItems: function(user) {
                 var signIn = $resource('/auth/guest/to/user/signin', {}, {

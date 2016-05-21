@@ -16,7 +16,7 @@ angular.module('lightweight').controller('CheckoutAsGuestController',
 
         $scope.loginFromCheckout = function() {
             if($scope.items && $scope.items.length) {
-                $scope.user.items = $scope.items
+                $scope.user.items = $scope.items;
                 UserService.signInUserWithGuestUserItems($scope.user)
                     .$promise
                     .then(function(user) {

@@ -228,7 +228,7 @@ exports.mergeItemsForExistingUser = function (userId, items) {
                     }
                     return item;
                 });
-                var mergeItems = _.concat(mergeItems, newItems)
+                mergeItems = _.concat(mergeItems, newItems);
 
                 replaceCartAllItems(userId, mergeItems, function (updated) {
                     if (updated) {
