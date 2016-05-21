@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "author": "Brain station, shaishab",
   "engines": {
-    "node": "5.11.x",
+    "node": "4.4.4",
     "npm": "3.8.x"
   },
   "scripts": {
