@@ -42,7 +42,10 @@ angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$
             if($scope.category.parent === ''){
                 $scope.category.parent = null;
             }
-            $scope.category.meta.keywords = $scope.category.meta.keywords ? $scope.category.meta.keywords.split(',') : [];
+
+            if($scope.category.meta && $scope.category.meta.keywords && typeof $scope.category.meta.keywords === 'string') {
+                $scope.category.meta.keywords = $scope.category.meta.keywords.length ? $scope.category.meta.keywords.split(',') : [];
+            }
 
             Upload.upload({
                 url: '/api/categories',
@@ -54,7 +57,7 @@ angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$
             }).success(function (data, status, headers, config) {
                 $state.go('Category.List');
             }).error(function(data, status, headers, config){
-                console.log('error block' + data);
+                console.log('error' + data);
             });
         };
     }

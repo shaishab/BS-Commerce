@@ -32,8 +32,8 @@ angular.module('shopAdmin').controller('categoryEditController', ['$scope', '$st
             if($scope.category.parent === ''){
                 $scope.category.parent = null;
             }
-            if(typeof $scope.category.meta.keywords === 'string') {
-                $scope.category.meta.keywords = $scope.category.meta.keywords ? $scope.category.meta.keywords.split(',') : [];
+            if($scope.category.meta && $scope.category.meta.keywords && typeof $scope.category.meta.keywords === 'string') {
+                $scope.category.meta.keywords = $scope.category.meta.keywords.length ? $scope.category.meta.keywords.split(',') : [];
             }
             categoryService.updateCategory($scope.category)
                 .$promise
