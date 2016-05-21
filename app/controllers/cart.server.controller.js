@@ -112,4 +112,4 @@ exports.getStripePublishableKey = function(req, res) {
         return res.status(200).json('');
     }
     return res.status(200).json(cartService.getStripePublishableKey());
-}
+};

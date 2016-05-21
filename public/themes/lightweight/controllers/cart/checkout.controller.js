@@ -1,7 +1,7 @@
 (function(){
 	'use strict';
-	angular.module('lightweight').controller('CheckoutController', ['$scope', '$rootScope', '$location', '$state', 'Global', '$timeout', 'CartService','CheckoutService', 'UserService',
-		function($scope, $rootScope, $location, $state, Global, $timeout, CartService, CheckoutService, UserService) {
+	angular.module('lightweight').controller('CheckoutController', ['$scope', '$rootScope', '$location', '$state', 'Global', '_', '$timeout', 'CartService','CheckoutService', 'UserService',
+		function($scope, $rootScope, $location, $state, Global, _, $timeout, CartService, CheckoutService, UserService) {
 
 			$scope.cartEmpty = true;
 			$scope.oneAtATime = true;
@@ -15,6 +15,7 @@
 			$scope.items = [];
 
 			var stripePublishableKey = '';
+			var Stripe = Stripe || {};
 			$scope.creditCardInfo = {};
 			$scope.months = [];
 			$scope.years = [];

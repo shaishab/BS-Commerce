@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('lightweight').directive('categoryAccordion', ['Global', '$rootScope', '$state', 'CategoryService',
-    function(Global, $rootScope, $state, CategoryService) {
+angular.module('lightweight').directive('categoryAccordion', ['Global', '_', '$rootScope', '$state', 'CategoryService',
+    function(Global, _, $rootScope, $state, CategoryService) {
 
         var highlightIfSelected = function(category, slug){
             if(category.slug === slug){

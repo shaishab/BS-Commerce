@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').controller('ProductDetailsController',
-    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', 'ProductService','UserService','CartService',
-    function($scope, $rootScope, $timeout, $state, $window, Global, ProductService, UserService, CartService) {
+    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', '_', 'ProductService','UserService','CartService',
+    function($scope, $rootScope, $timeout, $state, $window, Global, _, ProductService, UserService, CartService) {
         $scope.global = Global;
         var sku = $state.params.sku;
 
