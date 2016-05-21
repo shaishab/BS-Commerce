@@ -30,16 +30,16 @@ var BrandSchema = new Schema({
         },
         pageSizeOptions: [ {type: Number} ]
     },
-    seo: {
-        metaKeyword: {
+    meta: {
+        keywords: {
             type: String,
             default: ''
         },
-        metaDescription: {
+        description: {
             type: String,
             default: ''
         },
-        metaTitle: {
+        title: {
             type: String,
             default: ''
         },
