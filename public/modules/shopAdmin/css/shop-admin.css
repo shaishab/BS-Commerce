@@ -268,7 +268,7 @@ table.dataTable thead .sorting::after {
     color: #df8a13;
 }
 .bs-fa-color .fa{
-    color: orange;
+    color: #337ab7;
 }
 .fa-refresh-animate {
     -animation: spin .7s infinite linear;
