@@ -1,7 +1,8 @@
 (function(){
 	'use strict';
-	angular.module('lightweight').controller('CheckoutController', ['$scope', '$rootScope', '$location', '$state', 'Global', '_', '$timeout', 'CartService','CheckoutService', 'UserService',
-		function($scope, $rootScope, $location, $state, Global, _, $timeout, CartService, CheckoutService, UserService) {
+	angular.module('lightweight').controller('CheckoutController',
+		['$scope', '$rootScope', '$location', '$state', 'Global', '_', '$timeout','$window', 'CartService','CheckoutService', 'UserService',
+		function($scope, $rootScope, $location, $state, Global, _, $timeout, $window, CartService, CheckoutService, UserService) {
 
 			$scope.cartEmpty = true;
 			$scope.oneAtATime = true;
@@ -15,11 +16,12 @@
 			$scope.items = [];
 
 			var stripePublishableKey = '';
-			var Stripe = Stripe || {};
-			$scope.creditCardInfo = {};
+			//var Stripe = Stripe || {};
+
 			$scope.months = [];
 			$scope.years = [];
 			var currentYear = new Date().getFullYear();
+			$scope.creditCardInfo = {cardExpireMonth:1, cardExpireYear:currentYear};
 
 			for (var month=1; month<=12; month++) {
 				$scope.months.push(month);
@@ -134,23 +136,37 @@
 				}
 			};
 
+			$scope.cardTypeShow = function() {
+				var cardNumber = $scope.creditCardInfo.cardNumber;
+				if(new RegExp('^4[0-9]{12}(?:[0-9]{3})?$').test(cardNumber)) {
+					return 'fa-cc-visa';
+				} else if(new RegExp('^5[1-5][0-9]{14}$').test(cardNumber)) {
+					return 'fa-cc-mastercard';
+				} else if(new RegExp('^3[47][0-9]{13}$').test(cardNumber)) {
+					return 'fa-cc-amex';
+				} else if(new RegExp('^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$').test(cardNumber)) {
+					return 'fa-cc-discover';
+				} else if(new RegExp('^(?:2131|1800|35\d{3})\d{11}$').test(cardNumber)) {
+					return 'fa-cc-jcb';
+				}
+			};
+
 			$scope.checkCreditCardValidation = function() {
 
-				Stripe.setPublishableKey(stripePublishableKey);
-
-				//var valid = $.payment.validateCardNumber($scope.creditCardInfo.cardNumber);
-                //
-				//if (!valid) {
-				//	$scope.cardError = 'Your card is not valid!';
-				//	return false;
-				//}
-
+				$window.Stripe.setPublishableKey(stripePublishableKey);
+				$rootScope.isBusy = true;
 				//https://github.com/mjhea0/node-stripe-example/blob/master/src/server/routes/index.js
 
-				console.log($scope.creditCardInfo);
-				$rootScope.isBusy = true;
+				var validCard = $window.Stripe.card.validateCardNumber($scope.creditCardInfo.cardNumber);
 
-				Stripe.card.createToken({
+				if(!validCard) {
+					$timeout(function() {
+						$rootScope.isBusy = false;
+					});
+					return false;
+				}
+				
+				$window.Stripe.card.createToken({
 					number: $scope.creditCardInfo.cardNumber,
 					cvc: $scope.creditCardInfo.cardCVC,
 					exp_month: $scope.creditCardInfo.cardExpireMonth,
@@ -158,29 +174,23 @@
 				}, function(status, stripeResponse){
 
 					if(stripeResponse.error){
-						console.log('stripe error',stripeResponse.error);
-						$rootScope.isBusy = false;
+						// console.log('stripe error',stripeResponse.error);
 						$scope.cardError = stripeResponse.error.message;
+						$timeout(function() {
+							$rootScope.isBusy = false;
+						});
 					}else{
-						console.log('stripe success');
-						$rootScope.isBusy = false;
+						// console.log('stripe success', stripeResponse.id);
 						var stripeToken = stripeResponse.id;
-						console.log('stripe id= ',stripeToken);
+						// console.log('stripe id= ',stripeToken);
 						$scope.order.stripeToken = stripeToken;
-						$scope.setActiveStep(6);
 
-						//if(stripeToken){
-						//	$scope.order.stripeToken = stripeToken;
-						//	$scope.setActiveStep(6);
-						//}else{
-						//	//$scope.busy = false;
-						//	$scope.cardError ='Token not found from stripe.';
-						//}
+						$timeout(function() {
+							$rootScope.isBusy = false;
+							$scope.setActiveStep(6);
+						});
 					}
 				});
-
-				//$scope.setActiveStep(6)
-
 			};
 
 			$scope.confirmOrder = function() {

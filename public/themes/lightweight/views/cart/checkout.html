@@ -341,31 +341,20 @@
                         <p class="bg-danger">{{cardError}}</p>
                         <div class="form-group">
                             <div class="col-sm-3">
-                                <label for="cardType"><i class="fa fa-question-circle fa-fw"></i>Select credit card Type</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <select class="form-control" id="cardType" data-ng-model="creditCardInfo.cardType">
-                                <option value="Visa">Visa</option>
-                                <option value="MasterCard">Master Card</option>
-                                <option value="Discover">Discover</option>
-                                <option value="Amex">Amex</option>
-                            </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-3">
                                 <label for="holderName"><i class="fa fa-question-circle fa-fw"></i>Cardholder name</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 input-group">
                                 <input type="text" class="form-control" id="holderName" data-ng-model="creditCardInfo.cardHolderName" placeholder="Cardholder name">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-3">
                                 <label for="cardNumber"><i class="fa fa-question-circle fa-fw"></i>Card number</label>
                             </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="cardNumber" data-ng-model="creditCardInfo.cardNumber" placeholder="Card number">
+                            <div class="col-sm-4 input-group">
+                                <input type="text" class="form-control" id="cardNumber" data-ng-model="creditCardInfo.cardNumber" data-max-size="16" placeholder="Card number">
+                                <span class="input-group-addon"><i class="fa" ng-class="cardTypeShow()"></i></span>
                             </div>
                         </div>
 
@@ -373,18 +362,20 @@
                             <div class="col-sm-3">
                                 <label for="expireMonth"><i class="fa fa-question-circle fa-fw"></i>Expiration date</label>
                             </div>
-                            <div class="col-sm-2">
-                                <select class="form-control" id="expireMonth" ng-model="creditCardInfo.cardExpireMonth" data-ng-options="month for month in months"></select>
-                            </div>
-                            <div class="col-sm-2">
-                                <select class="form-control" ng-model="creditCardInfo.cardExpireYear" data-ng-options="year for year in years"></select>
+                            <div class="col-sm-4 input-group">
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="expireMonth" ng-model="creditCardInfo.cardExpireMonth" data-ng-options="month for month in months"></select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control" ng-model="creditCardInfo.cardExpireYear" data-ng-options="year for year in years"></select>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-3">
                                 <label for="cvc"><i class="fa fa-question-circle fa-fw"></i>Card code</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4 input-group">
                                 <input type="text" class="form-control" id="cvc" data-ng-model="creditCardInfo.cardCVC" placeholder="Card Code">
                             </div>
                         </div>
