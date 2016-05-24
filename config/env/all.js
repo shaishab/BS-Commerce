@@ -35,7 +35,8 @@ module.exports = {
 				'public/lib/ng-file-upload/ng-file-upload.js',
 				'public/lib/tinymce-dist/tinymce.js',
 				'public/lib/angular-ui-tinymce/src/tinymce.js',
-				'public/lib/lodash/dist/lodash.js'
+				'public/lib/lodash/dist/lodash.js',
+				'public/lib/jspdf/dist/jspdf.debug.js',
 			]
 		},
 		css: [
