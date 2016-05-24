@@ -44,8 +44,8 @@ module.exports = {
 		js: [
 			'public/config.js',
 			'public/application.js',
-			'public/modules/*[!shopAdmin]*/*.js',
-			'public/modules/*[!shopAdmin]*/*[!tests]*/*.js'
+			'public/modules/*[!shopAdmin, !users]*/*.js',
+			'public/modules/*[!shopAdmin, !users]*/*[!tests]*/*.js'
 		],
 		//================= start our custom variable=====================================
 		adminCss: [
