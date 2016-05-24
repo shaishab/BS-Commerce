@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('lightweight').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Global',
-	function($scope, $stateParams, $http, $location, Authentication) {
+angular.module('lightweight').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', '$window', 'Global',
+	function($scope, $stateParams, $http, $location, $window, Authentication) {
 		$scope.authentication = Authentication;
 
 		//If user is signed in then redirect back home
@@ -11,15 +11,15 @@ angular.module('lightweight').controller('PasswordController', ['$scope', '$stat
 		$scope.askForPasswordReset = function() {
 			$scope.success = $scope.error = null;
 
-			$http.post('/auth/user/forgot', $scope.credentials).success(function(response) {
+			$http.post('/auth/user/forgot', $scope.credentials).then(function(response) {
 				// Show user success message and clear form
 				$scope.credentials = null;
-				$scope.success = response.message;
+				$scope.success = response.data.message;
 
-			}).error(function(response) {
+			},function(error) {
 				// Show user error message and clear form
 				$scope.credentials = null;
-				$scope.error = response.message;
+				$scope.error = error.data.message;
 			});
 		};
 
@@ -27,17 +27,17 @@ angular.module('lightweight').controller('PasswordController', ['$scope', '$stat
 		$scope.resetUserPassword = function() {
 			$scope.success = $scope.error = null;
 
-			$http.post('/auth/user/reset/' + $stateParams.token, $scope.passwordDetails).success(function(response) {
+			$http.post('/auth/user/reset/' + $stateParams.token, $scope.passwordDetails).then(function(response) {
 				// If successful show success message and clear form
 				$scope.passwordDetails = null;
-
 				// Attach user profile
-				Authentication.user = response;
+				Authentication.user = response.data;
 
 				// And redirect to the index page
+				$window.location.reload();
 				$location.path('/password/reset/success');
-			}).error(function(response) {
-				$scope.error = response.message;
+			},function(error) {
+				$scope.error = error.data.message;
 			});
 		};
 	}

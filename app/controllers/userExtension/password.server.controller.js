@@ -147,7 +147,9 @@ exports.reset = function(req, res, next) {
 									if (err) {
 										res.status(400).send(err);
 									} else {
-										// Return authenticated user 
+										// Return authenticated user
+										user.password = undefined;
+										user.salt = undefined;
 										res.json(user);
 
 										done(err, user);
