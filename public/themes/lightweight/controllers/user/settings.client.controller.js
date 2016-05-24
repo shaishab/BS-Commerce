@@ -27,16 +27,6 @@ angular.module('lightweight').controller('SettingsController', ['$scope', '$http
 					}, function(error) {
 						$scope.error = error.msg;
 					});
-
-
-				//var user =  UserService($scope.user);
-                //
-				//user.$update(function(response) {
-				//	$scope.success = true;
-				//	Authentication.user = response;
-				//}, function(response) {
-				//	$scope.error = response.data.message;
-				//});
 			} else {
 				$scope.submitted = true;
 			}
@@ -46,7 +36,7 @@ angular.module('lightweight').controller('SettingsController', ['$scope', '$http
 		$scope.changeUserPassword = function() {
 			$scope.success = $scope.error = null;
 
-			$http.post('/auth/users/password', $scope.passwordDetails).success(function(response) {
+			$http.post('/auth/user/password', $scope.passwordDetails).success(function(response) {
 				// If successful show success message and clear form
 				$scope.success = true;
 				$scope.passwordDetails = null;
