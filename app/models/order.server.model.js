@@ -119,6 +119,10 @@ var OrderSchema = new Schema({
     totalCost: {
         type: Number,
         required: true
+    },
+    stripeToken: {
+        type: String,
+        default:''
     }
 
 });
