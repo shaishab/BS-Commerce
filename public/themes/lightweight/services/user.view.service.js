@@ -24,7 +24,13 @@ angular.module('lightweight').factory('UserService', ['$resource',
                     'post': {method: 'POST'}
                 });
                 return signIn.post(user);
-            }
+            },
+            updateUser: function(user) {
+                var updateUser = $resource('/auth/user/profile', {}, {
+                    'update': {method: 'PUT'}
+                });
+                return updateUser.update(user);
+            },
         };
     }
 ]);
