@@ -93,7 +93,7 @@ angular.module('lightweight').controller('ProductByCategoryController',
                 });
             } else {
                 WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
-                    console.log(data);
+                    //console.log(data);
                 });
             }
         };

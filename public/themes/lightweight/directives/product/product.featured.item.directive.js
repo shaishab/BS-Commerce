@@ -59,7 +59,7 @@ angular.module('lightweight').directive('productFeaturedItem',
                         });
                     } else {
                         WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
-                            console.log(data);
+                            //console.log(data);
                         });
                     }
                 };

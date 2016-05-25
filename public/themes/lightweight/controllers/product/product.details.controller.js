@@ -62,7 +62,7 @@ angular.module('lightweight').controller('ProductDetailsController',
                 });
             } else {
                 WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
-                    console.log(data);
+                    //console.log(data);
                 });
             }
         };
