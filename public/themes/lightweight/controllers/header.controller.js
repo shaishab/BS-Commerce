@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('lightweight').controller('HeaderController', ['$scope', 'Global', 'Menus',
-    function($scope, Authentication, Menus) {
+angular.module('lightweight').controller('HeaderController', ['$scope', '$rootScope', 'Global', 'Menus',
+    function($scope, $rootScope, Authentication, Menus) {
         $scope.authentication = Authentication;
         $scope.isCollapsed = false;
         $scope.menu = Menus.getMenu('topbar');
