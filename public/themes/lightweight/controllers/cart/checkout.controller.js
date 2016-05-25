@@ -16,7 +16,6 @@
 			$scope.items = [];
 
 			var stripePublishableKey = '';
-			//var Stripe = Stripe || {};
 
 			$scope.months = [];
 			$scope.years = [];
@@ -57,8 +56,6 @@
 				.$promise
 				.then(function(response) {
 					stripePublishableKey = response.publishableKey;
-
-					console.log(response);
 				});
 
 			$scope.initializeAddress = function() {
@@ -174,15 +171,12 @@
 				}, function(status, stripeResponse){
 
 					if(stripeResponse.error){
-						// console.log('stripe error',stripeResponse.error);
 						$scope.cardError = stripeResponse.error.message;
 						$timeout(function() {
 							$rootScope.isBusy = false;
 						});
 					}else{
-						// console.log('stripe success', stripeResponse.id);
 						var stripeToken = stripeResponse.id;
-						// console.log('stripe id= ',stripeToken);
 						$scope.order.stripeToken = stripeToken;
 
 						$timeout(function() {
@@ -237,7 +231,6 @@
 			};
 
 			$scope.setActiveStep = function(stepNo) {
-				console.log('call to change tab');
 				$scope.open['tab'+stepNo] = true;
 			};
 

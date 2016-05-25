@@ -7,41 +7,56 @@ var mongoose = require('mongoose'),
     stripe = require('stripe')(config.stripe.secretKey);
 
 
-var getChargeFromCard = function(stripeToken, price, currency, callback) {
-
-    var amount = price * 100; // make amount in cent
-
-    stripe.charges.create({
-            card: stripeToken,
-            currency: currency || 'usd',
-            amount: amount
-        },
-        function(err, charge) {
-            if (err) {
-                console.log(err);
-                return callback(false);
-            } else {
-                return callback(true);
-            }
-        });
-};
-
 exports.createOrder = function(req) {
     var deferred = Q.defer();
     var newOrder = new Order(req.body);
     if(req.body.stripeToken) {
-        getChargeFromCard(req.body.stripeToken, req.body.totalCost, 'usd', function(charged) {
-            if(charged) {
-                newOrder.paymentStatus ='paid';
-                newOrder.save(function(error, order) {
-                    if(error) {
-                        return deferred.reject(error);
-                    }
-                    return deferred.resolve(order);
-                });
-            } else {
-                return deferred.reject({msg: 'failed to get charge'});
-            }
+        var amount = req.body.totalCost * 100; // make amount in cent
+        var currency = req.body.currency || 'usd';
+
+        stripe.customers.create({
+            source: req.body.stripeToken,
+            description: 'user for '+req.user.email
+        }).then(function (customer) {
+            return stripe.charges.create({
+                amount: amount,
+                currency: currency,
+                customer: customer.id
+            });
+        }).then(function (charge) {
+
+            newOrder.paymentStatus ='paid';
+            newOrder.stripeCustomerId = charge.customer;
+            newOrder.stripeChargeId = charge.id;
+
+            newOrder.save(function(error, order) {
+                if(error) {
+                    return deferred.reject(error);
+                }
+                return deferred.resolve(order);
+            });
+        });
+    } else if(req.body.stripeCustomerId) {
+
+        var amount = req.body.totalCost * 100; // make amount in cent
+        var currency = req.body.currency || 'usd';
+
+        stripe.charges.create({
+            amount: amount,
+            currency: currency,
+            customer: req.body.stripeCustomerId // Previously stored, then retrieved
+        }).then(function(charge) {
+
+            newOrder.paymentStatus ='paid';
+            newOrder.stripeCustomerId = charge.customer;
+            newOrder.stripeChargeId = charge.id;
+
+            newOrder.save(function(error, order) {
+                if(error) {
+                    return deferred.reject(error);
+                }
+                return deferred.resolve(order);
+            });
         });
     } else {
         newOrder.save(function(error, order) {

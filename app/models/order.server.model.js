@@ -123,7 +123,16 @@ var OrderSchema = new Schema({
     stripeToken: {
         type: String,
         default:''
+    },
+    stripeCustomerId: {
+        type: String,
+        default:''
+    },
+    stripeChargeId: {
+        type: String,
+        default:''
     }
+
 
 });
 
