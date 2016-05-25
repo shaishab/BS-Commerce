@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').directive('productFeaturedItem',
-    ['$rootScope','$timeout', '$window', 'Global', 'ProductService','UserService','CartService',
-    function($rootScope, $timeout, $window, Global, ProductService, UserService, CartService) {
+    ['$rootScope','$timeout', '$window', 'Global', 'ProductService','UserService','CartService', 'WishlistService',
+    function($rootScope, $timeout, $window, Global, ProductService, UserService, CartService, WishlistService) {
         return{
             restrict: 'AE',
             replace: true,
@@ -43,6 +43,25 @@ angular.module('lightweight').directive('productFeaturedItem',
                     }
                     event.preventDefault();
 
+                };
+
+                scope.addToWishlist = function(product, event){
+                    event.preventDefault();
+                    var item = {product:product._id, quantity: 1};
+
+                    if(!scope.global.authenticated) {
+
+                        UserService.createGuestUser().$promise.then(function(user) {
+                            WishlistService.addToWishlist({item: item}).$promise.then(function(wishlistResponse) {
+                                scope.global.user = user;
+                                $window.location.reload();
+                            });
+                        });
+                    } else {
+                        WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
+                            console.log(data);
+                        });
+                    }
                 };
 
             }

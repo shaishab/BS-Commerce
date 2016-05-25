@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').controller('ProductDetailsController',
-    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', '_', 'ProductService','UserService','CartService',
-    function($scope, $rootScope, $timeout, $state, $window, Global, _, ProductService, UserService, CartService) {
+    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', '_', 'ProductService','UserService','CartService', 'WishlistService',
+    function($scope, $rootScope, $timeout, $state, $window, Global, _, ProductService, UserService, CartService, WishlistService) {
         $scope.global = Global;
         var sku = $state.params.sku;
 
@@ -46,6 +46,25 @@ angular.module('lightweight').controller('ProductDetailsController',
             }
             event.preventDefault();
 
+        };
+
+        $scope.addToWishlist = function(product, event){
+            event.preventDefault();
+            var item = {product:product._id, quantity: 1};
+
+            if(!$scope.global.authenticated) {
+
+                UserService.createGuestUser().$promise.then(function(user) {
+                    WishlistService.addToWishlist({item: item}).$promise.then(function(wishlistResponse) {
+                        $scope.global.user = user;
+                        $window.location.reload();
+                    });
+                });
+            } else {
+                WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
+                    console.log(data);
+                });
+            }
         };
     }
 ]);
