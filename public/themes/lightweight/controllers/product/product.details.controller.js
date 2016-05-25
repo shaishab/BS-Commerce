@@ -58,11 +58,13 @@ angular.module('lightweight').controller('ProductDetailsController',
                     WishlistService.addToWishlist({item: item}).$promise.then(function(wishlistResponse) {
                         $scope.global.user = user;
                         $window.location.reload();
+                        $rootScope.$emit('wishlist:updated');
                     });
                 });
             } else {
                 WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
                     //console.log(data);
+                    $rootScope.$emit('wishlist:updated');
                 });
             }
         };

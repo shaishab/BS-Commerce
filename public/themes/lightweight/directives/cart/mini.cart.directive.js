@@ -9,6 +9,7 @@ angular.module('lightweight').directive('miniCart', ['$rootScope', 'Global', '_'
             link: function (scope, element, attrs) {
                 scope.subTotal = 0;
                 scope.items = [];
+                $rootScope.totalCartItems = 0;
 
                 var updateCart = function () {
                     CartService.getCart()
@@ -19,6 +20,7 @@ angular.module('lightweight').directive('miniCart', ['$rootScope', 'Global', '_'
 
                             _.forEach(scope.items, function (item) {
                                 subTotal += (item.product.info.price * item.quantity);
+                                $rootScope.totalCartItems += item.quantity;
                             });
 
                             scope.subTotal = subTotal;

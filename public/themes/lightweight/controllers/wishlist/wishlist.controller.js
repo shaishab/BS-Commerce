@@ -7,17 +7,29 @@ angular.module('lightweight').controller('WishlistController',
 		$scope.items = [];
 		$scope.wishlistId = '';
 		$scope.rootUrl = '';
+		$rootScope.totalWishlistItems = 0;
 
 		$timeout(function() {
 			$scope.rootUrl = $window.location.href;
 		});
 
-		WishlistService.getWishlist()
-			.$promise
-			.then(function(wishlist){
-				$scope.wishlistId = wishlist._id;
-				$scope.items = wishlist.items;
-			});
+		$scope.getUpdateWishlist = function() {
+			WishlistService.getWishlist()
+				.$promise
+				.then(function(wishlist){
+					$scope.wishlistId = wishlist._id;
+					$scope.items = wishlist.items;
+
+					_.forEach($scope.items, function (item) {
+						$rootScope.totalWishlistItems += item.quantity;
+					});
+				});
+		};
+		$scope.getUpdateWishlist();
+
+		$rootScope.$on('wishlist:updated', function () {
+			$scope.getUpdateWishlist();
+		});
 
 		$scope.editWishlistItem = function(item) {
 			item.activeForEdit = true;
