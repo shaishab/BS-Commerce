@@ -145,6 +145,8 @@
 					return 'fa-cc-discover';
 				} else if(new RegExp('^(?:2131|1800|35\d{3})\d{11}$').test(cardNumber)) {
 					return 'fa-cc-jcb';
+				} else {
+					return 'fa-credit-card';
 				}
 			};
 
