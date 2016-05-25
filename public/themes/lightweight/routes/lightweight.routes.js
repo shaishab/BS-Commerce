@@ -62,6 +62,16 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
                 url: '/login/checkoutasguest?returnUrl',
                 controller: 'CheckoutAsGuestController',
                 templateUrl: 'themes/lightweight/views/cart/checkout-as-guest.html'
+            })
+            .state('Wishlist', {
+                url: '/wishlist',
+                controller: 'WishlistController',
+                templateUrl: 'themes/lightweight/views/wishlist/wishlist.html'
+            })
+            .state('WishlistDetails', {
+                url: '/wishlist/:wishlistId',
+                controller: 'WishlistShareableController',
+                templateUrl: 'themes/lightweight/views/wishlist/wishlist-shareable.html'
             });
     }
 ]);
