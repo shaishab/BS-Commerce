@@ -4,22 +4,24 @@ var mongoose = require('mongoose'),
     Order = mongoose.model('Orders'),
     Q = require('q'),
     config = require('../../config/config'),
-    stripe = require('stripe')(config.stripe.secretKey);
+    stripe = require('stripe')(config.stripe.secretKey),
+    paypal = require('paypal-rest-sdk');
 
 
 exports.createOrder = function(req) {
     var deferred = Q.defer();
     var newOrder = new Order(req.body);
+    var amount = req.body.totalCost || 0;
+    var currency = req.body.currency || 'USD';
+
     if(req.body.stripeToken) {
-        var amount = req.body.totalCost * 100; // make amount in cent
-        var currency = req.body.currency || 'usd';
 
         stripe.customers.create({
             source: req.body.stripeToken,
             description: 'user for '+req.user.email
         }).then(function (customer) {
             return stripe.charges.create({
-                amount: amount,
+                amount: amount * 100,
                 currency: currency,
                 customer: customer.id
             });
@@ -38,11 +40,8 @@ exports.createOrder = function(req) {
         });
     } else if(req.body.stripeCustomerId) {
 
-        var amount = req.body.totalCost * 100; // make amount in cent
-        var currency = req.body.currency || 'usd';
-
         stripe.charges.create({
-            amount: amount,
+            amount: amount * 100,
             currency: currency,
             customer: req.body.stripeCustomerId // Previously stored, then retrieved
         }).then(function(charge) {
@@ -58,6 +57,58 @@ exports.createOrder = function(req) {
                 return deferred.resolve(order);
             });
         });
+    } else if(req.body.paymentMethod === 'paypal') {
+
+        paypal.configure(config.paypal.clientInfo);
+
+        var payment = {
+            'intent': 'sale',
+            'payer': {
+                'payment_method': 'paypal'
+            },
+            'redirect_urls': {
+                'return_url': config.paypal.successUrl + '/' + newOrder._id,
+                'cancel_url': config.paypal.cancelUrl + '/' + newOrder._id
+            },
+            'transactions': [{
+                'amount': {
+                    'total':parseInt(amount),
+                    'currency':  currency,
+                    'details': {
+                        'subtotal': parseInt(amount)
+                    }
+                },
+                'description': 'Payment for order ID= '+ newOrder._id
+            }]
+        };
+
+        paypal.payment.create(payment, function (error, payment) {
+            if (error) {
+                return deferred.reject(error);
+            } else {
+                if(payment.payer.payment_method === 'paypal') {
+
+                    newOrder.paypalPaymentId = payment.id;
+                    var redirectUrl;
+
+                    for(var i=0; i < payment.links.length; i++) {
+                        var link = payment.links[i];
+                        if (link.method === 'REDIRECT') {
+                            redirectUrl = link.href;
+                        }
+                    }
+
+                    newOrder.save(function(orderError, order) {
+                        if(orderError) {
+                            return deferred.reject(orderError);
+                        }
+                        order.paypalRedirectUrl = redirectUrl;
+                        return deferred.resolve(order);
+                    });
+                }
+            }
+        });
+
     } else {
         newOrder.save(function(error, order) {
             if(error) {
@@ -147,6 +198,29 @@ exports.updateOrder = function(req) {
         }
         return deferred.resolve(order);
     });
+    return deferred.promise;
+};
+
+exports.updateOrderForPaypalPayment = function(req) {
+    var deferred = Q.defer();
+
+    paypal.configure(config.paypal.clientInfo);
+
+    var executePaymentDetails = { 'payer_id': req.params.payerId };
+
+    paypal.payment.execute(req.params.paymentId, executePaymentDetails, function(error, payment){
+        if(error){
+            return deferred.reject(error);
+        } else {
+            Order.findOneAndUpdate({_id:req.params.orderId, paypalPaymentId: req.params.paymentId}, {$set:{paymentStatus:'paid'}}, function(error, order) {
+                if(error) {
+                    return deferred.reject(error);
+                }
+                return deferred.resolve(order);
+            });
+        }
+    });
+
     return deferred.promise;
 };
 

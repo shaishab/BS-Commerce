@@ -131,6 +131,14 @@ var OrderSchema = new Schema({
     stripeChargeId: {
         type: String,
         default:''
+    },
+    paypalPaymentId: {
+        type: String,
+        default:''
+    },
+    paypalRedirectUrl: {
+        type: String,
+        default:''
     }
 
 
