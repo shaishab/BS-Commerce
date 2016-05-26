@@ -237,21 +237,19 @@
                             <div class="col-md-3 shipping-method">
                                 <label class="radio-inline">
                                     <input type="radio" name="shippingMethodOptions" id="shippingToday"
-                                           value="shippingToday" data-ng-model="order.shippingMethod" required> Cash on
-                                    delivery today
+                                           value="shippingToday" data-ng-model="order.shippingMethod" required> Delivery today
                                 </label>
                             </div>
                             <div class="col-md-3 shipping-method left-margin">
                                 <label class="radio-inline">
                                     <input type="radio" name="shippingMethodOptions" id="shippingNextDay"
-                                           value="shippingNextDay" data-ng-model="order.shippingMethod"> Cash on
-                                    delivery next day
+                                           value="shippingNextDay" data-ng-model="order.shippingMethod"> Delivery next day
                                 </label>
                             </div>
                             <div class="col-md-3 shipping-method left-margin">
                                 <label class="radio-inline">
                                     <input type="radio" name="shippingMethodOptions" id="shipping2ndDay"
-                                           value="shipping2ndDay" data-ng-model="order.shippingMethod"> Cash on delivery
+                                           value="shipping2ndDay" data-ng-model="order.shippingMethod"> Delivery
                                     2nd day
                                 </label>
                             </div>
@@ -277,7 +275,9 @@
                     <form class="form-horizontal" data-ng-submit="setActiveStep(5)">
                         <div class="form-group">
                             <div class="col-md-3 payment-method text-center">
-                                <img src="themes/lightweight/assets/img/hand-cash.png" alt="hand cash"/><br>
+                                <div class="text-center" style="width: 175px;">
+                                    <img style="height:57px; width: 175px" class="img-responsive" src="themes/lightweight/assets/img/hand-cash.png" alt="hand cash"/>
+                                </div>
                                 <label class="radio-inline">
                                     <input type="radio" name="paymentMethodOptions" id="paymentHandCash"
                                            value="handCash" data-ng-model="order.paymentMethod" required> Hand cash
@@ -285,20 +285,20 @@
                             </div>
                             <div class="col-md-3 payment-method left-margin text-center">
                                 <div>
-                                    <img class="img-responsive" src="themes/lightweight/assets/img/stripe.png" alt="stripe"/>
+                                    <img class="img-responsive" src="themes/lightweight/assets/img/stripe.png" alt="creditCard"/>
                                 </div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="paymentMethodOptions" id="paymentStripe"
-                                           value="stripe" data-ng-model="order.paymentMethod" required> Stripe Payment
+                                    <input type="radio" name="paymentMethodOptions" id="creditCard"
+                                           value="creditCard" data-ng-model="order.paymentMethod" required> Payment with credit card
                                 </label>
                             </div>
                             <div class="col-md-3 payment-method left-margin text-center">
-                                <div>
+                                <div class="text-center" style="width: 175px;">
                                     <img class="img-responsive" src="themes/lightweight/assets/img/paypal.png" alt="paypal"/>
                                 </div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="paypal" id="paypal"
-                                           value="paypal" data-ng-model="order.paymentMethod" disabled> Paypal (coming soon)
+                                    <input type="radio" name="paymentMethodOptions" id="paypal"
+                                           value="paypal" data-ng-model="order.paymentMethod" required> Payment with paypal
                                 </label>
                             </div>
                         </div>
@@ -339,7 +339,7 @@
 
                 <!--========Form for stripe card=========-->
 
-                <div class="col-md-offset-2" data-ng-show="order.paymentMethod === 'stripe'">
+                <div class="col-md-offset-2" data-ng-show="order.paymentMethod === 'creditCard'">
                     <form class="form-horizontal" data-ng-submit="checkCreditCardValidation()">
                         <p class="bg-danger">{{cardError}}</p>
                         <div class="form-group">
@@ -394,27 +394,15 @@
                 <!--========Form for Paypal card=========-->
 
                 <div class="col-md-offset-2" data-ng-show="order.paymentMethod === 'paypal'">
-                    <form class="form-horizontal" role="form" id="paypalForm" method="post" action="/paynow">
+                    <form class="form-horizontal" data-ng-submit="setActiveStep(6)">
                         <div class="form-group">
-                            <div class="col-sm-3">
-                                <label class="control-label col-sm-2" for="amount">Amount:</label>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter Amount" required="required" value="10">
+                            <div class="col-md-10 payment-method text-center">
+                                <label>Payment with paypal ... continue and confirm and redirect to paypal</label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="description">Description:</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="description" name="description" placeholder="Enter Description">My First Payment</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button id="send" class="btn btn-primary btn-lg" type="submit">
-                                    <span class="glyphicon glyphicon-send" ></span> Pay Now
-                                </button>
+                            <div class="col-md-offset-3 col-md-4">
+                                <button type="submit" class="btn btn-primary">Continue</button>
                             </div>
                         </div>
                     </form>

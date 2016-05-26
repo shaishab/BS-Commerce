@@ -200,7 +200,12 @@
 								.$promise
 								.then(function(deleteResponse) {
 									$rootScope.$emit('cart:updated');
-									$state.go('CheckoutSuccess',{orderId: response.orderId});
+									if(response.paypalRedirectUrl) {
+										$window.location.href = response.paypalRedirectUrl;
+									} else {
+										$state.go('CheckoutSuccess',{orderId: response.orderId});
+									}
+
 								},
 								function(error) {
 									$rootScope.$emit('cart:updated');
