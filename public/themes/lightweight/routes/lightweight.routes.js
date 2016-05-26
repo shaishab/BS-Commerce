@@ -72,6 +72,16 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
                 url: '/wishlist/:wishlistId',
                 controller: 'WishlistShareableController',
                 templateUrl: 'themes/lightweight/views/wishlist/wishlist-shareable.html'
+            })
+            .state('PaypalPaymentSuccess', {
+                url: '/payment/success/:orderId?paymentId&token&PayerID',
+                controller:'PaypalPaymentSuccessController',
+                templateUrl: 'themes/lightweight/views/cart/payment-success.html'
+            })
+            .state('PaypalPaymentCancel', {
+                url: '/payment/cancel/:orderId',
+                //controller:'PaypalPaymentCancelController', // need to work
+                templateUrl: 'themes/lightweight/views/cart/checkout-success.html'
             });
     }
 ]);
