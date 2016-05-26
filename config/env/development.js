@@ -43,5 +43,16 @@ module.exports = {
 	stripe: {
 		publishableKey: 'pk_test_bvLQL8RHq2KUbEXCwKoYim0Q',
 		secretKey: 'sk_test_MZWnReGdw0E6Iw4Zybd0RPqI'
+	},
+	paypal: {
+		clientInfo: {
+			host : 'api.sandbox.paypal.com',
+			mode:'sandbox',
+			port : '',
+			client_id: 'AbQzi5PqXs38yaCZ4M_bCP7KVGx6xa_jdF9czFTWMROL2GENwwrK7ChsdFD-OTwDJ24wDcBO7hwM4SRj',
+			client_secret: 'EFiMq09cVKB2Dq95B2b9eykTm-p0aRQr-vocCGRzKY5Rj1JT0JsW-wbcaRapmGw633gl4cTn3iXSNXQw'
+		},
+		successUrl: 'http://localhost:3000/#!/payment/success',
+		cancelUrl: 'http://localhost:3000/#!/payment/cancel'
 	}
 };
