@@ -28,6 +28,7 @@ angular.module('lightweight').directive('miniCart', ['$rootScope', 'Global', '_'
                 };
 
                 $rootScope.$on('cart:updated', function () {
+                    $rootScope.totalCartItems = 0;
                     updateCart();
                 });
 

@@ -28,6 +28,7 @@ angular.module('lightweight').controller('WishlistController',
 		$scope.getUpdateWishlist();
 
 		$rootScope.$on('wishlist:updated', function () {
+			$rootScope.totalWishlistItems = 0;
 			$scope.getUpdateWishlist();
 		});
 
