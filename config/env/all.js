@@ -17,7 +17,8 @@ module.exports = {
 				'public/lib/bootstrap/dist/css/bootstrap-theme.css',
 				'public/lib/components-font-awesome/css/font-awesome.css',
 				'public/lib/metisMenu/dist/metisMenu.css',
-				'public/lib/jstree/dist/themes/default/style.css'
+				'public/lib/jstree/dist/themes/default/style.css',
+				'public/lib/toastr/toastr.css'
 			],
 			js: [
 				'public/lib/jquery/dist/jquery.js',
@@ -35,8 +36,9 @@ module.exports = {
 				'public/lib/ng-file-upload/ng-file-upload.js',
 				'public/lib/tinymce-dist/tinymce.js',
 				'public/lib/angular-ui-tinymce/src/tinymce.js',
-				'public/lib/lodash/dist/lodash.js',
-				'public/lib/jspdf/dist/jspdf.debug.js',
+				'public/lib/lodash/dist/lodash.js',,
+				'public/lib/toastr/toastr.js',
+				'public/lib/jspdf/dist/jspdf.debug.js'
 			]
 		},
 		css: [
