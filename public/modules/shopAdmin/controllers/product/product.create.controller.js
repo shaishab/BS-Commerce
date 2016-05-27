@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('productCreateController', ['$scope', '$state', 'productService', 'brandService', 'categoryService',
-    function ($scope, $state, productService, brandService, categoryService) {
+angular.module('shopAdmin').controller('productCreateController', ['$scope', '$window', '$state', 'productService', 'brandService', 'categoryService',
+    function ($scope, $window, $state, productService, brandService, categoryService) {
 
         $scope.product = {};
         $scope.product.info ={};
@@ -66,8 +66,10 @@ angular.module('shopAdmin').controller('productCreateController', ['$scope', '$s
                 .$promise
                 .then(function(response) {
                     if (edit) {
+                        $window.toastr.success('Created new product');
                         $state.go('Product.Edit', {id: response._id});
                     } else {
+                        $window.toastr.success('Created new product');
                         $state.go('Product.List');
                     }
                 });
