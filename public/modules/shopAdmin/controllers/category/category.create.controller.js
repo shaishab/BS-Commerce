@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$stateParams','Upload','$state', 'categoryService',
-    function ($scope, $stateParams, Upload, $state, categoryService) {
+angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$window', '$stateParams','Upload','$state', 'categoryService',
+    function ($scope, $window, $stateParams, Upload, $state, categoryService) {
         // Info tab Page
         $scope.category = {};
         $scope.categories = [];
@@ -55,8 +55,10 @@ angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$
                 //$scope.log = 'progress: ' + progressPercentage + '% ' +
                 //evt.config.file.name + '\n' + $scope.log;
             }).success(function (data, status, headers, config) {
+                $window.toastr.success('Created new category');
                 $state.go('Category.List');
             }).error(function(data, status, headers, config){
+                $window.toastr.error('Failed to add new category');
                 console.log('error' + data);
             });
         };
