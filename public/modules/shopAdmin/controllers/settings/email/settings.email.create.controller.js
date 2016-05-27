@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('settingsEmailCreateController', ['$scope', '$location', 'settingsService',
-    function($scope, $location, settingsService) {
+angular.module('shopAdmin').controller('settingsEmailCreateController', ['$scope', '$window', '$location', 'settingsService',
+    function($scope, $window,  $location, settingsService) {
         $scope.settings= {};
         $scope.email = {};
         $scope.getEmailSettings = function() {
@@ -26,6 +26,7 @@ angular.module('shopAdmin').controller('settingsEmailCreateController', ['$scope
                 settingsService.addNewSettingsWithEmail($scope.settings)
                     .$promise
                     .then(function(emails) {
+                        $window.toastr.success('Successfully added new email');
                         $location.path('/Settings/Email/List');
                     });
             } else {
@@ -33,6 +34,7 @@ angular.module('shopAdmin').controller('settingsEmailCreateController', ['$scope
                 settingsService.addNewEmailSettings($scope.settings)
                     .$promise
                     .then(function(emails) {
+                        $window.toastr.success('Successfully added new email');
                         $location.path('/Settings/Email/List');
                     });
             }

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('settingsEmailEditController', ['$scope', '$location', '$stateParams', '$timeout', 'settingsService',
-    function($scope, $location, $stateParams, $timeout, settingsService) {
+angular.module('shopAdmin').controller('settingsEmailEditController', ['$scope', '$window', '$location', '$stateParams', '$timeout', 'settingsService',
+    function($scope, $location, $window, $stateParams, $timeout, settingsService) {
         $scope.settings= {};
         $scope.email = {};
         $scope.passwordFieldType = 'password';
@@ -27,9 +27,8 @@ angular.module('shopAdmin').controller('settingsEmailEditController', ['$scope',
             settingsService.addNewEmailSettings($scope.settings)
                 .$promise
                 .then(function(response) {
-                    $scope.updateSuccessMsg = response.msg;
                     $timeout(function() {
-                        $scope.updateSuccessMsg = '';
+                        $window.toastr.success(response.msg);
                         $location.path('/Settings/Email/List');
                     },2000);
                 });
@@ -40,9 +39,8 @@ angular.module('shopAdmin').controller('settingsEmailEditController', ['$scope',
             settingsService.addNewEmailSettings($scope.settings)
                 .$promise
                 .then(function(response) {
-                    $scope.updateSuccessMsg = response.msg;
                     $timeout(function() {
-                        $scope.updateSuccessMsg = '';
+                        $window.toastr.success(response.msg);
                         $location.path('/Settings/Email/List');
                     },2000);
                 });
