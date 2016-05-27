@@ -25,7 +25,7 @@ angular.module('shopAdmin').controller('shipmentEditController',
         $scope.updateShippingStatus = function() {
             orderService.updateOrder($scope.order)
                 .$promise.then(function(response) {
-                    $scope.orderUpdateSuccessMsg = 'success';
+                    $window.toastr.success('Successfully updated shipment status');
                 });
         };
 
@@ -108,10 +108,7 @@ angular.module('shopAdmin').controller('shipmentEditController',
             shipmentService.updateShipment($scope.shipment)
                 .$promise
                 .then(function(response) {
-                    $scope.updateSuccessMsg = response.msg;
-                    $timeout(function() {
-                        $scope.updateSuccessMsg = '';
-                    },1000);
+                    $window.toastr.success(response.msg);
                 });
         };
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('shipmentCreateController', ['$scope', '$timeout', '$location', '$stateParams', 'orderService', 'shipmentService',
-    function($scope, $timeout, $location, $stateParams, orderService, shipmentService) {
+angular.module('shopAdmin').controller('shipmentCreateController', ['$scope', '$window', '$timeout', '$location', '$stateParams', 'orderService', 'shipmentService',
+    function($scope, $window, $timeout, $location, $stateParams, orderService, shipmentService) {
 
         $scope.orderId = $stateParams.orderId;
         $scope.shipmentAbleProducts = [];
@@ -89,6 +89,7 @@ angular.module('shopAdmin').controller('shipmentCreateController', ['$scope', '$
                         orderService.updateOrder(updateOrder)
                             .$promise
                             .then(function(response) {
+                                $window.toastr.success('Successfully added shipment');
                                 $location.path('/Order/Edit/'+$stateParams.orderId);
                             });
                     });
