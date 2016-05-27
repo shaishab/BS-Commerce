@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('orderEditController', ['$scope', '$location', '$stateParams', '$timeout', 'orderService',
-    function($scope, $location,  $stateParams, $timeout, orderService) {
+angular.module('shopAdmin').controller('orderEditController', ['$scope', '$window', '$location', '$stateParams', '$timeout', 'orderService',
+    function($scope, $window, $location,  $stateParams, $timeout, orderService) {
 
         var orderId = $stateParams.orderId;
 
@@ -53,12 +53,10 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
                     .$promise
                     .then(function(response) {
                         $scope.order.orderStatus = orderStatus;
-                        $scope.successUpdateOrderStatus = response.msg;
                         $timeout(function() {
                             $scope.editOrderStatus = false;
-                            $scope.successUpdateOrderStatus = '';
                         },1000);
-
+                        $window.toastr.success(response.msg);
                     });
             }
         };
@@ -86,12 +84,10 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
                     .$promise
                     .then(function(response) {
                         $scope.order.paymentStatus = paymentStatus;
-                        $scope.successUpdatePaymentStatus = response.msg;
                         $timeout(function() {
                             $scope.editPaymentStatus = false;
-                            $scope.successUpdatePaymentStatus = '';
                         },1000);
-
+                        $window.toastr.success(response.msg);
                     });
             }
         };
@@ -118,12 +114,10 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
                     .$promise
                     .then(function(response) {
                         $scope.order.shippingStatus = shippingStatus;
-                        $scope.successUpdateShippingStatus = response.msg;
                         $timeout(function() {
                             $scope.editShippingStatus = false;
-                            $scope.successUpdateShippingStatus = '';
                         },1000);
-
+                        $window.toastr.success(response.msg);
                     });
             }
         };
@@ -152,13 +146,11 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
                     .$promise
                     .then(function(response) {
                         $scope.order.billingAddress = $scope.newBillingAddress;
-                        $scope.successUpdateBillingAddress = response.msg;
                         $timeout(function() {
                             $scope.billAddressFieldRequired = false;
                             $scope.showEditBillingAddressForm = false;
-                            $scope.successUpdateBillingAddress = '';
                         },1000);
-
+                        $window.toastr.success(response.msg);
                     });
             }
         };
@@ -177,7 +169,6 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
 
         $scope.updateShippingAddress = function() {
 
-            //$scope.order.shippingAddress = $scope.newShippingAddress;
             if(confirm('Are you sure want to change shipping address ?')) {
                 //$scope.order.billingAddress = $scope.newBillingAddress;
                 $scope.updateOrder = {
@@ -188,12 +179,11 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
                     .$promise
                     .then(function(response) {
                         $scope.order.shippingAddress = $scope.newShippingAddress;
-                        $scope.successUpdateShippingAddress = response.msg;
                         $timeout(function() {
                             $scope.shippingAddressFieldRequired = false;
                             $scope.showEditShippingAddressForm = false;
-                            $scope.successUpdateShippingAddress = '';
                         },1000);
+                        $window.toastr.success(response.msg);
                     });
             }
         };
@@ -230,12 +220,11 @@ angular.module('shopAdmin').controller('orderEditController', ['$scope', '$locat
             orderService.updateOrder(updateOrder)
                 .$promise
                 .then(function(response) {
-                    $scope.successUpdateProductInfo = response.msg;
                     $timeout(function() {
                         $scope.order.productCost = newProductCost;
                         $scope.order.totalCost = newProductCost + $scope.order.shippingCost;
-                        $scope.successUpdateProductInfo = '';
                     },1000);
+                    $window.toastr.success(response.msg);
                 });
         };
 
