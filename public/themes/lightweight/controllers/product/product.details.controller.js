@@ -36,12 +36,14 @@ angular.module('lightweight').controller('ProductDetailsController',
                         $scope.global.user = user;
                         $window.location.reload();
                         $rootScope.$emit('cart:updated');
+                        $window.toastr.success('Added to cart');
                     });
                 });
 
             } else {
                 CartService.addToCart({item: item}).$promise.then(function(data) {
                     $rootScope.$emit('cart:updated');
+                    $window.toastr.success('Added to cart');
                 });
             }
             event.preventDefault();
@@ -59,12 +61,14 @@ angular.module('lightweight').controller('ProductDetailsController',
                         $scope.global.user = user;
                         $window.location.reload();
                         $rootScope.$emit('wishlist:updated');
+                        $window.toastr.success('Added to wishlist');
                     });
                 });
             } else {
                 WishlistService.addToWishlist({item: item}).$promise.then(function(data) {
                     //console.log(data);
                     $rootScope.$emit('wishlist:updated');
+                    $window.toastr.success('Added to wishlist');
                 });
             }
         };
