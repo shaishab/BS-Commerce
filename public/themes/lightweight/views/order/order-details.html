@@ -1,9 +1,15 @@
 <div style="margin-bottom: 50px;">
     <div class="row text-center">
         <h2>Order information</h2>
+        <button class="btn btn-primary pull-right" type="button" data-ng-click="printOrderSlip()">Print order invoice</button>
     </div>
-    <hr/>
+</div>
+<hr>
+<div id="orderInfo">
     <div class="row text-center">
+        <div style="color: #4ab2f1">
+            <strong>Thank you for shipping from BS-Commerce</strong>
+        </div>
         <div>
             <strong>ORDER# {{order._id}}</strong>
         </div>
@@ -17,21 +23,19 @@
             <span>Order Total Amount: {{order.totalCost | currency}}</span>
         </div>
     </div>
-
-</div>
-<div class="">
     <div class="row">
         <div class="col-md-6 table-responsive">
             <table class="table">
                 <thead class="checkout-page-thead">
                 <tr>
                     <td>Billing address</td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>Name</td>
-                    <td data-ng-bind="order.billingAddress.name"></td>
+                    <td>{{order.billingAddress.firstName}} {{order.billingAddress.lastName}}</td>
                 </tr>
                 <tr>
                     <td>Email</td>
@@ -70,12 +74,13 @@
                 <thead class="checkout-page-thead">
                 <tr>
                     <td>Shipping address</td>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <td>Name</td>
-                    <td data-ng-bind="order.shippingAddress.name"></td>
+                    <td>{{order.shippingAddress.firstName}} {{order.shippingAddress.lastName}}</td>
                 </tr>
                 <tr>
                     <td>Email</td>
@@ -115,8 +120,10 @@
                 <thead class="checkout-page-thead">
                 <tr>
                     <td>Payment</td>
+                    <td></td>
                 </tr>
                 </thead>
+                <tbody>
                 <tr>
                     <td>Payment method</td>
                     <td data-ng-bind="order.paymentMethod"></td>
@@ -125,6 +132,7 @@
                     <td>Payment status</td>
                     <td data-ng-bind="order.paymentStatus"></td>
                 </tr>
+                </tbody>
             </table>
         </div>
         <div class="col-md-6">
@@ -132,8 +140,10 @@
                 <thead class="checkout-page-thead">
                 <tr>
                     <td>Shipping</td>
+                    <td></td>
                 </tr>
                 </thead>
+                <tbody>
                 <tr>
                     <td>Shipping method</td>
                     <td data-ng-bind="order.shippingMethod"></td>
@@ -142,44 +152,34 @@
                     <td>Shipping status</td>
                     <td data-ng-bind="order.shippingStatus"></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
     <div class="row">
-        <div class="table-responsive cart-info">
-            <h2>Product(s) Information</h2>
-            <table class="table table-bordered">
-                <thead>
-                <tr class="cart-menu">
-                    <td >Picture</td>
-                    <td>Product(s)</td>
-                    <td>Price</td>
-                    <td>Quantity</td>
-                    <td>Total</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr data-ng-repeat="item in order.products" class="text-center">
-                    <td class="cart-product" style="margin:0">
-                        <div class="item-img">
-                            <img class="img-responsive" data-ng-src="/api/products/photos/{{item.productId.photos[0].id}}" alt="no image">
-                        </div>
-                    </td>
-                    <td>
-                        <h4><a data-ui-sref="products-details({sku:item.sku})">{{item.name}}</a></h4>
-                    </td>
-                    <td>
-                        <p>{{item.price | currency}}</p>
-                    </td>
-                    <td>
-                        <span data-ng-bind="item.quantity"></span>
-                    </td>
-                    <td>
-                        <p>{{(item.price * item.quantity) | currency}}</p>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="table-responsive" id="productInfo">
+            <h4>Product(s) Information</h4>
+            <div class="col-sm-12 col-md-12" style="margin-top: 10px; padding: 10px;">
+                <table class="table table-responsive table-bordered">
+                    <thead>
+                    <tr class="text-center">
+                        <td>Product(s)</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Total</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr data-ng-repeat="item in order.products" class="text-center">
+                        <td><a data-ui-sref="products-details({sku:item.sku})">{{item.name}}</a></td>
+                        <td>{{item.price | currency}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{(item.price * item.quantity) | currency}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <hr/>
             <div class="col-sm-12 col-md-12" style="margin-top: 10px; padding: 10px;background-color: #f9f9f9;">
 
@@ -203,9 +203,9 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-offset-5 col-sm-10">
-            <a class="btn btn-primary" href="/#!/">Continue</a>
-        </div>
+</div>
+<div class="form-group">
+    <div class="col-sm-offset-5 col-sm-10">
+        <a class="btn btn-primary" href="/#!/">Continue</a>
     </div>
 </div>
