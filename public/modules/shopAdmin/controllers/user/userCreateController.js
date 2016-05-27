@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('shopAdmin').controller('userCreateController', ['$scope', '$timeout', '$location', 'userService',
-    function($scope, $timeout, $location, userService) {
+angular.module('shopAdmin').controller('userCreateController', ['$scope', '$window', '$timeout', '$location', 'userService',
+    function($scope, $window, $timeout, $location, userService) {
 
         //<editor-fold desc='Variable declaration'>
         $scope.user = {addresses: [],roles: []};
@@ -54,8 +54,7 @@ angular.module('shopAdmin').controller('userCreateController', ['$scope', '$time
             $scope.editAddress = {};
             if(active) {
                 $scope.activeEditAddress =true;
-                //Object.assign($scope.editAddress, $scope.user.addresses[addressIndex]);
-                $scope.editAddress = angular.copy($scope.user.addresses[addressIndex]);//previous jQuery.extend({}, source)
+                $scope.editAddress = angular.copy($scope.user.addresses[addressIndex]);
                 $scope.editAddress.index = addressIndex;
                 $scope.addressTableBtnsDisable = true;
             }
@@ -87,17 +86,13 @@ angular.module('shopAdmin').controller('userCreateController', ['$scope', '$time
             $scope.user.active = $scope.user.active || true;
             var createUserResponse = userService.createUser($scope.user);
             createUserResponse.$promise.then(function(promiseData) {
-                    $scope.createSuccessMsg = promiseData.msg;
                     $timeout(function() {
-                        $scope.createSuccessMsg = '';
+                        $window.toastr.success(promiseData.msg);
                         $location.path('/User/List');
                     },2000);
                 },
                 function(error) {
-                    $scope.createErrorMsg = error.data.msg;
-                    $timeout(function() {
-                        $scope.createErrorMsg = '';
-                    },2000);
+                    $window.toastr.error(error.data.msg);
                 });
         };
     }
