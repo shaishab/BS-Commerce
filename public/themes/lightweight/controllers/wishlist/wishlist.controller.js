@@ -71,6 +71,7 @@ angular.module('lightweight').controller('WishlistController',
 					.then(function(updatedWishlist) {
 						$scope.items = updatedWishlist.items;
 						$rootScope.$emit('cart:updated');
+						$rootScope.$emit('wishlist:updated');
 						$window.toastr.success('Added wishlist to cart');
 					}, function(error) {
 						$window.toastr.error('Failed to add wishlist to cart');
