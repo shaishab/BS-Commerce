@@ -19,7 +19,7 @@
                     <label>Quantity:</label>
                     <input type="text" data-ng-model="quantity"/>
 
-                    <button type="button" class="btn btn-default add-to-cart" data-ng-click="addToCart(product, $event)">
+                    <button type="button" class="btn btn-default" data-ng-click="addToCart(product, $event)">
                         <i class="fa fa-shopping-cart"></i> Add to cart
                     </button>
                 </span>
@@ -28,7 +28,7 @@
                 <p><b>Condition:</b> New</p>
                 <p><b>Brand:</b> <span data-ng-repeat="brand in product.brands">{{brand}}</span></p>
                 <p>
-                    <button class="btn btn-default" data-ng-click="addToWishlist(product, $event)"><i class="fa fa-star"></i> Add to wishlist</button>
+                    <button class="btn btn-success" data-ng-click="addToWishlist(product, $event)"><i class="fa fa-star"></i> Add to wishlist</button>
                 </p>
             </div>
         </div>
