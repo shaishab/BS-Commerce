@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('brandEditController', ['$scope', '$stateParams', '$state', 'brandService',
-    function ($scope, $stateParams, $state, brandService) {
+angular.module('shopAdmin').controller('brandEditController', ['$scope', '$window' ,'$stateParams', '$state', 'brandService',
+    function ($scope, $window, $stateParams, $state, brandService) {
 
         $scope.brand = {};
         $scope.brand.meta = {};
@@ -29,16 +29,20 @@ angular.module('shopAdmin').controller('brandEditController', ['$scope', '$state
             brandService.updateBrand($scope.brand)
                 .$promise
                 .then(function(response) {
+                    $window.toastr.success('Updated brand information');
                     $state.go('Brand.List');
                 });
         };
 
         $scope.delete = function () {
-            brandService.deleteBrand($stateParams.brandId)
-                .$promise
-                .then(function(response) {
-                    $state.go('Brand.List');
-                });
+            if(confirm('Are you sure want to delete this brand')) {
+                brandService.deleteBrand($stateParams.brandId)
+                    .$promise
+                    .then(function(response) {
+                        $window.toastr.success('Deleted brand');
+                        $state.go('Brand.List');
+                    });
+            }
         };
     }
 ]);

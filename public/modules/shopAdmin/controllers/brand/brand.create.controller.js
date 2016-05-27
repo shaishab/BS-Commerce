@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('brandCreateController', ['$scope', 'Global', '$http', '$state', 'brandService',
-    function($scope, Global, $http, $state, brandService) {
+angular.module('shopAdmin').controller('brandCreateController', ['$scope', '$window', 'Global', '$http', '$state', 'brandService',
+    function($scope, $window, Global, $http, $state, brandService) {
         $scope.brand = {};
         $scope.brand.meta = {};
         $scope.brand.info = {};
@@ -18,6 +18,7 @@ angular.module('shopAdmin').controller('brandCreateController', ['$scope', 'Glob
             brandService.createBrand($scope.brand)
                 .$promise
                 .then(function(promise) {
+                    $window.toastr.success('Created new brand');
                     $state.go('Brand.List');
                 });
         };
