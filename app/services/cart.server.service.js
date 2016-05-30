@@ -17,6 +17,17 @@ exports.deleteCartById = function (cartId) {
     return deferred.promise;
 };
 
+exports.deleteCartByUserId = function (userId) {
+    var deferred = Q.defer();
+    Cart.findOneAndRemove({user:userId}, function (err, doc) {
+        if (err) {
+            return deferred.reject(err);
+        }
+        return deferred.resolve({msg: 'success'});
+    });
+    return deferred.promise;
+};
+
 /*------------------new-------------------------*/
 
 var isExistCart = function (userId, callback) {
