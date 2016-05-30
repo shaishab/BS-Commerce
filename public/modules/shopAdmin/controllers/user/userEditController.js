@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('shopAdmin').controller('userEditController', ['$scope', '$window', 'Global', '$stateParams','userService','$location', '$timeout',
-    function($scope, $window, Global, $stateParams, userService, $location, $timeout) {
+angular.module('shopAdmin').controller('userEditController', ['$scope', '$window', 'Global', '$state', '$stateParams','userService','$location', '$timeout',
+    function($scope, $window, Global, $state, $stateParams, userService, $location, $timeout) {
 
         //<editor-fold desc='Variable declaration'>
         $scope.user = {};
@@ -120,10 +120,11 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', '$window
                 var deleteUserResponse = userService.deleteUserById($scope.user._id);
                 deleteUserResponse.$promise.then(function(responseData) {
                         $window.toastr.success(responseData.msg);
-                        $location.path('/User/List');
+                        $state.go('User.List');
                     },
                     function(error) {
-                        $window.toastr.error(error.msg);
+                        console.log(error);
+                        $window.toastr.error(error.data.msg);
                     });
             }
         };
