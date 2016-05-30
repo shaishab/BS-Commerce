@@ -3,14 +3,14 @@
 var _ = require('lodash'),
   	validator = require('validator'),
 	validation = require('../services/validation.server.service'),
-	//settingsController = require('../../../shopSettings/server/controllers/settingsController'),
   	mongoose = require('mongoose'),
   	User = mongoose.model('User'),
 	Order = mongoose.model('Orders'),
-  	nodemailer = require('nodemailer'),
 	passport = require('passport'),
 	userService = require('../services/user.extension.server.service'),
-	cartService = require('../services/cart.server.service');
+	cartService = require('../services/cart.server.service'),
+	wishlistService = require('../services/wishlist.server.service'),
+	compareService = require('../services/compare.server.service');
 
 
 exports.getUserById = function(req, res) {
@@ -114,11 +114,23 @@ exports.removeUserById = function(req, res) {
 	if (!req.user) {
 		return res.status(401).send([{msg: 'Access denied'}]);
 	}
-	User.findByIdAndRemove(req.query.userId, function(err, doc) {
-		if(err) {
-			return res.status(500).send({msg: 'An unhandled error occurred, please try again'});
-		}
-		return res.status(200).send({msg: 'Profile delete successfully.'});
+	cartService.deleteCartByUserId(req.query.userId).then(function(cartResponse) {
+		wishlistService.deleteWishlistByUserId(req.query.userId).then(function(wishListResponse) {
+			compareService.deleteCompareByUserId(req.query.userId).then(function(compareResponse) {
+				User.findByIdAndRemove(req.query.userId, function(err, doc) {
+					if(err) {
+						return res.status(400).send({msg: 'An unhandled error occurred, please try again'});
+					}
+					return res.status(200).send({msg: 'User delete successfully.'});
+				});
+			}, function(error) {
+				return res.status(400).send({msg: 'Error occurred while deleting user compare list'});
+			});
+		}, function(error) {
+			return res.status(400).send({msg: 'Error occurred while deleting user wishlist'});
+		});
+	}, function(error) {
+		return res.status(400).send({msg: 'Error occurred while deleting user cart'});
 	});
 };
 
