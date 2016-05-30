@@ -32,3 +32,10 @@
 .list-options {
     margin-right: 5px;
 }
+.fa-trash {
+    color: #AB0F0F;
+}
+
+.list-img-sm {
+    width: 120px;
+}
