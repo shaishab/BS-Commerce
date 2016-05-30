@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').controller('ProductDetailsController',
-    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', '_', 'ProductService','UserService','CartService', 'WishlistService',
-    function($scope, $rootScope, $timeout, $state, $window, Global, _, ProductService, UserService, CartService, WishlistService) {
+    ['$scope', '$rootScope', '$timeout', '$state', '$window', 'Global', '_', 'ProductService','UserService','CartService', 'WishlistService', 'CompareService',
+    function($scope, $rootScope, $timeout, $state, $window, Global, _, ProductService, UserService, CartService, WishlistService, CompareService) {
         $scope.global = Global;
         var sku = $state.params.sku;
 
@@ -69,6 +69,26 @@ angular.module('lightweight').controller('ProductDetailsController',
                     //console.log(data);
                     $rootScope.$emit('wishlist:updated');
                     $window.toastr.success('Added to wishlist');
+                });
+            }
+        };
+
+        $scope.addToCompare = function(product, event){
+            event.preventDefault();
+            var item = {product:product._id};
+
+            if(!$scope.global.authenticated) {
+
+                UserService.createGuestUser().$promise.then(function(user) {
+                    CompareService.addToCompare({item: item}).$promise.then(function(compareResponse) {
+                        $scope.global.user = user;
+                        $window.toastr.success('Added to compare list');
+                        $window.location.reload();
+                    });
+                });
+            } else {
+                CompareService.addToCompare({item: item}).$promise.then(function(data) {
+                    $window.toastr.success('Added to compare list');
                 });
             }
         };

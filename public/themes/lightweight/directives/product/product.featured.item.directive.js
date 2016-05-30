@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').directive('productFeaturedItem',
-    ['$rootScope','$timeout', '$window', 'Global', 'ProductService','UserService','CartService', 'WishlistService',
-    function($rootScope, $timeout, $window, Global, ProductService, UserService, CartService, WishlistService) {
+    ['$rootScope','$timeout', '$window', 'Global', 'ProductService','UserService','CartService', 'WishlistService', 'CompareService',
+    function($rootScope, $timeout, $window, Global, ProductService, UserService, CartService, WishlistService, CompareService) {
         return{
             restrict: 'AE',
             replace: true,
@@ -69,6 +69,26 @@ angular.module('lightweight').directive('productFeaturedItem',
 
                         }, function(error) {
                             $window.toastr.error('Failed to add to wishlist');
+                        });
+                    }
+                };
+
+                scope.addToCompare = function(product, event){
+                    event.preventDefault();
+                    var item = {product:product._id};
+
+                    if(!scope.global.authenticated) {
+
+                        UserService.createGuestUser().$promise.then(function(user) {
+                            CompareService.addToCompare({item: item}).$promise.then(function(compareResponse) {
+                                scope.global.user = user;
+                                $window.toastr.success('Added to compare list');
+                                $window.location.reload();
+                            });
+                        });
+                    } else {
+                        CompareService.addToCompare({item: item}).$promise.then(function(data) {
+                            $window.toastr.success('Added to compare list');
                         });
                     }
                 };
