@@ -1,23 +1,23 @@
 'use strict';
 
-angular.module('lightweight').directive('categoryAccordion', ['Global', '_', '$rootScope', '$state', 'CategoryService',
-    function(Global, _, $rootScope, $state, CategoryService) {
+angular.module('lightweight').directive('categoryAccordion', ['Global', '_', '$rootScope', '$stateParams', '$timeout', 'CategoryService',
+    function(Global, _, $rootScope, $stateParams, $timeout, CategoryService) {
 
-        var highlightIfSelected = function(category, slug){
+        var highlightIfSelected = function(category, slug, parentCategory){
+
             if(category.slug === slug){
                 category.isOpen = true;
-                return true;
-            }
-            var subCategorySelected = _.some(category.subCategories, function (sub) {
-                return highlightIfSelected(sub, slug);
-            });
 
-            if(subCategorySelected){
-                category.isOpen = true;
-            }else{
+                if(parentCategory) {
+                    parentCategory.isOpen = true;
+                }
+            } else {
                 category.isOpen = false;
             }
-            return subCategorySelected;
+
+            _.forEach(category.subCategories, function (sub) {
+                highlightIfSelected(sub, slug, category);
+            });
         };
 
         var processCategorySelection = function(categories, slug){
@@ -30,8 +30,12 @@ angular.module('lightweight').directive('categoryAccordion', ['Global', '_', '$r
             restrict: 'AE',
             templateUrl: 'themes/lightweight/views/category/category-accordion.html',
             link: function(scope, element, attrs){
-                scope.slug = $state.params.slug;
+
                 scope.categories = [];
+
+                $timeout(function() {
+                    scope.slug = $stateParams.slug;
+                });
 
                 CategoryService.getCategories()
                     .$promise
@@ -54,8 +58,7 @@ angular.module('lightweight').directive('categoryAccordion', ['Global', '_', '$r
                 };
 
                 $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-                    //console.log(toState,toParams);
-                    scope.slug = (toState.name === 'products-in-category') ? toParams.slug : '';
+                    scope.slug = (toState.name === 'Category') ? toParams.slug : '';
                     processCategorySelection(scope.categories, scope.slug);
                 });
             }

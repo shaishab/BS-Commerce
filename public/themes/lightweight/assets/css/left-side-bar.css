@@ -8,11 +8,20 @@
 .category-products a {
     color: #696763;
     font-family: 'Roboto', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     padding: 5px;
-    /*text-transform: uppercase;*/
     display: inline-block;
     cursor: pointer;
+    text-decoration: none;
+}
+.category-products a:hover {
+    color: #5cb85c;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    padding: 5px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .category-products  ul {
@@ -24,7 +33,10 @@
 }
 
 .category-products span {
-    cursor: pointer; color: #696763;padding-right: 5px;
+    cursor: pointer;
+    color: #696763;
+    padding-right: 5px;
+    padding-top: 6px;
 }
 
 .category-products .selected-nav-category {
