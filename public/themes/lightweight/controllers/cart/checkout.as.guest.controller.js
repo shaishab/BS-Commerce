@@ -20,17 +20,16 @@ angular.module('lightweight').controller('CheckoutAsGuestController',
                 UserService.signInUserWithGuestUserItems($scope.user)
                     .$promise
                     .then(function(user) {
-                        $scope.global.user = user;
 
-                        //$window.location.reload();
                         $rootScope.$emit('cart:updated');
 
                         $timeout(function() {
-                            $state.go(returnState, {}, { reload: true });
+                            $scope.global.user = user;
+                            $scope.global.isRegistered = true;
+                            $state.go(returnState);
                         });
-                        
+
                     }, function(error) {
-                        console.log('error== ',error);
                         $scope.errorLogin = error.data.message;
                     });
             }
