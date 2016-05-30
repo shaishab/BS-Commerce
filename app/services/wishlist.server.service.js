@@ -17,6 +17,17 @@ exports.deleteWishlistById = function (wishlistId) {
     return deferred.promise;
 };
 
+exports.deleteWishlistByUserId = function (userId) {
+    var deferred = Q.defer();
+    Wishlist.findOneAndRemove({user:userId}, function (err, wishlist) {
+        if (err) {
+            return deferred.reject(err);
+        }
+        return deferred.resolve({msg: 'success'});
+    });
+    return deferred.promise;
+};
+
 var isExistWishlist = function (userId, callback) {
     Wishlist.findOne({user: userId}, function (error, wishlist) {
         if (error || !wishlist) {
