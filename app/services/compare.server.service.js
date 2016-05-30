@@ -8,11 +8,22 @@ var mongoose = require('mongoose'),
 
 exports.deleteCompareById = function (compareId) {
     var deferred = Q.defer();
-    compareId.findByIdAndRemove(compareId, function (err, compare) {
+    Compare.findByIdAndRemove(compareId, function (err, compare) {
         if (err) {
             return deferred.reject(err);
         }
         return deferred.resolve(compare);
+    });
+    return deferred.promise;
+};
+
+exports.deleteCompareByUserId = function (userId) {
+    var deferred = Q.defer();
+    Compare.findOneAndRemove({user: userId}, function (err, compare) {
+        if (err) {
+            return deferred.reject(err);
+        }
+        return deferred.resolve({msg: 'success'});
     });
     return deferred.promise;
 };
