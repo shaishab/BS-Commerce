@@ -46,13 +46,13 @@
                         <a data-ui-sref="Product({sku:product.info.sku})" data-ng-bind="product.info.name"></a>
                     </p>
                     <button class="btn btn-success" data-ng-click="addToCart(product, $event)">
-                        <i class="fa fa-shopping-cart"></i>Add to cart
+                        <i class="fa fa-shopping-cart"></i> Add to cart
                     </button>
                 </div>
                 <div class="choose">
                     <ul class="nav nav-pills nav-justified">
                         <li><a href="javascript:void(0)" data-ng-click="addToWishlist(product, $event)"><i class="fa fa-plus-square"></i> Add to wishlist</a></li>
-                        <!--<li><a href=""><i class="fa fa-plus-square"></i> Add to compare</a></li>-->
+                        <li><a href="javascript:void(0)" data-ng-click="addToCompare(product, $event)"><i class="fa fa-plus-square"></i> Add to compare</a></li>
                     </ul>
                 </div>
             </div>

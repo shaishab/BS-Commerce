@@ -29,6 +29,7 @@
                 <p><b>Brand:</b> <span data-ng-repeat="brand in product.brands">{{brand}}</span></p>
                 <p>
                     <button class="btn btn-success" data-ng-click="addToWishlist(product, $event)"><i class="fa fa-star"></i> Add to wishlist</button>
+                    <button class="btn btn-success" data-ng-click="addToCompare(product, $event)"><i class="fa fa-exchange" style="transform: rotate(90deg);"></i> Add to compare</button>
                 </p>
             </div>
         </div>
