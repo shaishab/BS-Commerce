@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('lightweight').controller('CartController', ['$scope', '$rootScope', '$location', '$state', 'Global', 'CartService',
-	function($scope, $rootScope, $location, $state, Global, CartService) {
+angular.module('lightweight').controller('CartController', ['$scope', '$rootScope', '$window' ,'$location', '$state', 'Global', '_', 'CartService',
+	function($scope, $rootScope, $window, $location, $state, Global, _, CartService) {
 		$scope.global = Global;
 		$scope.items = [];
 		$scope.shipping = 0;
@@ -41,6 +41,7 @@ angular.module('lightweight').controller('CartController', ['$scope', '$rootScop
 				.then(function(updatedCart) {
 					$scope.items = updatedCart.items;
 					$rootScope.$emit('cart:updated');
+					$window.toastr.success('Updated cart');
 				});
 		};
 
@@ -52,6 +53,7 @@ angular.module('lightweight').controller('CartController', ['$scope', '$rootScop
 					.then(function(updatedCart) {
 						$scope.items = updatedCart.items;
 						$rootScope.$emit('cart:updated');
+						$window.toastr.success('Updated cart');
 					});
 			}
 		};

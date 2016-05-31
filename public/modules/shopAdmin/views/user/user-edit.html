@@ -5,19 +5,13 @@
                 <i class="fa fa-user-md"></i> Edit User details (<a data-ui-sref="User.List">back to customer list</a>)
             </h3>
 
-            <button class="btn btn-default" data-ng-click="updateUserInfo()">Save</button>
-            <button class="btn btn-default" data-ng-click="updateUserInfo()">Save and Continue Edit</button>
-            <button class="btn btn-default" data-ng-click="deleteUserById()">Delete</button>
+            <button class="btn btn-success" data-ng-click="updateUserInfo()">Save</button>
+            <button class="btn btn-success" data-ng-click="updateUserInfo()">Save and Continue Edit</button>
+            <button class="btn btn-danger" data-ng-click="deleteUserById()">Delete</button>
 
         </div>
     </div>
     <hr>
-    <div class="row">
-        <div class="col-md-offset-4 col-md-4 alert-success text-center" data-ng-show="updateSuccessMsg"><label>{{updateSuccessMsg}}</label></div>
-        <div class="col-md-offset-4 col-md-4 alert-danger text-center" data-ng-show="updateErrorMsg"><label>{{updateErrorMsg}}</label></div>
-        <div class="col-md-offset-4 col-md-4 alert-success text-center" data-ng-show="deleteSuccessMsg"><label>{{deleteSuccessMsg}}</label></div>
-        <div class="col-md-offset-4 col-md-4 alert-danger text-center" data-ng-show="deleteErrorMsg"><label>{{deleteErrorMsg}}</label></div>
-    </div>
     <div class="row" style="border: 2px solid #C5C5C5;">
         <uib-tabset>
             <uib-tab heading="User Info">
@@ -50,8 +44,6 @@
                             <div class="col-md-2">
                                 <button class="btn btn-default" data-ng-click="changeUserPassword()">Change Password</button>
                             </div>
-                            <div class="col-md-3 alert-success" data-ng-show="passwordChanged"><label>successfully changed password</label></div>
-                            <div class="col-md-3 alert-danger" data-ng-show="passwordChangedError"><label>Unhandled error! Please try again.</label></div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-3"><label class="required-label" for="firstName"><i class="fa fa-question-circle fa-fw"></i> First name</label></div>

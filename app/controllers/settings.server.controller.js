@@ -50,15 +50,7 @@ exports. getEmailSettings = function(req, res) {
 
 var emailSend = function(emailSettings, recipientEmail, subject, htmlBody, callback){
 
-    var smtpTransport = nodemailer.createTransport({
-        host: emailSettings.host,
-        port: emailSettings.port,
-        secure: emailSettings.ssl,
-        auth: {
-            user: emailSettings.user,
-            pass: emailSettings.password
-        }
-    });
+    var smtpTransport = nodemailer.createTransport('smtps://'+emailSettings.user+'%40gmail.com:'+emailSettings.password+'@smtp.gmail.com');
 
     var mailOptions = {
         from: emailSettings.emailDisplayName +'-<'+ emailSettings.emailAddress +'>',
@@ -73,9 +65,6 @@ var emailSend = function(emailSettings, recipientEmail, subject, htmlBody, callb
         }else{
             callback(true);
         }
-
-        // if you don't want to use this transport object anymore, uncomment following line
-        //smtpTransport.close(); // shut down the connection pool, no more messages
     });
 };
 

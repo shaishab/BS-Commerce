@@ -1,7 +1,8 @@
 (function(){
 	'use strict';
-	angular.module('lightweight').controller('CheckoutController', ['$scope', '$rootScope', '$location', '$state', 'Global', '$timeout', 'CartService','CheckoutService', 'UserService',
-		function($scope, $rootScope, $location, $state, Global, $timeout, CartService, CheckoutService, UserService) {
+	angular.module('lightweight').controller('CheckoutController',
+		['$scope', '$rootScope', '$location', '$state', 'Global', '_', '$timeout','$window', 'CartService','CheckoutService', 'UserService',
+		function($scope, $rootScope, $location, $state, Global, _, $timeout, $window, CartService, CheckoutService, UserService) {
 
 			$scope.cartEmpty = true;
 			$scope.oneAtATime = true;
@@ -13,6 +14,21 @@
 			$scope.global = Global;
 
 			$scope.items = [];
+
+			var stripePublishableKey = '';
+
+			$scope.months = [];
+			$scope.years = [];
+			var currentYear = new Date().getFullYear();
+			$scope.creditCardInfo = {cardExpireMonth:1, cardExpireYear:currentYear};
+
+			for (var month=1; month<=12; month++) {
+				$scope.months.push(month);
+			}
+
+			for(var year = 0; year<15; year++) {
+				$scope.years.push(currentYear + year);
+			}
 
 			CartService.getCart()
 				.$promise
@@ -34,6 +50,12 @@
 				},
 				function (error) {
 					$state.go('emptyCart');
+				});
+
+			CartService.getStripePublishableKey()
+				.$promise
+				.then(function(response) {
+					stripePublishableKey = response.publishableKey;
 				});
 
 			$scope.initializeAddress = function() {
@@ -111,6 +133,62 @@
 				}
 			};
 
+			$scope.cardTypeShow = function() {
+				var cardNumber = $scope.creditCardInfo.cardNumber;
+				if(new RegExp('^4[0-9]{12}(?:[0-9]{3})?$').test(cardNumber)) {
+					return 'fa-cc-visa';
+				} else if(new RegExp('^5[1-5][0-9]{14}$').test(cardNumber)) {
+					return 'fa-cc-mastercard';
+				} else if(new RegExp('^3[47][0-9]{13}$').test(cardNumber)) {
+					return 'fa-cc-amex';
+				} else if(new RegExp('^65[4-9][0-9]{13}|64[4-9][0-9]{13}|6011[0-9]{12}|(622(?:12[6-9]|1[3-9][0-9]|[2-8][0-9][0-9]|9[01][0-9]|92[0-5])[0-9]{10})$').test(cardNumber)) {
+					return 'fa-cc-discover';
+				} else if(new RegExp('^(?:2131|1800|35\d{3})\d{11}$').test(cardNumber)) {
+					return 'fa-cc-jcb';
+				} else {
+					return 'fa-credit-card';
+				}
+			};
+
+			$scope.checkCreditCardValidation = function() {
+
+				$window.Stripe.setPublishableKey(stripePublishableKey);
+				$rootScope.isBusy = true;
+				//https://github.com/mjhea0/node-stripe-example/blob/master/src/server/routes/index.js
+
+				var validCard = $window.Stripe.card.validateCardNumber($scope.creditCardInfo.cardNumber);
+
+				if(!validCard) {
+					$timeout(function() {
+						$rootScope.isBusy = false;
+					});
+					return false;
+				}
+				
+				$window.Stripe.card.createToken({
+					number: $scope.creditCardInfo.cardNumber,
+					cvc: $scope.creditCardInfo.cardCVC,
+					exp_month: $scope.creditCardInfo.cardExpireMonth,
+					exp_year: $scope.creditCardInfo.cardExpireYear
+				}, function(status, stripeResponse){
+
+					if(stripeResponse.error){
+						$scope.cardError = stripeResponse.error.message;
+						$timeout(function() {
+							$rootScope.isBusy = false;
+						});
+					}else{
+						var stripeToken = stripeResponse.id;
+						$scope.order.stripeToken = stripeToken;
+
+						$timeout(function() {
+							$rootScope.isBusy = false;
+							$scope.setActiveStep(6);
+						});
+					}
+				});
+			};
+
 			$scope.confirmOrder = function() {
 				addProductInfo(function() {
 					CheckoutService.createOrder($scope.order)
@@ -122,7 +200,12 @@
 								.$promise
 								.then(function(deleteResponse) {
 									$rootScope.$emit('cart:updated');
-									$state.go('CheckoutSuccess',{orderId: response.orderId});
+									if(response.paypalRedirectUrl) {
+										$window.location.href = response.paypalRedirectUrl;
+									} else {
+										$state.go('CheckoutSuccess',{orderId: response.orderId});
+									}
+
 								},
 								function(error) {
 									$rootScope.$emit('cart:updated');

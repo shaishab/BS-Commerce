@@ -15,4 +15,7 @@ module.exports = function(app) {
     app.route('/api/cart/allitems')
         .get(cartController.getItemsWithoutPopulate)
         .delete(cartController.deleteAllCartItems);
+
+    app.route('/api/stripePublishableKey')
+        .get(cartController.getStripePublishableKey);
 };

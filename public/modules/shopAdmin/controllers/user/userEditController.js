@@ -3,8 +3,8 @@
  */
 'use strict';
 
-angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global', '$stateParams','userService','$location', '$timeout',
-    function($scope, Global, $stateParams, userService, $location, $timeout) {
+angular.module('shopAdmin').controller('userEditController', ['$scope', '$window', 'Global', '$state', '$stateParams','userService','$location', '$timeout',
+    function($scope, $window, Global, $state, $stateParams, userService, $location, $timeout) {
 
         //<editor-fold desc='Variable declaration'>
         $scope.user = {};
@@ -32,15 +32,9 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
         $scope.changeUserPassword = function() {
             var getChangeResponse = userService.changeUserPassword($scope.user._id, $scope.user.password);
             getChangeResponse.$promise.then(function(data) {
-                $scope.passwordChanged = true;
-                $timeout(function() {
-                    $scope.passwordChanged = false;
-                },2000);
+                $window.toastr.success('Successfully changed password');
             },function(error) {
-                $scope.passwordChangedError = true;
-                $timeout(function() {
-                    $scope.passwordChangedError = false;
-                },2000);
+                $window.toastr.error('Failed to change password. Please try again');
             });
         };
 
@@ -114,16 +108,10 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
             $scope.user.active = $scope.user.active || false;
             var updateResponse = userService.updateUserInfo($scope.user);
             updateResponse.$promise.then(function(responseData) {
-                $scope.updateSuccessMsg = responseData.msg;
-                    $timeout(function() {
-                        $scope.updateSuccessMsg = '';
-                    },2000);
+                $window.toastr.success(responseData.msg);
             },
             function(error) {
-                $scope.updateErrorMsg = error.msg;
-                $timeout(function() {
-                    $scope.updateErrorMsg = '';
-                },2000);
+                $window.toastr.error(error.msg);
             });
         };
 
@@ -131,17 +119,12 @@ angular.module('shopAdmin').controller('userEditController', ['$scope', 'Global'
             if(confirm('Are you sure you want to delete this user ?')) {
                 var deleteUserResponse = userService.deleteUserById($scope.user._id);
                 deleteUserResponse.$promise.then(function(responseData) {
-                        $scope.deleteSuccessMsg = responseData.msg;
-                        $timeout(function() {
-                            $scope.deleteSuccessMsg = '';
-                            $location.path('/User/List');
-                        },3000);
+                        $window.toastr.success(responseData.msg);
+                        $state.go('User.List');
                     },
                     function(error) {
-                        $scope.deleteErrorMsg = error.msg;
-                        $timeout(function() {
-                            $scope.deleteErrorMsg = '';
-                        },3000);
+                        console.log(error);
+                        $window.toastr.error(error.data.msg);
                     });
             }
         };

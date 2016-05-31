@@ -142,10 +142,12 @@ module.exports = function(db) {
 
 	// Assume 404 since no middleware responded
 	app.use(function(req, res) {
-		res.status(404).render('404', {
-			url: req.originalUrl,
-			error: 'Not Found'
-		});
+		//res.status(404).render('404', {
+		//	url: req.originalUrl,
+		//	error: 'Not Found'
+		//});
+		console.log('******** Error status = 404 *********');
+		res.redirect('/');
 	});
 
 	if (process.env.NODE_ENV === 'secure') {

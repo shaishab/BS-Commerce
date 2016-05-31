@@ -57,5 +57,20 @@ module.exports = {
 				pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
 			}
 		}
+	},
+	stripe: {
+		publishableKey: 'pk_test_bvLQL8RHq2KUbEXCwKoYim0Q',
+		secretKey: 'sk_test_MZWnReGdw0E6Iw4Zybd0RPqI'
+	},
+	paypal: {
+		clientInfo: {
+			host : 'api.sandbox.paypal.com',
+			mode:'sandbox',
+			port : '',
+			client_id: 'AfHSUd0B4IKM7JCAsc5VzAHjvFQDBKqzF5w7fHu_eanyBsdYgXefKFrAYrtG7snFlhoVhvNOJUaleb74',
+			client_secret: 'EAXrTB_nYgVeRQIDvbza95Clc5_d9cLGHVXW9ZE2FnACD6JC8ceMxRqgwisV_HoCt09We2D9OtEO_v4M'
+		},
+		successUrl: 'http://localhost:3000/#!/payment/success',
+		cancelUrl: 'http://localhost:3000/#!/payment/cancel'
 	}
 };

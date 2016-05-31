@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('themeEditController', ['$scope', '$stateParams', '$state', 'themeService',
-    function ($scope, $stateParams, $state, themeService) {
+angular.module('shopAdmin').controller('themeEditController', ['$scope', '$window', '$stateParams', '$state', 'themeService',
+    function ($scope, $window, $stateParams, $state, themeService) {
 
         $scope.theme = {};
 
@@ -18,6 +18,7 @@ angular.module('shopAdmin').controller('themeEditController', ['$scope', '$state
             themeService.updateTheme($scope.theme)
                 .$promise
                 .then(function(response) {
+                    $window.toastr.success('Successfully update theme information');
                     $state.go('Theme.List');
                 });
         };
@@ -27,6 +28,7 @@ angular.module('shopAdmin').controller('themeEditController', ['$scope', '$state
                 themeService.deleteTheme($stateParams.themeId)
                     .$promise
                     .then(function (response) {
+                        $window.toastr.success('Successfully deleted theme');
                         $state.go('Theme.List');
                     });
             }

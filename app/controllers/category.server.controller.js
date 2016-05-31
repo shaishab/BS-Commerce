@@ -71,10 +71,9 @@ exports.addCategory = function(req, res) {
                         return res.status(400).json(error);
                     })
                     .done();
-
-            },function (err) {
-                console.log('Error', err);
-                service.addCategory(JSON.parse(req.body.category))
+            })
+            .catch(function (error) {
+                service.addCategory(req.body.category)
                     .then(function(category) {
                         return res.status(200).json(category);
                     })
@@ -83,14 +82,15 @@ exports.addCategory = function(req, res) {
                     })
                     .done();
             })
-            .catch(function (error) {
-                return res.status(500).json({error: error});
-            })
             .done();
     }else{
-        service.addCategory(req.body.category).then(function(category) {
-            return res.status(200).json({msg: 'success'});
-        });
-
+        service.addCategory(req.body.category)
+            .then(function(category) {
+                return res.status(200).json({msg: 'success'});
+            })
+            .catch(function(error){
+                return res.status(400).json(error);
+            })
+            .done();
     }
 };

@@ -61,7 +61,7 @@
 }
 
 .cart-info .cart-menu {
-    background: #FE980F;
+    background: #5cb85c;
     color: #fff;
     font-size: 16px;
     font-weight: normal;
@@ -82,7 +82,7 @@
     padding-top: 5px;
 }
 .cart-quantity-btn a:hover{
-    background: #FE980F;
+    background: #5cb85c;
     color: #FFFFFF;
 }
 .cart-quantity-btn input {
@@ -96,7 +96,7 @@
 }
 
 .cart-total-price {
-    color: #FE980F;
+    color: #5cb85c;
     font-size: 24px;
 }
 .cart-item-delete a {
@@ -106,7 +106,7 @@
     font-size: 16px;
 }
 .cart-item-delete a:hover {
-    background: #FE980F;;
+    background: #5cb85c;;
     color: #FFFFFF;
     padding: 5px 7px;
     font-size: 16px;

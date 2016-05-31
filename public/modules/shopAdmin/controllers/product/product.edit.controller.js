@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('shopAdmin').controller('productUpdateController',
-    ['$scope', '$stateParams', 'Upload', '$state', 'categoryService', 'brandService', 'productService', '$http',
-    function ($scope, $stateParams, Upload, $state, categoryService, brandService, productService, $http) {
+    ['$scope', '$window', '$stateParams', 'Upload', '$state', 'categoryService', 'brandService', 'productService',
+    function ($scope, $window, $stateParams, Upload, $state, categoryService, brandService, productService) {
         $scope.product = {};
         $scope.picture = {};
         $scope.product.categories = [];
@@ -74,18 +74,20 @@ angular.module('shopAdmin').controller('productUpdateController',
                 //$scope.log = 'progress: ' + progressPercentage + '% ' +
                 //    evt.config.file.name + '\n' + $scope.log;
             }).success(function (data, status, headers, config) {
+                $window.toastr.success('Successfully updated');
                 $scope.product = data;
                 $scope.picture = {};
             });
         };
 
         $scope.update = function () {
-            if(typeof $scope.product.meta.keywords === 'string') {
-                $scope.product.meta.keywords = $scope.product.meta.keywords ? $scope.product.meta.keywords.split(',') : [];
+            if($scope.product.meta && $scope.product.meta.keywords && typeof $scope.product.meta.keywords === 'string') {
+                $scope.product.meta.keywords = $scope.product.meta.keywords.length ? $scope.product.meta.keywords.split(',') : [];
             }
             productService.updateProduct($scope.product)
                 .$promise
                 .then(function(data) {
+                    $window.toastr.success('Updated product');
                     $state.go('Product.List');
                 });
         };
@@ -95,6 +97,7 @@ angular.module('shopAdmin').controller('productUpdateController',
                 productService.deleteProductPhoto($stateParams.id, photoId)
                     .$promise
                     .then(function(updateProduct) {
+                        $window.toastr.success('Deleted a product picture');
                         $scope.product = updateProduct;
                     });
             }
@@ -104,6 +107,7 @@ angular.module('shopAdmin').controller('productUpdateController',
             productService.deleteProduct($scope.product._id)
                 .$promise
                 .then(function(data) {
+                    $window.toastr.success('Deleted product');
                     $state.go('Product.List');
                 });
         };

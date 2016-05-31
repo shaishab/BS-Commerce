@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('lightweight').controller('CheckoutAsGuestController',
-    ['$scope', '$rootScope', '$location', '$state', '$stateParams', '$window', 'Global', 'UserService','CartService',
-    function($scope, $rootScope, $location, $state, $stateParams, $window, Global, UserService, CartService) {
+    ['$scope', '$rootScope', '$location', '$state', '$timeout', '$stateParams', '$window', 'Global', 'UserService','CartService',
+    function($scope, $rootScope, $location, $state, $timeout, $stateParams, $window, Global, UserService, CartService) {
         $scope.global = Global;
         var returnState = $stateParams.returnUrl;
         $scope.userCredential = {};
@@ -16,19 +16,21 @@ angular.module('lightweight').controller('CheckoutAsGuestController',
 
         $scope.loginFromCheckout = function() {
             if($scope.items && $scope.items.length) {
-                $scope.user.items = $scope.items
+                $scope.user.items = $scope.items;
                 UserService.signInUserWithGuestUserItems($scope.user)
                     .$promise
                     .then(function(user) {
-                        $scope.global.user = user;
 
-                        $window.location.reload();
                         $rootScope.$emit('cart:updated');
 
-                        $state.go(returnState);
-                        
+                        $timeout(function() {
+                            $scope.global.user = user;
+                            $scope.global.isRegistered = true;
+                            $state.go(returnState);
+                        });
+
                     }, function(error) {
-                        console.log('error== ',error);
+                        $scope.errorLogin = error.data.message;
                     });
             }
 

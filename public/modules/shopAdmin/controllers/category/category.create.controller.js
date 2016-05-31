@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$stateParams','Upload','$state', 'categoryService',
-    function ($scope, $stateParams, Upload, $state, categoryService) {
+angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$window', '$stateParams','Upload','$state', 'categoryService',
+    function ($scope, $window, $stateParams, Upload, $state, categoryService) {
         // Info tab Page
         $scope.category = {};
         $scope.categories = [];
@@ -42,7 +42,10 @@ angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$
             if($scope.category.parent === ''){
                 $scope.category.parent = null;
             }
-            $scope.category.meta.keywords = $scope.category.meta.keywords ? $scope.category.meta.keywords.split(',') : [];
+
+            if($scope.category.meta && $scope.category.meta.keywords && typeof $scope.category.meta.keywords === 'string') {
+                $scope.category.meta.keywords = $scope.category.meta.keywords.length ? $scope.category.meta.keywords.split(',') : [];
+            }
 
             Upload.upload({
                 url: '/api/categories',
@@ -52,9 +55,11 @@ angular.module('shopAdmin').controller('categoryCreateController', ['$scope', '$
                 //$scope.log = 'progress: ' + progressPercentage + '% ' +
                 //evt.config.file.name + '\n' + $scope.log;
             }).success(function (data, status, headers, config) {
+                $window.toastr.success('Created new category');
                 $state.go('Category.List');
             }).error(function(data, status, headers, config){
-                console.log('error block' + data);
+                $window.toastr.error('Failed to add new category');
+                console.log('error' + data);
             });
         };
     }

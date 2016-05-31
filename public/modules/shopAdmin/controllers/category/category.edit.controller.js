@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('shopAdmin').controller('categoryEditController', ['$scope', '$state', '$stateParams', 'categoryService',
-    function($scope, $state, $stateParams, categoryService) {
+angular.module('shopAdmin').controller('categoryEditController', ['$scope', '$window', '$state', '$stateParams', 'categoryService',
+    function($scope, $window, $state, $stateParams, categoryService) {
         $scope.categoryId = $stateParams.categoryId;
         $scope.category = {};
         $scope.category.meta = {};
@@ -32,21 +32,25 @@ angular.module('shopAdmin').controller('categoryEditController', ['$scope', '$st
             if($scope.category.parent === ''){
                 $scope.category.parent = null;
             }
-            if(typeof $scope.category.meta.keywords === 'string') {
-                $scope.category.meta.keywords = $scope.category.meta.keywords ? $scope.category.meta.keywords.split(',') : [];
+            if($scope.category.meta && $scope.category.meta.keywords && typeof $scope.category.meta.keywords === 'string') {
+                $scope.category.meta.keywords = $scope.category.meta.keywords.length ? $scope.category.meta.keywords.split(',') : [];
             }
             categoryService.updateCategory($scope.category)
                 .$promise
                 .then(function(response) {
-                   $state.go('Category.List');
+                    $window.toastr.success('Updated category');
+                    $state.go('Category.List');
                 });
         };
 
         $scope.delete = function () {
-            categoryService.deleteCategory($scope.category._id)
-                .$promise.then(function(promise) {
+            if(confirm('Are you sure want to delete this category')) {
+                categoryService.deleteCategory($scope.category._id)
+                    .$promise.then(function(promise) {
+                    $window.toastr.success('Deleted category');
                     $state.go('Category.List');
                 });
+            }
         };
     }
 ]);

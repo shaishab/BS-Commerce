@@ -37,8 +37,6 @@
                                     <button class="btn btn-default" data-ng-click="cancelUpdateOrderStatus()">cancel</button>
                                     <button class="btn btn-primary" data-ng-click="updateOrderStatus(selectedOrderStatus)">save</button>
                                 </div>
-                                <span class="alert alert-success" data-ng-show="successUpdateOrderStatus" data-ng-bind="successUpdateOrderStatus"></span>
-
                             </div>
                         </div>
                         <hr>
@@ -77,7 +75,7 @@
                         <div class="form-group">
                             <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> Customer</label>
                             <div class="col-sm-10">
-                                <a ui-sref="User.Edit({userId: order.user._id})">{{order.user.name +' ('+ order.user.email +')'}}</a>
+                                <a ui-sref="User.Edit({userId: order.user._id})">{{order.user.firstName +' '+ order.user.lastName +' ('+ order.user.email +')'}}</a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -117,15 +115,20 @@
                                     <button class="btn btn-default" data-ng-click="cancelUpdatePaymentStatus()">cancel</button>
                                     <button class="btn btn-primary" data-ng-click="updatePaymentStatus(selectedPaymentStatus)">save</button>
                                 </div>
-                                <span class="alert alert-success" data-ng-show="successUpdatePaymentStatus" data-ng-bind="successUpdatePaymentStatus"></span>
                             </div>
                         </div>
                         <hr>
 
                         <div class="form-group">
-                            <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> Name</label>
+                            <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> First name</label>
                             <div class="col-sm-10">
-                                <span class="form-control-static" data-ng-bind="order.billingAddress.name"></span>
+                                <span class="form-control-static" data-ng-bind="order.billingAddress.firstName"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> Last name</label>
+                            <div class="col-sm-10">
+                                <span class="form-control-static" data-ng-bind="order.billingAddress.lastName"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -177,12 +180,16 @@
                     <form class="form-horizontal" name="billingAddressForm" style="margin-top: 20px;" data-ng-show="showEditBillingAddressForm" data-ng-submit="updateBillingAddress()">
                         <h2>Billing address</h2>
                         <hr>
-                        <span class="col-sm-12 alert alert-success" data-ng-show="successUpdateBillingAddress" data-ng-bind="successUpdateBillingAddress"></span>
-
                         <div class="form-group">
-                            <label class="col-sm-2" for="billAddressName"><i class="fa fa-question-circle fa-fw"></i> Name</label>
+                            <label class="col-sm-2" for="billAddressFirstName"><i class="fa fa-question-circle fa-fw"></i> First name</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="billAddressName" placeholder="name" data-ng-model="newBillingAddress.name" ng-required="billAddressFieldRequired">
+                                <input type="text" class="form-control" id="billAddressFirstName" placeholder="first name" data-ng-model="newBillingAddress.firstName" ng-required="billAddressFieldRequired">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2" for="billAddressLastName"><i class="fa fa-question-circle fa-fw"></i> Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="billAddressLastName" placeholder="last name" data-ng-model="newBillingAddress.lastName" ng-required="billAddressFieldRequired">
                             </div>
                         </div>
                         <div class="form-group">
@@ -261,15 +268,20 @@
                                     <button class="btn btn-default" data-ng-click="cancelUpdateShippingStatus()">cancel</button>
                                     <button class="btn btn-primary" data-ng-click="updateShippingStatus(selectedShippingStatus)">save</button>
                                 </div>
-                                <span class="alert alert-success" data-ng-show="successUpdateShippingStatus" data-ng-bind="successUpdateShippingStatus"></span>
                             </div>
                         </div>
                         <hr>
 
                         <div class="form-group">
-                            <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> Name</label>
+                            <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> First name</label>
                             <div class="col-sm-10">
-                                <span class="form-control-static" data-ng-bind="order.shippingAddress.name"></span>
+                                <span class="form-control-static" data-ng-bind="order.shippingAddress.firstName"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2"><i class="fa fa-question-circle fa-fw"></i> Last name</label>
+                            <div class="col-sm-10">
+                                <span class="form-control-static" data-ng-bind="order.shippingAddress.lastName"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -325,11 +337,16 @@
                     <form class="form-horizontal" name="shippingAddressForm" style="margin-top: 20px;" data-ng-show="showEditShippingAddressForm" data-ng-submit="updateShippingAddress()">
                         <h2>Shipping address</h2>
                         <hr>
-                        <span class="col-sm-12 alert alert-success" data-ng-show="successUpdateShippingAddress" data-ng-bind="successUpdateShippingAddress"></span>
                         <div class="form-group">
-                            <label class="col-sm-2" for="shippingAddressName"><i class="fa fa-question-circle fa-fw"></i> Name</label>
+                            <label class="col-sm-2" for="shippingAddressFiratName"><i class="fa fa-question-circle fa-fw"></i> First name</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="shippingAddressName" placeholder="name" data-ng-model="newShippingAddress.name" ng-required="shippingAddressFieldRequired">
+                                <input type="text" class="form-control" id="shippingAddressFiratName" placeholder="first name" data-ng-model="newShippingAddress.firstName" ng-required="shippingAddressFieldRequired">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2" for="shippingAddressLastName"><i class="fa fa-question-circle fa-fw"></i> Last name</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="shippingAddressLastName" placeholder="name" data-ng-model="newShippingAddress.lastName" ng-required="shippingAddressFieldRequired">
                             </div>
                         </div>
                         <div class="form-group">
@@ -385,7 +402,6 @@
                 <div class="">
                     <div class=" col-md-12 table-responsive cart_info">
                         <h2>Product(s) Information</h2>
-                        <span class="col-sm-12 alert alert-success" data-ng-show="successUpdateProductInfo" data-ng-bind="successUpdateProductInfo"></span>
                         <table class="table table-bordered">
                             <thead>
                             <tr class="cart_menu">

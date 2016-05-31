@@ -20,4 +20,7 @@ module.exports = function(app) {
 
     app.route('/api/auth/orders/incomplete/statistics')
         .get(orderController.getIncompleteOrdersStatistics);
+
+    app.route('/api/auth/order/:orderId/:paymentId/:payerId')
+        .put(orderController.updateOrderForPaypalPayment);
 };

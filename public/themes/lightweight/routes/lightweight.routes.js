@@ -24,7 +24,7 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
             })
             .state('Product', {
                 url: '/product/:sku',
-                parent:'master',
+                parent: 'master',
                 controller: 'ProductDetailsController',
                 templateUrl: 'themes/lightweight/views/product/product-details.html'
             })
@@ -62,6 +62,31 @@ angular.module('lightweight').config(['$stateProvider', '$urlRouterProvider',
                 url: '/login/checkoutasguest?returnUrl',
                 controller: 'CheckoutAsGuestController',
                 templateUrl: 'themes/lightweight/views/cart/checkout-as-guest.html'
+            })
+            .state('Wishlist', {
+                url: '/wishlist',
+                controller: 'WishlistController',
+                templateUrl: 'themes/lightweight/views/wishlist/wishlist.html'
+            })
+            .state('WishlistDetails', {
+                url: '/wishlist/:wishlistId',
+                controller: 'WishlistShareableController',
+                templateUrl: 'themes/lightweight/views/wishlist/wishlist-shareable.html'
+            })
+            .state('PaypalPaymentSuccess', {
+                url: '/payment/success/:orderId?paymentId&token&PayerID',
+                controller: 'PaypalPaymentSuccessController',
+                templateUrl: 'themes/lightweight/views/cart/payment-success.html'
+            })
+            .state('PaypalPaymentCancel', {
+                url: '/payment/cancel/:orderId',
+                //controller:'PaypalPaymentCancelController', // need to work
+                templateUrl: 'themes/lightweight/views/cart/payment-cancel.html'
+            })
+            .state('CompareList', {
+                url: '/compareList',
+                controller: 'CompareController',
+                templateUrl: 'themes/lightweight/views/compare/compare-list.html'
             });
     }
 ]);

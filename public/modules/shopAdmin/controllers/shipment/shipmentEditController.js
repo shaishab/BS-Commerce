@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('shopAdmin').controller('shipmentEditController', ['$scope', '$timeout', '$location', '$stateParams', 'orderService', 'shipmentService',
-    function($scope, $timeout, $location, $stateParams, orderService, shipmentService) {
+angular.module('shopAdmin').controller('shipmentEditController',
+    ['$scope', '$timeout', '$window', '$location', '$stateParams', 'orderService', 'shipmentService',
+    function($scope, $timeout, $window, $location, $stateParams, orderService, shipmentService) {
 
         $scope.shipmentId = $stateParams.shipmentId;
         $scope.shippedDate = null;
@@ -24,7 +25,7 @@ angular.module('shopAdmin').controller('shipmentEditController', ['$scope', '$ti
         $scope.updateShippingStatus = function() {
             orderService.updateOrder($scope.order)
                 .$promise.then(function(response) {
-                    $scope.orderUpdateSuccessMsg = 'success';
+                    $window.toastr.success('Successfully updated shipment status');
                 });
         };
 
@@ -107,10 +108,7 @@ angular.module('shopAdmin').controller('shipmentEditController', ['$scope', '$ti
             shipmentService.updateShipment($scope.shipment)
                 .$promise
                 .then(function(response) {
-                    $scope.updateSuccessMsg = response.msg;
-                    $timeout(function() {
-                        $scope.updateSuccessMsg = '';
-                    },1000);
+                    $window.toastr.success(response.msg);
                 });
         };
 
@@ -186,7 +184,7 @@ angular.module('shopAdmin').controller('shipmentEditController', ['$scope', '$ti
         };
 
         $scope.printPackagingSlip = function() {
-            var doc = new window.jsPDF();
+            var doc = new $window.jsPDF();
 
             doc.setFont('helvetica');
             doc.setFontType('bold');
@@ -200,17 +198,17 @@ angular.module('shopAdmin').controller('shipmentEditController', ['$scope', '$ti
             doc.setTextColor(0,0,0);
             doc.text(20, 50,  'Shipping ID:');
             doc.setFontType('normal');
-            doc.text(45, 50,  $scope.shipment._id);
+            doc.text(50, 50,  $scope.shipment._id);
             doc.setFontType('bold');
-            doc.text(110, 50,  'Order ID:');
+            doc.text(112, 50,  'Order ID:');
             doc.setFontType('normal');
-            doc.text(130, 50,  $scope.shipment.order._id);
+            doc.text(135, 50,  $scope.shipment.order._id);
 
             doc.setFontType('bold');
             doc.text(20, 60,  'Shipping Address:');
             doc.setFontType('normal');
             doc.text(30, 70,  'Name');
-            doc.text(70, 70,  ': '+$scope.shipment.order.shippingAddress.name);
+            doc.text(70, 70,  ': '+$scope.shipment.order.shippingAddress.firstName +' '+ $scope.shipment.order.shippingAddress.lastName);
             doc.text(30, 76,  'Address Line 1');
             doc.text(70, 76,  ': '+$scope.shipment.order.shippingAddress.addressLine1);
             doc.text(30, 82,  'Address Line 2');

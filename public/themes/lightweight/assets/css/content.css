@@ -1,5 +1,5 @@
 h2.title {
-    color: #FE980F;
+    color: #5cb85c;
     font-family: 'Roboto', sans-serif;
     font-size: 18px;
     font-weight: 700;
@@ -41,10 +41,11 @@ h2.title:after {
     font-size: 13px;
     padding-left: 0;
     padding-right: 0;
+    background-color: #f5f5f5;
 }
 
 .choose ul li a:hover {
-    color: #FE980F;
+    color: #5cb85c;
     font-family: 'Roboto', sans-serif;
     font-size: 13px;
     padding-left: 0;
@@ -52,8 +53,12 @@ h2.title:after {
     background-color: #ffffff;
 }
 
+.product-info {
+    padding-bottom: 5px;
+}
+
 .product-info h2 {
-    color: #FE980F;
+    color: #5cb85c;
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-weight: 700;
@@ -66,7 +71,7 @@ h2.title:after {
 }
 
 .single-product:hover {
-    box-shadow: 1px 1px 1px 2px #FE980F;
+    box-shadow: 1px 1px 1px 2px #5cb85c;
     overflow: hidden;
     margin-bottom: 30px;
 }
@@ -88,7 +93,7 @@ h2.title:after {
 }
 
 .add-to-cart-btn:hover {
-    background: #FE980F;
+    background: #3eb825;
     color: #FFFFFF;
 }
 

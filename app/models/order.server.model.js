@@ -119,7 +119,28 @@ var OrderSchema = new Schema({
     totalCost: {
         type: Number,
         required: true
+    },
+    stripeToken: {
+        type: String,
+        default:''
+    },
+    stripeCustomerId: {
+        type: String,
+        default:''
+    },
+    stripeChargeId: {
+        type: String,
+        default:''
+    },
+    paypalPaymentId: {
+        type: String,
+        default:''
+    },
+    paypalRedirectUrl: {
+        type: String,
+        default:''
     }
+
 
 });
 

@@ -1,9 +1,9 @@
 <div class="table-responsive cart-info">
-    <table class="table table-condensed">
+    <table class="table table-condensed table-bordered">
         <thead>
-            <tr class="cart-menu">
-                <td>Item</td>
-                <td></td>
+            <tr class="cart-menu text-center">
+                <td>Image</td>
+                <td>Product(s)</td>
                 <td>Price</td>
                 <td>Quantity</td>
                 <td>Total</td>
@@ -11,24 +11,24 @@
             </tr>
         </thead>
         <tbody>
-            <tr data-ng-repeat="item in items">
-                <td>
+            <tr data-ng-repeat="item in items" class="text-center">
+                <td class="list-img-sm">
                     <div class="item-img">
-                        <a data-ui-sref="products-details({sku:item.product.info.sku})">
+                        <a data-ui-sref="Product({sku:item.product.info.sku})">
                             <img class="img-responsive" data-ng-if="item.product.photos.length > 0" data-ng-src="/api/products/photos/{{item.product.photos[0].id}}" alt="">
                         </a>
                     </div>
 
                 </td>
                 <td>
-                    <h4><a data-ui-sref="products-details({sku:item.product.info.sku})">{{item.product.info.name}}</a></h4>
+                    <h4><a data-ui-sref="Product({sku:item.product.info.sku})">{{item.product.info.name}}</a></h4>
                 </td>
                 <td>
                     {{item.product.info.price | currency}}
                 </td>
                 <td>
                     <div class="cart-quantity-btn">
-                        <input data-ng-if="!item.activeForEdit" type="number" name="quantity" data-ng-model="item.quantity" ng-disabled="true">
+                        <label data-ng-show="!item.activeForEdit" data-ng-bind="item.quantity"></label>
                         <input data-ng-if="item.activeForEdit" type="number" name="quantity" min="1" data-ng-model="item.editQuantity">
                     </div>
                 </td>
@@ -39,9 +39,9 @@
                         <button type="button" class="btn btn-default" data-ng-click="editCartItem(item)"><i class="fa fa-edit"></i></button>
                     </div>
                     <div data-ng-if="item.activeForEdit">
-                        <button type="button" class="btn btn-default" data-ng-click="cancelEditCartItem(item)" uib-tooltip="cancel"><i class="fa fa-arrow-left"></i></button>
+                        <button type="button" class="btn btn-default" data-ng-click="cancelEditCartItem(item)" uib-tooltip="cancel"><i class="fa fa-close"></i></button>
                         <button type="button" class="btn btn-default" data-ng-click="updateCartItem(item)" uib-tooltip="update"><i class="fa fa-check"></i></button>
-                        <button type="button" class="btn btn-default" data-ng-click="deleteCartItem(item)" uib-tooltip="remove"><i class="fa fa-close"></i></button>
+                        <button type="button" class="btn btn-default" data-ng-click="deleteCartItem(item)" uib-tooltip="remove"><i class="fa fa-trash"></i></button>
                     </div>
                 </td>
             </tr>

@@ -17,14 +17,20 @@ angular.module('lightweight').factory('UserService', ['$resource',
                 var signIn = $resource('/auth/signin', {}, {
                     'post': {method: 'POST'}
                 });
-                return signIn.post(userCredential)
+                return signIn.post(userCredential);
             },
             signInUserWithGuestUserItems: function(user) {
                 var signIn = $resource('/auth/guest/to/user/signin', {}, {
                     'post': {method: 'POST'}
                 });
                 return signIn.post(user);
-            }
+            },
+            updateUser: function(user) {
+                var updateUser = $resource('/auth/user/profile', {}, {
+                    'update': {method: 'PUT'}
+                });
+                return updateUser.update(user);
+            },
         };
     }
 ]);

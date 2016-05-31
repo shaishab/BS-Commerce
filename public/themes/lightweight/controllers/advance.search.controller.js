@@ -21,7 +21,7 @@ angular.module('lightweight').controller('AdvanceSearchController',
                 .then(function (response) {
                     $scope.brands = response.brands;
                 }, function (error) {
-                    $scope.brands = []
+                    $scope.brands = [];
                 });
 
             var generateCategoriesForDropDownList = function (getCategories, callback) {

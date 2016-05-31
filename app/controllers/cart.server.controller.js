@@ -106,3 +106,10 @@ exports.getItemsWithoutPopulate = function(req, res) {
         })
         .done();
 };
+
+exports.getStripePublishableKey = function(req, res) {
+    if(!req.user) {
+        return res.status(200).json('');
+    }
+    return res.status(200).json(cartService.getStripePublishableKey());
+};
